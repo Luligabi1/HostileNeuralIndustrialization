@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "modern_industrialization:guidebook"
+    },
+    {
+      "item": "hostilenetworks:blank_data_model"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "hostile_neural_industrialization:guidebook"
+  }
+}
