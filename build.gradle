@@ -95,6 +95,9 @@ neoForge {
             systemProperty 'forge.logging.markers', 'REGISTRIES'
 
             logLevel = org.slf4j.event.Level.DEBUG
+
+            systemProperty 'guideme.hostile_neural_industrialization.guide.sources',
+                    file("src/main/resources/assets/hostile_neural_industrialization/hni_guidebook/").absolutePath
         }
     }
 

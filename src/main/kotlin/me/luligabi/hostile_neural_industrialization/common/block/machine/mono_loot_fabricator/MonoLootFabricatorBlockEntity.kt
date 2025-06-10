@@ -32,6 +32,10 @@ class MonoLootFabricatorBlockEntity private constructor(
 ): MachineBlockEntity(bep, guiParams, orientationParams), EnergyComponentHolder, Tickable, CrafterComponentHolder, CrafterComponent.Behavior {
 
     companion object {
+
+        const val ID = "mono_loot_fabricator"
+        const val NAME = "Mono Loot Fabricator"
+
         fun registerEnergyApi(bet: BlockEntityType<*>) {
 
             MICapabilities.onEvent { event: RegisterCapabilitiesEvent ->
@@ -59,7 +63,7 @@ class MonoLootFabricatorBlockEntity private constructor(
         private set
 
     constructor(bep: BEP): this(bep,
-        MachineGuiParameters.Builder("mono_loot_fabricator", true).build(),
+        MachineGuiParameters.Builder(ID, true).build(),
         OrientationComponent.Params(true, true, false)
     ) {
 
@@ -73,7 +77,7 @@ class MonoLootFabricatorBlockEntity private constructor(
         overdrive = OverdriveComponent()
 
         energy = EnergyComponent(this) { casing.euCapacity }
-        insertable = energy.buildInsertable { tier: CableTier? -> casing.canInsertEu(tier) }
+        insertable = energy.buildInsertable { tier -> casing.canInsertEu(tier) }
 
         lootSelector = LootSelectorComponent()
 

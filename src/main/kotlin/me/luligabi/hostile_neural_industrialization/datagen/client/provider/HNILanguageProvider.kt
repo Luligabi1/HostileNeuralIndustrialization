@@ -2,6 +2,7 @@ package me.luligabi.hostile_neural_industrialization.datagen.client.provider
 
 import me.luligabi.hostile_neural_industrialization.common.HNI
 import me.luligabi.hostile_neural_industrialization.common.item.HNIItems
+import me.luligabi.hostile_neural_industrialization.common.util.HNIText
 import net.neoforged.neoforge.common.data.LanguageProvider
 import net.neoforged.neoforge.data.event.GatherDataEvent
 
@@ -14,6 +15,11 @@ class HNILanguageProvider(event: GatherDataEvent): LanguageProvider(event.genera
         }
 
         add("itemGroup.${HNI.ID}.${HNI.ID}", "Hostile Neural Industrialization")
+
+        for (text in HNIText.entries) {
+            add(text.translationKey, text.englishText())
+        }
+
     }
 
 }

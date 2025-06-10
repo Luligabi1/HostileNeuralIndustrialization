@@ -1,4 +1,4 @@
-package me.luligabi.hostile_neural_industrialization.common.block.machine.mono_loot_fabricator
+package me.luligabi.hostile_neural_industrialization.common.block.machine.large_loot_fabricator
 
 import aztech.modern_industrialization.machines.recipe.MachineRecipe
 import aztech.modern_industrialization.machines.recipe.ProxyableMachineRecipeType
@@ -9,31 +9,27 @@ import me.luligabi.hostile_neural_industrialization.common.HNI
 import me.luligabi.hostile_neural_industrialization.common.util.PredictionIngredient
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.resources.ResourceLocation
-import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.level.Level
 import net.swedz.tesseract.neoforge.compat.mi.recipe.MIMachineRecipeBuilder
 
 
-class MonoLootFabricatorRecipeType(id: ResourceLocation): ProxyableMachineRecipeType(id) {
+class LargeLootFabricatorRecipeType(id: ResourceLocation): ProxyableMachineRecipeType(id) {
 
     private fun generate(
         id: ResourceLocation,
-        model: DataModel,
-        outputLoot: ItemStack,
-        lootIndex: Int
+        model: DataModel
     ): RecipeHolder<MachineRecipe> {
 
-        val recipeBuilder = MIMachineRecipeBuilder(this, model.simCost / 2, 60 * 20).apply {
+        val recipeBuilder = MIMachineRecipeBuilder(this, model.simCost / 10, 7 * 60 * 20).apply {
             addItemInput(PredictionIngredient(model).toVanilla(), 1, 1f)
-            addItemOutput(ItemVariant.of(outputLoot), outputLoot.count, 1f)
+            model.fabDrops.forEach {
+                addItemOutput(ItemVariant.of(it), it.count, 1f)
+            }
+
         }
 
-        val recipe = (recipeBuilder.convert() as MachineRecipe).apply {
-            conditions = listOf(LootIndexProcessCondition(lootIndex))
-        }
-
-        return RecipeHolder(id, recipe)
+        return RecipeHolder(id, recipeBuilder.convert() as MachineRecipe)
     }
 
     private fun getPredictionRecipes(): MutableList<RecipeHolder<MachineRecipe>> {
@@ -42,19 +38,14 @@ class MonoLootFabricatorRecipeType(id: ResourceLocation): ProxyableMachineRecipe
 
         for (model in DataModelRegistry.INSTANCE.values) {
 
-            model.fabDrops.forEachIndexed { i, drop ->
+            val entityId = BuiltInRegistries.ENTITY_TYPE.getKey(model.entity)
 
-                val entityId = BuiltInRegistries.ENTITY_TYPE.getKey(model.entity)
-                val itemId = BuiltInRegistries.ITEM.getKey(drop.item)
-
-                recipes.add(
-                    generate(
-                        ResourceLocation.parse("${HNI.ID}:${entityId.namespace}/${entityId.path}/${itemId.namespace}/${itemId.path}"),
-                        model, drop, i
-                    )
+            recipes.add(
+                generate(
+                    ResourceLocation.parse("${HNI.ID}:${entityId.namespace}/${entityId.path}"),
+                    model
                 )
-
-            }
+            )
 
         }
         return recipes

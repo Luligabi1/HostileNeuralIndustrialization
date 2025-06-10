@@ -5,10 +5,18 @@ navigation:
 ---
 
 # Hostile Neural Industrialization
-Welcome to **Hostile Neural Industrialization**!
 
 ![Pipes, pipes and more pipes](assets/pipes_pipes_pipes.png)
 
-## Introduction
+*Hostile Neural Networks meets Modern Industrialization*
 
-Lorem ipsum sit amet yada yada yada this is a TODO guide book
+
+HNI offers electric, overclockable and very powerful versions of HNN's default machines.
+
+It is **absolutely required** that you have the following to progress:
+
+- A good production of **Stainless Steel** and a meaty energy production for overclocking;
+
+AAAAAAAAAAAAAAAAAAAA TODO
+
+
