@@ -5,6 +5,7 @@ import me.luligabi.hostile_neural_industrialization.common.item.HNIItems
 import me.luligabi.hostile_neural_industrialization.common.util.HNIText
 import net.neoforged.neoforge.common.data.LanguageProvider
 import net.neoforged.neoforge.data.event.GatherDataEvent
+import net.swedz.tesseract.neoforge.datagen.mi.MIDatagenHooks
 
 class HNILanguageProvider(event: GatherDataEvent): LanguageProvider(event.generator.packOutput, HNI.ID, "en_us") {
     
@@ -19,6 +20,8 @@ class HNILanguageProvider(event: GatherDataEvent): LanguageProvider(event.genera
         for (text in HNIText.entries) {
             add(text.translationKey, text.englishText())
         }
+
+        MIDatagenHooks.Client.withLanguageHook(this, HNI.ID)
 
     }
 

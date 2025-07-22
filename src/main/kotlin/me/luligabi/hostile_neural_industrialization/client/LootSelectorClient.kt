@@ -1,134 +1,168 @@
 package me.luligabi.hostile_neural_industrialization.client
 
 import aztech.modern_industrialization.machines.gui.ClientComponentRenderer
-import aztech.modern_industrialization.machines.gui.ClientComponentRenderer.CustomButtonRenderer
+import aztech.modern_industrialization.machines.gui.ClientComponentRenderer.ButtonContainer
 import aztech.modern_industrialization.machines.gui.GuiComponentClient
 import aztech.modern_industrialization.machines.gui.MachineScreen
+import aztech.modern_industrialization.util.Rectangle
+import aztech.modern_industrialization.util.TextHelper
 import me.luligabi.hostile_neural_industrialization.common.HNI
-import net.minecraft.client.gui.Font
+import me.luligabi.hostile_neural_industrialization.common.network.SelectLootPacket
+import me.luligabi.hostile_neural_industrialization.common.util.HNIText
+import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.network.RegistryFriendlyByteBuf
-import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
 
 class LootSelectorClient(buf: RegistryFriendlyByteBuf): GuiComponentClient {
 
     private companion object {
-
-        val BG_TEXTURE = HNI.id("textures/gui/loot_selector/loot_selector_bg.png")
-
-        val UNSELECTED_TEXTURE = HNI.id("textures/gui/loot_selector/loot_selector_unselected.png")
-        val SELECTED_TEXTURE = HNI.id("textures/gui/loot_selector/loot_selector_selected.png")
+        
+        val BUTTONS = HNI.id("textures/gui/loot_selector/buttons.png")
+        val BACKGROUND = HNI.id("textures/gui/loot_selector/background.png")
 
         // TODO Accesswiden from StonecutterScreen
         val RECIPE_SELECTED_SPRITE = ResourceLocation.withDefaultNamespace("container/stonecutter/recipe_selected")
         val RECIPE_HIGHLIGHTED_SPRITE = ResourceLocation.withDefaultNamespace("container/stonecutter/recipe_highlighted")
         val RECIPE_SPRITE = ResourceLocation.withDefaultNamespace("container/stonecutter/recipe")
-
-    }
-
-    init {
-        readCurrentData(buf)
     }
 
     private var selectedIndex = -1
     private var lootList: List<ItemStack> = emptyList()
 
-    private var open = false
+    init {
+        readCurrentData(buf)
+    }
 
     override fun readCurrentData(buf: RegistryFriendlyByteBuf) {
-        selectedIndex = buf.readInt()
-        lootList = ItemStack.LIST_STREAM_CODEC.decode(buf)
+
+        val id = buf.readInt()
+        val list = ItemStack.LIST_STREAM_CODEC.decode(buf)
+
+        selectedIndex = id
+        lootList = list
     }
 
     override fun createRenderer(screen: MachineScreen) = Renderer(screen)
 
     inner class Renderer(private val screen: MachineScreen): ClientComponentRenderer {
 
-        override fun addButtons(container: ClientComponentRenderer.ButtonContainer) {
+        private var isPanelOpen = false
+        private val panelWidth = 109
+        private val panelHeight = 94
 
-            container.addButton(
-                48, 36,
-                20, 20,
-                { syncId ->
-                    println(":3 $syncId")
-                    open = !open
-                },
-                { listOf<Component>() },
-                ButtonRenderer()
+        override fun addButtons(container: ButtonContainer) {
+            screen.addButton(
+                -24, 17, 20, 20,
+                { _ -> isPanelOpen = !isPanelOpen },
+                { listOf(
+                    HNIText.LOOT_SELECTOR_TITLE.text(),
+                    HNIText.LOOT_SELECTOR_DESCRIPTION.text().setStyle(TextHelper.GRAY_TEXT)
+                ) },
+                { screen, button, gui, _, _, _ ->
+
+                    val selectedIndex = this@LootSelectorClient.selectedIndex
+                    val hasInputItem = !screen.menu.inventory.itemStacks[0].isEmpty
+
+
+                    val u = when {
+                        selectedIndex == -1 -> if (hasInputItem) 20f else 0f
+                        else -> 40f
+                    }
+                    val v = if (button.isHoveredOrFocused) 20f else 0f
+
+                    gui.blit(BUTTONS, button.x, button.y, u, v, button.width, button.height, 60, 40)
+                    if (selectedIndex != -1 && this@LootSelectorClient.lootList.size > selectedIndex) {
+                        gui.renderItem(this@LootSelectorClient.lootList[selectedIndex], button.x + 2, button.y + 2)
+                    }
+
+                }
             )
+
+            addSelectionButtons(false)
         }
 
-        override fun renderBackground(gui: GuiGraphics, x: Int, y: Int) {
-            if (!open) return
+        fun addSelectionButtons(removePrevious: Boolean) {
 
-            gui.pose().pushPose()
-            gui.pose().translate(.0, .0, 2000.0)
-            gui.blit(BG_TEXTURE, screen.guiLeft + 4, screen.guiTop - 37, 0f, 0f, 112, 69, 112, 69)
-
-            val l = screen.guiLeft + 12
-            val i1 = screen.guiTop - 31
-            val j1 = 12
-            renderButtons(gui, x, y, l, i1)
-            renderRecipes(gui, l, i1, j1)
-
-            gui.pose().popPose()
-        }
-
-        override fun renderTooltip(screen: MachineScreen, font: Font, gui: GuiGraphics, leftPos: Int, topPos: Int, cursorX: Int, cursorY: Int) {
-            if (!open) return
-
-            val x = screen.guiLeft + 12
-            val y = screen.guiTop - 31
-
-            for (i in 0 until lootList.size) {
-                val j1 = x + i % 4 * 16
-                val k1 = y + i / 4 * 18 + 2
-                if (cursorX >= j1 && cursorX < j1 + 16 && cursorY >= k1 && cursorY < k1 + 18) {
-                    gui.renderTooltip(font, lootList[i], cursorX, cursorY)
+            if (removePrevious) {
+                screen.renderables.removeIf {
+                    val button = (it as? MachineScreen.MachineButton) ?: return@removeIf false
+                    button.x == 16 && button.y == 18
                 }
             }
-        }
 
-        private fun renderButtons(gui: GuiGraphics, mouseX: Int, mouseY: Int, x: Int, y: Int) {
-            for (i in 0 until lootList.size) {
-                val k = x + i % 9 * 16
-                val l = i / 9
-                val i1 = y + l * 18 + 2
+            this@LootSelectorClient.lootList.forEachIndexed { i, stack ->
 
-                val texture = if (i == selectedIndex) {
-                    RECIPE_SELECTED_SPRITE
-                } else if (mouseX >= k && mouseY >= i1 && mouseX < k + 16 && mouseY < i1 + 18) {
-                    RECIPE_HIGHLIGHTED_SPRITE
-                } else {
-                    RECIPE_SPRITE
+                val col = i % 6
+                val row = i / 6
+
+                val x = -101 + col * 16
+                val y = 42 + row * 18
+
+                screen.addButton(
+                    x, y, 16, 18,
+                    { syncId -> SelectLootPacket(syncId, i).sendToServer() },
+                    { listOf(
+                        (HNIText.LOOT_SELECTOR_MEMBER_NAME
+                            .arg(stack.count)
+                            .arg(stack.hoverName))
+                                .withStyle(TextHelper.GRAY_TEXT)
+                    ) },
+                    { _, button, gui, _, _, _ ->
+
+                        val texture = when {
+                            i == this@LootSelectorClient.selectedIndex -> RECIPE_SELECTED_SPRITE
+                            button.isHovered -> RECIPE_HIGHLIGHTED_SPRITE
+                            else -> RECIPE_SPRITE
+                        }
+
+                        gui.blitSprite(texture, button.x, button.y, 16, 18)
+                        gui.renderItem(stack, button.x, button.y)
+                        gui.renderItemDecorations(Minecraft.getInstance().font, stack, button.x, button.y)
+                    },
+                    { isPanelOpen }
+                )
+
+            }
+
+            for (a in screen.renderables) {
+
+                if (a is MachineScreen.MachineButton) {
+                    println("${a.x} ${a.y} ${a.width} ${a.height}")
                 }
 
-                gui.blitSprite(texture, k, i1 - 1, 16, 18)
-            }
-        }
 
-        private fun renderRecipes(gui: GuiGraphics, x: Int, y: Int, startIndex: Int) {
-            for (i in 0 until lootList.size) {
-                val k = x + i % 4 * 16
-                val l = i / 4
-                val i1 = y + l * 18 + 2
-                gui.renderItem(lootList[i], k, i1)
-            }
-        }
-
-        inner class ButtonRenderer: CustomButtonRenderer {
-
-            override fun renderButton(screen: MachineScreen, button: MachineScreen.MachineButton, gui: GuiGraphics, mouseX: Int, mouseY: Int, partialTick: Float) {
-
-                val texture = if (selectedIndex >= 0) SELECTED_TEXTURE else UNSELECTED_TEXTURE
-                val v = if (button.isHoveredOrFocused) 20f else 0f
-
-                gui.blit(texture, screen.guiLeft + 48, screen.guiTop + 36, 0f, v, 20, 20, 20, 40)
             }
 
         }
 
+        override fun renderBackground(gui: GuiGraphics, leftPos: Int, topPos: Int) {
+            val box = getBox(leftPos, topPos)
+            gui.blit(MachineScreen.BACKGROUND, box.x(), box.y(), 0, 0, box.w(), box.h() - 4)
+            gui.blit(MachineScreen.BACKGROUND, box.x(), box.y() + box.h() - 4, 0, 252, box.w(), 4)
+
+            if (isPanelOpen)  {
+                gui.blit(BACKGROUND, box.x() + 7, box.y() + 31, 0f, 0f, 98, 56, 98, 56)
+            }
+
+        }
+
+        private fun getBox(leftPos: Int, topPos: Int): Rectangle {
+            return if (isPanelOpen) {
+                Rectangle(
+                    leftPos - panelWidth, topPos + 10,
+                    panelWidth, panelHeight
+                )
+            } else {
+                Rectangle(leftPos - 31, topPos + 10, 31, 34)
+            }
+        }
+
+        override fun addExtraBoxes(rectangles: MutableList<Rectangle>, leftPos: Int, topPos: Int) {
+            rectangles.add(getBox(leftPos, topPos))
+        }
+        
     }
+
 }

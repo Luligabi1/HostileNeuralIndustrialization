@@ -7,10 +7,15 @@ import net.swedz.tesseract.neoforge.compat.mi.hook.MIHookListener
 import net.swedz.tesseract.neoforge.compat.mi.hook.context.listener.MachineCasingsMIHookContext
 import net.swedz.tesseract.neoforge.compat.mi.hook.context.listener.MachineRecipeTypesMIHookContext
 import net.swedz.tesseract.neoforge.compat.mi.hook.context.listener.MultiblockMachinesMIHookContext
+import net.swedz.tesseract.neoforge.compat.mi.hook.context.listener.SingleBlockCraftingMachinesMIHookContext
 import net.swedz.tesseract.neoforge.compat.mi.hook.context.listener.SingleBlockSpecialMachinesMIHookContext
 
 @MIHookEntrypoint
 class HNIHookListener: MIHookListener {
+
+//    override fun singleBlockCraftingMachines(hook: SingleBlockCraftingMachinesMIHookContext) {
+//        HNIMachines.singleBlockCrafting(hook)
+//    }
 
     override fun singleBlockSpecialMachines(hook: SingleBlockSpecialMachinesMIHookContext) {
         HNIMachines.singleBlockSpecial(hook)

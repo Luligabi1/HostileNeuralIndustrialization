@@ -1,4 +1,4 @@
-package me.luligabi.hostile_neural_industrialization.common.block.machine.large_loot_fabricator
+package me.luligabi.hostile_neural_industrialization.common.block.machine.loot_fabricator.large
 
 import aztech.modern_industrialization.compat.rei.machines.ReiMachineRecipes
 import aztech.modern_industrialization.machines.BEP
@@ -15,6 +15,9 @@ import aztech.modern_industrialization.materials.part.MIParts
 import me.luligabi.hostile_neural_industrialization.common.HNI
 import me.luligabi.hostile_neural_industrialization.common.block.HNIBlocks
 import me.luligabi.hostile_neural_industrialization.common.block.machine.HNIMachines
+import me.luligabi.hostile_neural_industrialization.common.block.machine.HNIMultiblockShape
+import me.luligabi.hostile_neural_industrialization.common.block.machine.HNIMultiblockShape.Companion.CLEAN_STEEL_CASING
+import me.luligabi.hostile_neural_industrialization.common.block.machine.HNIMultiblockShape.Companion.PREDICTION_CASING
 
 class LargeLootFabricatorBlockEntity(bep: BEP): AbstractElectricCraftingMultiblockBlockEntity(
     bep,
@@ -23,7 +26,7 @@ class LargeLootFabricatorBlockEntity(bep: BEP): AbstractElectricCraftingMultiblo
     arrayOf(SHAPE)
 ) {
 
-    companion object {
+    companion object : HNIMultiblockShape {
 
         const val ID = "large_loot_fabricator"
         const val NAME = "Large Loot Fabricator"
@@ -32,12 +35,7 @@ class LargeLootFabricatorBlockEntity(bep: BEP): AbstractElectricCraftingMultiblo
             ReiMachineRecipes.registerMultiblockShape(HNI.id(ID), SHAPE)
         }
 
-        /**
-         * _ -> air
-         * # -> layer
-         * @ -> pillar
-         * */
-        private val PATTERN = listOf(
+        override val pattern = listOf(
             "___#@#___",
             "_#######_",
             "_#######_",
@@ -49,12 +47,14 @@ class LargeLootFabricatorBlockEntity(bep: BEP): AbstractElectricCraftingMultiblo
             "___#@#___"
         )
 
-        private val PREDICTION_CASING = SimpleMember.forBlock { HNIBlocks.PREDICTION_MACHINE_CASING.get() }
-        private val CLEAN_STEEL_CASING = SimpleMember.forBlock { MIMaterials.STAINLESS_STEEL.getPart(MIParts.MACHINE_CASING_SPECIAL).asBlock() }
+        override val materialRules: Map<(Char, Int) -> Boolean, SimpleMember>
+            get() = mapOf(
+                { char: Char, y: Int -> char == '@' } to PREDICTION_CASING,
+                { _: Char, y: Int -> y == -1 || y == 2 } to PREDICTION_CASING,
+                { _: Char, y: Int -> y == 0 || y == 1 } to CLEAN_STEEL_CASING
+            )
 
-        private val HATCHES = HatchFlags.Builder()
-            .with(HatchType.ITEM_INPUT, HatchType.ITEM_OUTPUT, HatchType.ENERGY_INPUT)
-            .build()
+        override val controllerXOffset = -4
 
         private val SHAPE = ShapeTemplate.Builder(HNIMachines.Casings.PREDICTION_MACHINE_CASING)
             .addLayer(-1)
@@ -63,42 +63,18 @@ class LargeLootFabricatorBlockEntity(bep: BEP): AbstractElectricCraftingMultiblo
             .addLayer(2)
             .build()
 
-
-        private fun ShapeTemplate.Builder.addLayer(y: Int): ShapeTemplate.Builder {
-
-            for (z in PATTERN.indices) {
-                val row = PATTERN[z]
-                for (x in row.indices) {
-                    if (row[x] == '_') continue
-
-                    val block = when {
-                        (row[x] == '@') || (y == -1 || y == 2) -> PREDICTION_CASING
-                        (y == 0 || y == 1) -> CLEAN_STEEL_CASING
-                        else -> continue
-                    }
-
-                    add(x - 4, y, z, block, if (block == PREDICTION_CASING) HATCHES else null)
-                }
-            }
-
-            return this
-        }
-
     }
 
-    private var casing = CasingComponent()
     private var upgrades = UpgradeComponent()
     private var overdrive = OverdriveComponent()
 
     init {
-
-        registerComponents(casing, upgrades, overdrive)
+        registerComponents(upgrades, overdrive)
 
         registerGuiComponent(
             SlotPanel.Server(this)
                 .withRedstoneControl(redstoneControl)
                 .withUpgrades(upgrades)
-                .withCasing(casing)
                 .withOverdrive(overdrive)
         )
     }

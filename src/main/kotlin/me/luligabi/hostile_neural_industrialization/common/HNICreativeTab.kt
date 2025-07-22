@@ -1,7 +1,8 @@
 package me.luligabi.hostile_neural_industrialization.common
 
 import me.luligabi.hostile_neural_industrialization.common.block.machine.HNIMachines
-import me.luligabi.hostile_neural_industrialization.common.block.machine.large_loot_fabricator.LargeLootFabricatorBlockEntity
+import me.luligabi.hostile_neural_industrialization.common.block.machine.loot_fabricator.large.LargeLootFabricatorBlockEntity
+import me.luligabi.hostile_neural_industrialization.common.block.machine.sim_chamber.large.LargeSimChamberBlockEntity
 import me.luligabi.hostile_neural_industrialization.common.item.HNIItems
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.chat.Component
@@ -20,7 +21,7 @@ object HNICreativeTab {
 
         CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.${HNI.ID}.${HNI.ID}"))
-            .icon { HNIMachines.getMachineFromId(LargeLootFabricatorBlockEntity.ID).defaultInstance }
+            .icon { HNIMachines.getMachineFromId(LargeSimChamberBlockEntity.ID).defaultInstance }
             .displayItems { _, output ->
 
                 val compareBySortOrder = Comparator.comparing { obj: ItemHolder<*> -> obj.sortOrder() }

@@ -8,7 +8,7 @@ import dev.shadowsoffire.hostilenetworks.Hostile
 import me.luligabi.hostile_neural_industrialization.common.HNI
 import me.luligabi.hostile_neural_industrialization.common.block.HNIBlocks
 import me.luligabi.hostile_neural_industrialization.common.block.machine.HNIMachines
-import me.luligabi.hostile_neural_industrialization.common.block.machine.large_loot_fabricator.LargeLootFabricatorBlockEntity
+import me.luligabi.hostile_neural_industrialization.common.block.machine.loot_fabricator.large.LargeLootFabricatorBlockEntity
 import me.luligabi.hostile_neural_industrialization.common.item.HNIItems
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.recipes.RecipeOutput

@@ -4,10 +4,17 @@
   "package": "me.luligabi.hostile_neural_industrialization.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "ExampleServerMixin"
+    "HackedMachineRegistrationHelperAccessor",
+    "MIHookContextAccessor",
+    "MultiblockInventoryComponentAccessor",
+    "MultiblockMachineBlockEntityAccessor",
+    "DataModelRegistryAccessor",
+    "ModelTierRegistryAccessor"
   ],
   "server": [],
-  "client": [],
+  "client": [
+    "MachineScreenAccessor"
+  ],
   "injectors": {
     "defaultRequire": 1
   }

@@ -1,4 +1,4 @@
-package me.luligabi.hostile_neural_industrialization.common.util
+package me.luligabi.hostile_neural_industrialization.common.block.machine.loot_fabricator
 
 import dev.shadowsoffire.hostilenetworks.Hostile
 import dev.shadowsoffire.hostilenetworks.data.DataModel
@@ -12,5 +12,5 @@ class PredictionIngredient(model: DataModel): DataComponentIngredient(
     DataComponentPredicate.builder()
         .expect(Hostile.Components.DATA_MODEL, model.predictionDrop.get(Hostile.Components.DATA_MODEL) ?: throw IllegalArgumentException("Model has invalid prediction data"))
         .build(),
-    true
+    false
 )

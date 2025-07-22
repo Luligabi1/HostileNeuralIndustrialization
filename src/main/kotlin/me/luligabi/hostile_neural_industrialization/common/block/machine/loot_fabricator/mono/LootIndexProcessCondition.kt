@@ -1,4 +1,4 @@
-package me.luligabi.hostile_neural_industrialization.common.block.machine.mono_loot_fabricator
+package me.luligabi.hostile_neural_industrialization.common.block.machine.loot_fabricator.mono
 
 import aztech.modern_industrialization.machines.recipe.MachineRecipe
 import aztech.modern_industrialization.machines.recipe.condition.MachineProcessCondition
@@ -17,13 +17,13 @@ class LootIndexProcessCondition(val index: Int): MachineProcessCondition {
         val CODEC: MapCodec<LootIndexProcessCondition> = RecordCodecBuilder.mapCodec { i: RecordCodecBuilder.Instance<LootIndexProcessCondition> ->
             i.group(
                 Codec.INT.fieldOf("index").forGetter(LootIndexProcessCondition::index)
-            ).apply(i) { index -> LootIndexProcessCondition(index) }
+            ).apply(i, ::LootIndexProcessCondition)
         }
 
         val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, LootIndexProcessCondition> = StreamCodec.composite(
-            ByteBufCodecs.INT,
-            LootIndexProcessCondition::index
-        ) { index -> LootIndexProcessCondition(index) }
+            ByteBufCodecs.INT, LootIndexProcessCondition::index,
+            ::LootIndexProcessCondition
+        )
     }
 
     override fun canProcessRecipe(context: MachineProcessCondition.Context, recipe: MachineRecipe): Boolean {

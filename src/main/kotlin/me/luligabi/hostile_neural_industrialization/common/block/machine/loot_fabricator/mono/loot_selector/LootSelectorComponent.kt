@@ -1,4 +1,4 @@
-package me.luligabi.hostile_neural_industrialization.common.block.machine.mono_loot_fabricator.loot_selector
+package me.luligabi.hostile_neural_industrialization.common.block.machine.loot_fabricator.mono.loot_selector
 
 import aztech.modern_industrialization.machines.IComponent
 import net.minecraft.core.HolderLookup

@@ -1,4 +1,4 @@
-package me.luligabi.hostile_neural_industrialization.common.block.machine.mono_loot_fabricator.loot_selector
+package me.luligabi.hostile_neural_industrialization.common.block.machine.loot_fabricator.mono.loot_selector
 
 import aztech.modern_industrialization.machines.gui.GuiComponent
 import me.luligabi.hostile_neural_industrialization.common.HNI
@@ -8,26 +8,39 @@ import net.minecraft.world.item.ItemStack
 
 class LootSelector {
 
+    interface Behavior {
+
+        fun handleClick(index: Int)
+
+    }
+
     class Server(
-        private val selectedIndex: () -> Int,
-        private val lootList: () -> List<ItemStack>
+        val behavior: Behavior,
+        private val selectedIndexSupplier: () -> Int,
+        private val lootListSupplier: () -> List<ItemStack>
     ): GuiComponent.Server<Data> {
 
         override fun copyData(): Data {
-            return Data(selectedIndex.invoke(), lootList.invoke())
+            return Data(selectedIndexSupplier(), lootListSupplier())
         }
 
         override fun needsSync(cachedData: Data): Boolean {
-            return cachedData.selectedIndex != selectedIndex.invoke() || cachedData.lootList != lootList.invoke()
+            if (cachedData.selectedIndex != selectedIndexSupplier()) return true
+
+            cachedData.lootList.forEachIndexed { i, stack ->
+                if (stack != lootListSupplier().getOrNull(i)) return true
+            }
+
+            return false
         }
 
         override fun writeInitialData(buf: RegistryFriendlyByteBuf) {
-            writeCurrentData(buf)
+            buf.writeInt(selectedIndexSupplier())
+            ItemStack.LIST_STREAM_CODEC.encode(buf, lootListSupplier())
         }
 
         override fun writeCurrentData(buf: RegistryFriendlyByteBuf) {
-            buf.writeInt(selectedIndex.invoke())
-            ItemStack.LIST_STREAM_CODEC.encode(buf, lootList.invoke())
+            writeInitialData(buf)
         }
 
         override fun getId() = ID

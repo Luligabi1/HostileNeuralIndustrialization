@@ -3,8 +3,8 @@ package me.luligabi.hostile_neural_industrialization.common.compat.viewer.jei
 import dev.shadowsoffire.hostilenetworks.jei.LootFabCategory
 import me.luligabi.hostile_neural_industrialization.common.HNI
 import me.luligabi.hostile_neural_industrialization.common.block.machine.HNIMachines
-import me.luligabi.hostile_neural_industrialization.common.block.machine.large_loot_fabricator.LargeLootFabricatorBlockEntity
-import me.luligabi.hostile_neural_industrialization.common.block.machine.mono_loot_fabricator.MonoLootFabricatorBlockEntity
+import me.luligabi.hostile_neural_industrialization.common.block.machine.loot_fabricator.large.LargeLootFabricatorBlockEntity
+import me.luligabi.hostile_neural_industrialization.common.block.machine.loot_fabricator.mono.MonoLootFabricatorBlockEntity
 import mezz.jei.api.IModPlugin
 import mezz.jei.api.JeiPlugin
 import mezz.jei.api.registration.IRecipeCatalystRegistration

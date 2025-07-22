@@ -1,7 +1,6 @@
-package me.luligabi.hostile_neural_industrialization.common.block.machine.mono_loot_fabricator
+package me.luligabi.hostile_neural_industrialization.common.block.machine.loot_fabricator.mono
 
 import aztech.modern_industrialization.MICapabilities
-import aztech.modern_industrialization.api.energy.CableTier
 import aztech.modern_industrialization.api.energy.EnergyApi
 import aztech.modern_industrialization.api.energy.MIEnergyStorage
 import aztech.modern_industrialization.api.machine.holder.CrafterComponentHolder
@@ -18,9 +17,10 @@ import aztech.modern_industrialization.machines.init.MachineTier
 import aztech.modern_industrialization.machines.models.MachineModelClientData
 import aztech.modern_industrialization.util.Simulation
 import aztech.modern_industrialization.util.Tickable
-import dev.shadowsoffire.hostilenetworks.Hostile
+import dev.shadowsoffire.hostilenetworks.item.DataModelItem
 import me.luligabi.hostile_neural_industrialization.common.block.machine.HNIMachines
-import me.luligabi.hostile_neural_industrialization.common.block.machine.mono_loot_fabricator.loot_selector.LootSelectorComponent
+import me.luligabi.hostile_neural_industrialization.common.block.machine.loot_fabricator.mono.loot_selector.LootSelector
+import me.luligabi.hostile_neural_industrialization.common.block.machine.loot_fabricator.mono.loot_selector.LootSelectorComponent
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent
@@ -49,7 +49,8 @@ class MonoLootFabricatorBlockEntity private constructor(
 
     private lateinit var inventory: MachineInventoryComponent
     private lateinit var crafter: CrafterComponent
-    private lateinit var isActiveComponent: IsActiveComponent
+    lateinit var isActiveComponent: IsActiveComponent
+        private set
 
     private lateinit var redstoneControl: RedstoneControlComponent
     private lateinit var casing: CasingComponent
@@ -110,15 +111,22 @@ class MonoLootFabricatorBlockEntity private constructor(
         )
 
         registerGuiComponent(AutoExtract.Server(orientation))
-//        registerGuiComponent(LootSelector.Server(
-//            { lootSelector.selectedLootIndex },
-//            {
-//                val prediction = inventory.inventory.itemStacks[0].toStack()
-//                val model = DataModelItem.getStoredModel(prediction).optional
-//
-//                if (model.isPresent) model.get().fabDrops else emptyList()
-//            }
-//        ))
+        registerGuiComponent(LootSelector.Server(
+            object : LootSelector.Behavior {
+
+                override fun handleClick(index: Int) {
+                    lootSelector.selectedLootIndex = index
+                }
+
+            },
+            { lootSelector.selectedLootIndex },
+            {
+                val prediction = inventory.inventory.itemStacks[0].toStack()
+                val model = DataModelItem.getStoredModel(prediction).optional
+
+                if (model.isPresent) model.get().fabDrops else emptyList()
+            }
+        ))
 
         registerComponents(
             energy,
@@ -129,45 +137,17 @@ class MonoLootFabricatorBlockEntity private constructor(
 
     }
 
-    fun onFabChange(added: Boolean) {
-
-        if (!added) {
-            lootSelector.selectedLootIndex = -1
-            return
-        }
-
-        val directive = inventory.inventory.itemStacks[0].variant.toStack()
-        val selections = directive.get(Hostile.Components.FAB_SELECTIONS)?.selections
-
-        val selection = selections?.firstNotNullOfOrNull { it } ?: return
-
-        inventory.inventory.itemStacks[1].let {
-
-            if (it.isEmpty) {
-
-                val model = selection.key.optional.orElse(null) ?: return@let
-                it.playerLock(model.predictionDrop.item, Simulation.ACT)
-            }
-        }
-        lootSelector.selectedLootIndex = selection.value
-
-    }
-
     private fun buildInventory(): MachineInventoryComponent {
 
-        val itemInputs = listOf(
-            FabSelectorConfigurableItemStack.create({ this }),
-            ConfigurableItemStack.standardInputSlot()
-        )
-        val itemOutputs = listOf(ConfigurableItemStack.standardInputSlot())
+        val itemInputs = listOf(MonoLootFabricatorInputConfigurableItemStack.create({ this }))
+        val itemOutputs = listOf(ConfigurableItemStack.standardOutputSlot())
 
         val itemPositions = SlotPositions.Builder()
-            .addSlot(56, 21) // fab
             .addSlot(56, 39) // input
             .addSlot(102, 39) // output
             .build()
 
-        return MachineInventoryComponent(itemInputs, itemOutputs, listOf(), listOf(), itemPositions, SlotPositions.empty())
+        return MachineInventoryComponent(itemInputs, itemOutputs, emptyList(), emptyList(), itemPositions, SlotPositions.empty())
     }
 
     override fun getInventory(): MIInventory = inventory.inventory
@@ -186,7 +166,8 @@ class MonoLootFabricatorBlockEntity private constructor(
     override fun tick() {
         if(level?.isClientSide == true) return
 
-        isActiveComponent.updateActive(crafter.tickRecipe(), this)
+        val active = crafter.tickRecipe()
+        isActiveComponent.updateActive(active, this)
 
         if(orientation.extractItems) {
             getInventory().autoExtractItems(level, worldPosition, orientation.outputDirection)
