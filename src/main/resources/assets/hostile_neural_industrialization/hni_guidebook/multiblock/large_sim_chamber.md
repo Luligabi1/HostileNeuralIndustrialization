@@ -2,8 +2,8 @@
 navigation:
   title: "Large Simulation Chamber"
   icon: "hostile_neural_industrialization:large_simulation_chamber"
-  position: 1
-  parent: hostile_neural_industrialization:sim_chamber.md
+  position: 0
+  parent: hostile_neural_industrialization:multiblock.md
 item_ids:
   - hostile_neural_industrialization:large_simulation_chamber
 ---
@@ -16,7 +16,7 @@ item_ids:
     <MultiblockShape controller="hostile_neural_industrialization:large_simulation_chamber" />
 </GameScene>
 
-Alongside all of [Electric Simulation Chamber](../sim_chamber/electric_sim_chamber.md)'s quirks, it also brings some new ones:
+Alongside all of [Electric Simulation Chamber](../single_block/electric_sim_chamber.md)'s quirks, it also brings some new ones:
 
 §2§l+ §r§aWhen prediction sequences are successful, it'll generate §l4 §r§apredictions at once
 
@@ -27,4 +27,4 @@ Alongside all of [Electric Simulation Chamber](../sim_chamber/electric_sim_chamb
 Which essentially boils down to it being able to extract more predictions per sequence. It's advisable to simulate at §d§lSuperior §rtier or higher, since you'll waste lots of energy and Prediction Matrixes for little reward otherwise.
 
 
-<Recipe id="hostile_neural_industrialization:machine/large_loot_fabricator" />
+<Recipe id="hostile_neural_industrialization:machine/large_simulation_chamber" />

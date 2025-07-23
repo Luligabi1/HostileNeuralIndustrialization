@@ -3,7 +3,7 @@ navigation:
   title: "Large Loot Fabricator"
   icon: "hostile_neural_industrialization:large_loot_fabricator"
   position: 1
-  parent: hostile_neural_industrialization:loot_fabricator.md
+  parent: hostile_neural_industrialization:multiblock.md
 item_ids:
   - hostile_neural_industrialization:large_loot_fabricator
 ---

@@ -3,7 +3,7 @@ navigation:
   title: "Electric Simulation Chamber"
   icon: "hostile_neural_industrialization:electric_simulation_chamber"
   position: 0
-  parent: hostile_neural_industrialization:sim_chamber.md
+  parent: hostile_neural_industrialization:single_block.md
 item_ids:
   - hostile_neural_industrialization:electric_simulation_chamber
 ---
@@ -19,4 +19,4 @@ MI-styled Simulation Chamber sidegrade. Has both up and downsides:
 
 §4§l- §r§cUses tier's base accuracy rather than current data accuracy
 
-<Recipe id="hostile_neural_industrialization:machine/large_loot_fabricator" />
+<Recipe id="hostile_neural_industrialization:machine/electric_simulation_chamber" />
