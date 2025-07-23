@@ -26,6 +26,8 @@ import dev.shadowsoffire.hostilenetworks.data.DataModelInstance
 import dev.shadowsoffire.hostilenetworks.item.DataModelItem
 import me.luligabi.hostile_neural_industrialization.common.HNI
 import me.luligabi.hostile_neural_industrialization.common.block.machine.HNIMachines
+import me.luligabi.hostile_neural_industrialization.common.block.machine.sim_chamber.HNISimChamber
+import me.luligabi.hostile_neural_industrialization.mixin.AbstractConfigurableStackAccessor
 import me.luligabi.hostile_neural_industrialization.mixin.MultiblockInventoryComponentAccessor
 import me.luligabi.hostile_neural_industrialization.mixin.MultiblockMachineBlockEntityAccessor
 import net.minecraft.server.level.ServerLevel
@@ -36,7 +38,7 @@ class ElectricSimChamberBlockEntity private constructor(
     bep: BEP,
     guiParams: MachineGuiParameters,
     orientationParams: OrientationComponent.Params
-): MachineBlockEntity(bep, guiParams, orientationParams), EnergyComponentHolder, Tickable, CrafterComponentHolder, CrafterComponent.Behavior {
+): MachineBlockEntity(bep, guiParams, orientationParams), EnergyComponentHolder, Tickable, CrafterComponentHolder, CrafterComponent.Behavior, HNISimChamber {
 
     companion object {
 
@@ -126,26 +128,7 @@ class ElectricSimChamberBlockEntity private constructor(
         val input = inventory.itemInputs[0]
         if (!input.toStack().`is`(Hostile.Items.DATA_MODEL)) return
 
-        val newModel = input.toStack().let {
-
-            val model = DataModelInstance(it, 0)
-            val tier = model.getTier()
-            if (!tier.isMax && HostileConfig.simModelUpgrade > 0) {
-                val newData = model.getData() + 1
-                if (HostileConfig.simModelUpgrade != 2 || newData <= model.nextTierData) {
-                    model.setData(newData)
-                }
-            }
-            DataModelItem.setIters(it, DataModelItem.getIters(it) + 1)
-            it
-        }
-
-        val modelVariant = ConfigurableItemStack().apply {
-            setKey(ItemVariant.of(newModel))
-            amount = 1
-        }
-
-        inventory.itemInputs[0] = modelVariant
+        inventory.itemInputs[0].setContent(getUpdatedModel(input))
     }
 
     private fun buildInventory(): MachineInventoryComponent {

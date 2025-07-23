@@ -1,5 +1,6 @@
 package me.luligabi.hostile_neural_industrialization.datagen.server.provider.recipe
 
+import aztech.modern_industrialization.MIBlock
 import aztech.modern_industrialization.MIItem
 import aztech.modern_industrialization.machines.recipe.MachineRecipeType
 import aztech.modern_industrialization.materials.MIMaterials
@@ -9,6 +10,9 @@ import me.luligabi.hostile_neural_industrialization.common.HNI
 import me.luligabi.hostile_neural_industrialization.common.block.HNIBlocks
 import me.luligabi.hostile_neural_industrialization.common.block.machine.HNIMachines
 import me.luligabi.hostile_neural_industrialization.common.block.machine.loot_fabricator.large.LargeLootFabricatorBlockEntity
+import me.luligabi.hostile_neural_industrialization.common.block.machine.loot_fabricator.mono.MonoLootFabricatorBlockEntity
+import me.luligabi.hostile_neural_industrialization.common.block.machine.sim_chamber.electric.ElectricSimChamberBlockEntity
+import me.luligabi.hostile_neural_industrialization.common.block.machine.sim_chamber.large.LargeSimChamberBlockEntity
 import me.luligabi.hostile_neural_industrialization.common.item.HNIItems
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.recipes.RecipeOutput
@@ -45,6 +49,54 @@ class HNIRecipeProvider(event: GatherDataEvent): RecipeProvider(event.generator.
                 .pattern("PPP")
                 .pattern("PSP")
                 .pattern("PPP")
+            },
+            output
+        )
+
+
+        shaped(
+            "machine/electric_simulation_chamber",
+            HNIMachines.getMachineFromId(ElectricSimChamberBlockEntity.ID), 1,
+            { builder -> builder
+                .define('C', MIItem.CAPACITOR)
+                .define('A', MIItem.ANALOG_CIRCUIT)
+                .define('R', MIItem.RESISTOR)
+                .define('S', Hostile.Blocks.SIM_CHAMBER.value())
+                .define('H', MIBlock.BASIC_MACHINE_HULL)
+                .pattern("CAC")
+                .pattern("RSR")
+                .pattern("CHC")
+            },
+            output
+        )
+
+        shaped(
+            "machine/mono_loot_fabricator",
+            HNIMachines.getMachineFromId(MonoLootFabricatorBlockEntity.ID), 1,
+            { builder -> builder
+                .define('C', MIItem.CAPACITOR)
+                .define('A', MIItem.ANALOG_CIRCUIT)
+                .define('R', MIItem.RESISTOR)
+                .define('F', Hostile.Blocks.LOOT_FABRICATOR.value())
+                .define('H', MIBlock.BASIC_MACHINE_HULL)
+                .pattern("CAC")
+                .pattern("RFR")
+                .pattern("CHC")
+            },
+            output
+        )
+
+        shaped(
+            "machine/large_simulation_chamber",
+            HNIMachines.getMachineFromId(LargeSimChamberBlockEntity.ID), 1,
+            { builder -> builder
+                .define('P', HNIBlocks.PREDICTION_MACHINE_CASING.get())
+                .define('S', MIMaterials.STAINLESS_STEEL.getPart(MIParts.LARGE_PLATE))
+                .define('F', Hostile.Blocks.SIM_CHAMBER.value())
+                .define('M', MIItem.ADVANCED_MOTOR)
+                .pattern("PSP")
+                .pattern("MFM")
+                .pattern("PSP")
             },
             output
         )

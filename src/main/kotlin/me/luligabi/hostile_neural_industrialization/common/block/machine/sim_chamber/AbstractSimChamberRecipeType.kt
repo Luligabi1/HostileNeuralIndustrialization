@@ -45,7 +45,6 @@ abstract class AbstractSimChamberRecipeType (id: ResourceLocation): ProxyableMac
             }
 
             for (tier in ModelTierRegistry.INSTANCE.values) {
-
                 if (!tier.canSim) continue
 
                 val stack = ItemStack(Hostile.Items.DATA_MODEL.value()).apply {

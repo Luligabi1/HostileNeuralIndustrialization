@@ -23,6 +23,7 @@ import me.luligabi.hostile_neural_industrialization.common.block.machine.HNIMach
 import me.luligabi.hostile_neural_industrialization.common.block.machine.HNIMultiblockShape
 import me.luligabi.hostile_neural_industrialization.common.block.machine.HNIMultiblockShape.Companion.CLEAN_STEEL_CASING
 import me.luligabi.hostile_neural_industrialization.common.block.machine.HNIMultiblockShape.Companion.PREDICTION_CASING
+import me.luligabi.hostile_neural_industrialization.common.block.machine.sim_chamber.HNISimChamber
 import me.luligabi.hostile_neural_industrialization.mixin.MultiblockInventoryComponentAccessor
 import me.luligabi.hostile_neural_industrialization.mixin.MultiblockMachineBlockEntityAccessor
 
@@ -31,7 +32,7 @@ class LargeSimChamberBlockEntity(bep: BEP): AbstractElectricCraftingMultiblockBl
     ID,
     OrientationComponent.Params(false, false, false),
     arrayOf(SHAPE)
-) {
+), HNISimChamber {
 
     companion object : HNIMultiblockShape {
 
@@ -86,44 +87,27 @@ class LargeSimChamberBlockEntity(bep: BEP): AbstractElectricCraftingMultiblockBl
         val index = inventory.itemInputs.indexOfFirst { it.toStack().`is`(Hostile.Items.DATA_MODEL) }
         if (index == -1) return
 
-        val newModel = inventory.itemInputs[index].toStack().let {
-
-            val model = DataModelInstance(it, 0)
-            val tier = model.getTier()
-            if (!tier.isMax && HostileConfig.simModelUpgrade > 0) {
-                val newData = model.getData() + HNI.CONFIG.largeSimChamber().inputPerRecipeAmount()
-                if (HostileConfig.simModelUpgrade != 2 || newData <= model.nextTierData) {
-                    model.setData(newData)
-                }
-            }
-            DataModelItem.setIters(it, DataModelItem.getIters(it) + 1)
-            it
-        }
-
-        val modelVariant = ConfigurableItemStack().apply {
-            setKey(ItemVariant.of(newModel))
-            amount = 1
-        }
-
-
+        // Search the model on all input hatches
+        // this might use the wrong model if there's more than one... skill issue tbh
         for (hatch in (this as MultiblockMachineBlockEntityAccessor).shapeMatcher.matchedHatches) {
             if (hatch.hatchType != HatchType.ITEM_INPUT) continue
 
             val index = hatch.inventory.itemStacks.indexOfFirst { it.toStack().`is`(Hostile.Items.DATA_MODEL) }
             if (index == -1) continue
 
-            hatch.inventory.itemStacks[index] = modelVariant
+            hatch.inventory.itemStacks[index].setContent(getUpdatedModel(inventory.itemInputs[index]))
             break
         }
 
-        inventory.itemInputs[index] = modelVariant
+        // refresh cache
         (inventory as MultiblockInventoryComponentAccessor).invokeRebuildList(
             shapeMatcher.matchedHatches,
             inventory.itemInputs,
             HatchBlockEntity::appendItemInputs
         )
-
     }
+
+    override val dataIncreaseAmount = HNI.CONFIG.largeSimChamber().inputPerRecipeAmount()
 
     override fun recipeType() = HNIMachines.RecipeTypes.LARGE_SIM_CHAMBER
 

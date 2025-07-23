@@ -6,6 +6,7 @@
   "mixins": [
     "HackedMachineRegistrationHelperAccessor",
     "MIHookContextAccessor",
+    "AbstractConfigurableStackAccessor",
     "MultiblockInventoryComponentAccessor",
     "MultiblockMachineBlockEntityAccessor",
     "DataModelRegistryAccessor",
