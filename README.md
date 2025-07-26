@@ -1,39 +1,6 @@
-# Kotlin MDK
+# Hostile Neural Industrialization <img src="src/main/resources/assets/hostile_neural_industrialization/logo.png" align="right" width="160"/>
+*Hostile Neural Networks meets Modern Industrialization... the neural network must grow.*
 
-This is a fork of NeoForge's MDK that is configured to use Kotlin. The following modifications have been made:
-- Port existing Java code to Kotlin
-- Adjust necessary resources for running on Kotlin (i.e. depend on KFF)
-- Added an example Mixin to emphasize that Mixins should only be written in Java
+###### Requires [Modern Industrialization](https://www.curseforge.com/minecraft/mc-mods/modern-industrialization/), [Hostile Neural Networks](https://www.curseforge.com/minecraft/mc-mods/hostile-neural-networks), [Tesseract API](https://legacy.curseforge.com/minecraft/mc-mods/tesseract-api-neoforge) and [Kotlin for Forge](https://www.curseforge.com/minecraft/mc-mods/kotlin-for-forge). You likely already have most of these!
 
-> [!NOTE]
-> The Kotlin experience is not very good in Eclipse. The original MDK may be made to work with Eclipse as well,
-> but if you want to use Kotlin, the best choice is IntelliJ IDEA with the Minecraft Development Plugin.
-
----
-
-Original README:
-
-Installation information
-=======
-
-This template repository can be directly cloned to get you started with a new
-mod. Simply create a new repository cloned from this one, by following the
-instructions provided by [GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
-
-Once you have your clone, simply open the repository in the IDE of your choice. The usual recommendation for an IDE is either IntelliJ IDEA or Eclipse.
-
-If at any point you are missing libraries in your IDE, or you've run into problems you can
-run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-{this does not affect your code} and then start the process again.
-
-Mapping Names:
-============
-By default, the MDK is configured to use the official mapping names from Mojang for methods and fields 
-in the Minecraft codebase. These names are covered by a specific license. All modders should be aware of this
-license. For the latest license text, refer to the mapping file itself, or the reference copy here:
-https://github.com/NeoForged/NeoForm/blob/main/Mojang.md
-
-Additional Resources: 
-==========
-Community Documentation: https://docs.neoforged.net/  
-NeoForged Discord: https://discord.neoforged.net/
+For modpack creator documentation, [click here](https://github.com/Luligabi1/HostileNeuralIndustrialization/wiki#for-modpack-creators).
