@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": {
+      "item": "hostilenetworks:sim_chamber"
+    },
+    "M": {
+      "item": "modern_industrialization:advanced_motor"
+    },
+    "P": {
+      "item": "hostile_neural_industrialization:prediction_machine_casing"
+    },
+    "S": {
+      "item": "modern_industrialization:stainless_steel_large_plate"
+    }
+  },
+  "pattern": [
+    "PSP",
+    "MFM",
+    "PSP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "hostile_neural_industrialization:large_simulation_chamber"
+  }
+}

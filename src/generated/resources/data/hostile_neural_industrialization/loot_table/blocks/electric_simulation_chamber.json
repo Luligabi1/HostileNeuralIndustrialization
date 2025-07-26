@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "hostile_neural_industrialization:electric_simulation_chamber"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "hostile_neural_industrialization:blocks/electric_simulation_chamber"
+}

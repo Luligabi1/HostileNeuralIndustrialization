@@ -7,10 +7,12 @@ import aztech.modern_industrialization.machines.gui.MachineScreen
 import aztech.modern_industrialization.util.Rectangle
 import aztech.modern_industrialization.util.TextHelper
 import me.luligabi.hostile_neural_industrialization.common.HNI
-import me.luligabi.hostile_neural_industrialization.common.network.SelectLootPacket
+import me.luligabi.hostile_neural_industrialization.common.block.machine.loot_fabricator.mono.loot_selector.LootSelector
+import me.luligabi.hostile_neural_industrialization.common.misc.network.SelectLootPacket
 import me.luligabi.hostile_neural_industrialization.common.util.HNIText
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphics
+import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
@@ -28,7 +30,7 @@ class LootSelectorClient(buf: RegistryFriendlyByteBuf): GuiComponentClient {
         val RECIPE_SPRITE = ResourceLocation.withDefaultNamespace("container/stonecutter/recipe")
     }
 
-    private var selectedIndex = -1
+    private var selectedId: ResourceLocation? = null
     private var lootList: List<ItemStack> = emptyList()
 
     init {
@@ -37,10 +39,10 @@ class LootSelectorClient(buf: RegistryFriendlyByteBuf): GuiComponentClient {
 
     override fun readCurrentData(buf: RegistryFriendlyByteBuf) {
 
-        val id = buf.readInt()
+        val id = buf.readResourceLocation()
         val list = ItemStack.LIST_STREAM_CODEC.decode(buf)
 
-        selectedIndex = id
+        selectedId = if (id == LootSelector.NONE) null else id
         lootList = list
     }
 
@@ -62,20 +64,24 @@ class LootSelectorClient(buf: RegistryFriendlyByteBuf): GuiComponentClient {
                 ) },
                 { screen, button, gui, _, _, _ ->
 
-                    val selectedIndex = this@LootSelectorClient.selectedIndex
+                    val selectedId = this@LootSelectorClient.selectedId
                     val hasInputItem = !screen.menu.inventory.itemStacks[0].isEmpty
 
 
                     val u = when {
-                        selectedIndex == -1 -> if (hasInputItem) 20f else 0f
+                        selectedId == null -> if (hasInputItem) 20f else 0f
                         else -> 40f
                     }
                     val v = if (button.isHoveredOrFocused) 20f else 0f
 
                     gui.blit(BUTTONS, button.x, button.y, u, v, button.width, button.height, 60, 40)
-                    if (selectedIndex != -1 && this@LootSelectorClient.lootList.size > selectedIndex) {
-                        gui.renderItem(this@LootSelectorClient.lootList[selectedIndex], button.x + 2, button.y + 2)
+                    selectedId?.let {
+                        gui.renderItem(ItemStack(BuiltInRegistries.ITEM.get(it)), button.x + 2, button.y + 2)
                     }
+
+//                    if (selectedId != null /*&& this@LootSelectorClient.lootList.size > selectedId*/) {
+//                        gui.renderItem(this@LootSelectorClient.lootList[selectedId], button.x + 2, button.y + 2)
+//                    }
 
                 }
             )
@@ -102,7 +108,7 @@ class LootSelectorClient(buf: RegistryFriendlyByteBuf): GuiComponentClient {
 
                 screen.addButton(
                     x, y, 16, 18,
-                    { syncId -> SelectLootPacket(syncId, i).sendToServer() },
+                    { syncId -> SelectLootPacket(syncId, BuiltInRegistries.ITEM.getKey(stack.item)).sendToServer() },
                     { listOf(
                         (HNIText.LOOT_SELECTOR_MEMBER_NAME
                             .arg(stack.count)
@@ -112,7 +118,7 @@ class LootSelectorClient(buf: RegistryFriendlyByteBuf): GuiComponentClient {
                     { _, button, gui, _, _, _ ->
 
                         val texture = when {
-                            i == this@LootSelectorClient.selectedIndex -> RECIPE_SELECTED_SPRITE
+                            BuiltInRegistries.ITEM.getKey(stack.item) == this@LootSelectorClient.selectedId -> RECIPE_SELECTED_SPRITE
                             button.isHovered -> RECIPE_HIGHLIGHTED_SPRITE
                             else -> RECIPE_SPRITE
                         }
@@ -123,15 +129,6 @@ class LootSelectorClient(buf: RegistryFriendlyByteBuf): GuiComponentClient {
                     },
                     { isPanelOpen }
                 )
-
-            }
-
-            for (a in screen.renderables) {
-
-                if (a is MachineScreen.MachineButton) {
-                    println("${a.x} ${a.y} ${a.width} ${a.height}")
-                }
-
 
             }
 

@@ -1,7 +1,6 @@
 package me.luligabi.hostile_neural_industrialization.common.block.machine.sim_chamber.large
 
 import aztech.modern_industrialization.compat.rei.machines.ReiMachineRecipes
-import aztech.modern_industrialization.inventory.ConfigurableItemStack
 import aztech.modern_industrialization.machines.BEP
 import aztech.modern_industrialization.machines.blockentities.multiblocks.AbstractElectricCraftingMultiblockBlockEntity
 import aztech.modern_industrialization.machines.components.OrientationComponent
@@ -13,11 +12,7 @@ import aztech.modern_industrialization.machines.multiblocks.HatchBlockEntity
 import aztech.modern_industrialization.machines.multiblocks.HatchType
 import aztech.modern_industrialization.machines.multiblocks.ShapeTemplate
 import aztech.modern_industrialization.machines.multiblocks.SimpleMember
-import aztech.modern_industrialization.thirdparty.fabrictransfer.api.item.ItemVariant
 import dev.shadowsoffire.hostilenetworks.Hostile
-import dev.shadowsoffire.hostilenetworks.HostileConfig
-import dev.shadowsoffire.hostilenetworks.data.DataModelInstance
-import dev.shadowsoffire.hostilenetworks.item.DataModelItem
 import me.luligabi.hostile_neural_industrialization.common.HNI
 import me.luligabi.hostile_neural_industrialization.common.block.machine.HNIMachines
 import me.luligabi.hostile_neural_industrialization.common.block.machine.HNIMultiblockShape
@@ -107,7 +102,7 @@ class LargeSimChamberBlockEntity(bep: BEP): AbstractElectricCraftingMultiblockBl
         )
     }
 
-    override val dataIncreaseAmount = HNI.CONFIG.largeSimChamber().inputPerRecipeAmount()
+    override val dataIncreaseAmount = HNI.CONFIG.largeSimChamber().dataPerRecipeAmount()
 
     override fun recipeType() = HNIMachines.RecipeTypes.LARGE_SIM_CHAMBER
 

@@ -5,6 +5,7 @@ import aztech.modern_industrialization.api.energy.EnergyApi
 import aztech.modern_industrialization.api.energy.MIEnergyStorage
 import aztech.modern_industrialization.api.machine.holder.CrafterComponentHolder
 import aztech.modern_industrialization.api.machine.holder.EnergyComponentHolder
+import aztech.modern_industrialization.inventory.ConfigurableFluidStack
 import aztech.modern_industrialization.inventory.ConfigurableItemStack
 import aztech.modern_industrialization.inventory.MIInventory
 import aztech.modern_industrialization.inventory.SlotPositions
@@ -15,23 +16,14 @@ import aztech.modern_industrialization.machines.gui.MachineGuiParameters
 import aztech.modern_industrialization.machines.guicomponents.*
 import aztech.modern_industrialization.machines.init.MachineTier
 import aztech.modern_industrialization.machines.models.MachineModelClientData
-import aztech.modern_industrialization.machines.multiblocks.HatchBlockEntity
-import aztech.modern_industrialization.machines.multiblocks.HatchType
-import aztech.modern_industrialization.thirdparty.fabrictransfer.api.item.ItemVariant
 import aztech.modern_industrialization.util.Simulation
 import aztech.modern_industrialization.util.Tickable
 import dev.shadowsoffire.hostilenetworks.Hostile
-import dev.shadowsoffire.hostilenetworks.HostileConfig
-import dev.shadowsoffire.hostilenetworks.data.DataModelInstance
-import dev.shadowsoffire.hostilenetworks.item.DataModelItem
-import me.luligabi.hostile_neural_industrialization.common.HNI
 import me.luligabi.hostile_neural_industrialization.common.block.machine.HNIMachines
 import me.luligabi.hostile_neural_industrialization.common.block.machine.sim_chamber.HNISimChamber
-import me.luligabi.hostile_neural_industrialization.mixin.AbstractConfigurableStackAccessor
-import me.luligabi.hostile_neural_industrialization.mixin.MultiblockInventoryComponentAccessor
-import me.luligabi.hostile_neural_industrialization.mixin.MultiblockMachineBlockEntityAccessor
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.level.block.entity.BlockEntityType
+import net.neoforged.neoforge.capabilities.Capabilities
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent
 
 class ElectricSimChamberBlockEntity private constructor(
@@ -52,6 +44,16 @@ class ElectricSimChamberBlockEntity private constructor(
                     EnergyApi.SIDED,
                     bet
                 ) { be, _ -> (be as ElectricSimChamberBlockEntity).insertable }
+
+                event.registerBlockEntity(
+                    Capabilities.ItemHandler.BLOCK,
+                    bet
+                ) { be, _ -> (be as ElectricSimChamberBlockEntity).inventory.inventory.itemStorage.itemHandler }
+
+                event.registerBlockEntity(
+                    Capabilities.FluidHandler.BLOCK,
+                    bet
+                ) { be, _ -> (be as ElectricSimChamberBlockEntity).inventory.inventory.fluidStorage.fluidHandler }
             }
         }
     }
@@ -110,7 +112,7 @@ class ElectricSimChamberBlockEntity private constructor(
 
         registerGuiComponent(
             ProgressBar.Server(
-                ProgressBar.Parameters(78, 34, "compress")
+                ProgressBar.Parameters(79, 34, "compress")
             ) { crafter.progress }
         )
 
@@ -134,14 +136,22 @@ class ElectricSimChamberBlockEntity private constructor(
     private fun buildInventory(): MachineInventoryComponent {
 
         val itemInputs = listOf(ConfigurableItemStack.standardInputSlot(), ConfigurableItemStack.standardInputSlot())
-        val itemOutputs = listOf(ConfigurableItemStack.standardOutputSlot(), ConfigurableItemStack.standardInputSlot())
+        val itemOutputs = listOf(ConfigurableItemStack.standardOutputSlot(), ConfigurableItemStack.standardOutputSlot())
+
+        val fluidInputs = listOf(ConfigurableFluidStack.standardInputSlot(16_000))
+        val fluidOutputs = listOf(ConfigurableFluidStack.standardOutputSlot(16_000))
 
         val itemPositions = SlotPositions.Builder()
-            .addSlots(56, 27, 1, 2) // input
-            .addSlots(102, 27, 1, 2) // output
+            .addSlots(57, 27, 1, 2) // input
+            .addSlots(103, 27, 1, 2) // output
             .build()
 
-        return MachineInventoryComponent(itemInputs, itemOutputs, emptyList(), emptyList(), itemPositions, SlotPositions.empty())
+        val fluidPositions = SlotPositions.Builder()
+            .addSlot(39, 27) // input
+            .addSlot(121, 27) // output
+            .build()
+
+        return MachineInventoryComponent(itemInputs, itemOutputs, fluidInputs, fluidOutputs, itemPositions, fluidPositions)
     }
 
     override fun getInventory(): MIInventory = inventory.inventory

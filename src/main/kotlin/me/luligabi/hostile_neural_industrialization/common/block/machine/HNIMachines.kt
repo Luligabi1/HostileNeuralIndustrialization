@@ -4,9 +4,7 @@ import aztech.modern_industrialization.api.energy.CableTier
 import aztech.modern_industrialization.compat.rei.machines.MachineCategoryParams
 import aztech.modern_industrialization.compat.rei.machines.SteamMode
 import aztech.modern_industrialization.inventory.SlotPositions
-import aztech.modern_industrialization.machines.guicomponents.EnergyBar
 import aztech.modern_industrialization.machines.guicomponents.ProgressBar
-import aztech.modern_industrialization.machines.guicomponents.RecipeEfficiencyBar
 import aztech.modern_industrialization.machines.init.MultiblockMachines.Rei
 import aztech.modern_industrialization.machines.init.SingleBlockCraftingMachines
 import aztech.modern_industrialization.machines.models.MachineCasing
@@ -30,6 +28,7 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.crafting.RecipeSerializer
 import net.minecraft.world.item.crafting.RecipeType
+import net.neoforged.bus.api.IEventBus
 import net.neoforged.neoforge.registries.DeferredRegister
 import net.swedz.tesseract.neoforge.compat.mi.hook.MIHookTracker
 import net.swedz.tesseract.neoforge.compat.mi.hook.context.listener.MachineCasingsMIHookContext
@@ -53,10 +52,11 @@ object HNIMachines {
             RecipeTypes.ELECTRIC_SIM_CHAMBER,
             MachineCategoryParams(
                 null, null,
-                SlotPositions.Builder().addSlots(56, 27, 1, 2).build(),
-                SlotPositions.Builder().addSlots(102, 27, 1, 2).build(),
-                SlotPositions.empty(), SlotPositions.empty(),
-                ProgressBar.Parameters(78, 34, "compress"),
+                SlotPositions.Builder().addSlots(57, 27, 1, 2).build(),
+                SlotPositions.Builder().addSlots(103, 27, 1, 2).build(),
+                SlotPositions.Builder().addSlot(39, 27).build(),
+                SlotPositions.Builder().addSlot(121, 27).build(),
+                ProgressBar.Parameters(79, 34, "compress"),
                 RecipeTypes.ELECTRIC_SIM_CHAMBER,
                 null,
                 false,
@@ -79,8 +79,9 @@ object HNIMachines {
                 null, null,
                 SlotPositions.Builder().addSlot(56, 39).build(),
                 SlotPositions.Builder().addSlot(102, 39).build(),
-                SlotPositions.empty(), SlotPositions.empty(),
-                ProgressBar.Parameters(78, 38, "compress"),
+                SlotPositions.Builder().addSlot(56, 57).build(),
+                SlotPositions.Builder().addSlot(102, 57).build(),
+                ProgressBar.Parameters(78, 43, "compress"),
                 RecipeTypes.MONO_LOOT_FABRICATOR,
                 null,
                 false,
@@ -99,10 +100,14 @@ object HNIMachines {
             ::LargeSimChamberBlockEntity,
             { LargeSimChamberBlockEntity.registerReiShapes() }
         )
-        Rei(LargeSimChamberBlockEntity.NAME, HNI.id(LargeSimChamberBlockEntity.ID), RecipeTypes.LARGE_SIM_CHAMBER, ProgressBar.Parameters(77, 33, "arrow"))
+        Rei(LargeSimChamberBlockEntity.NAME, HNI.id(LargeSimChamberBlockEntity.ID), RecipeTypes.LARGE_SIM_CHAMBER, ProgressBar.Parameters(77, 33, "compress"))
             .items(
                 { it.addSlots(58, 27, 1, 2) },
                 { it.addSlots(102, 27, 1, 2) }
+            )
+            .fluids(
+                { it.addSlot(40, 27) },
+                { it.addSlot(120, 27) }
             )
             .workstations(HNI.id(LargeSimChamberBlockEntity.ID))
             .register()
@@ -114,10 +119,14 @@ object HNIMachines {
             ::LargeLootFabricatorBlockEntity,
             { LargeLootFabricatorBlockEntity.registerReiShapes() }
         )
-        Rei(LargeLootFabricatorBlockEntity.NAME, HNI.id(LargeLootFabricatorBlockEntity.ID), RecipeTypes.LARGE_LOOT_FABRICATOR, ProgressBar.Parameters(77, 33, "arrow"))
+        Rei(LargeLootFabricatorBlockEntity.NAME, HNI.id(LargeLootFabricatorBlockEntity.ID), RecipeTypes.LARGE_LOOT_FABRICATOR, ProgressBar.Parameters(77, 33, "compress"))
             .items(
                 { it.addSlot(56, 35) },
                 { it.addSlots(102, 35, 5, 4) }
+            )
+            .fluids(
+                { it.addSlot(56, 53) },
+                { it.addSlot(84, 89) }
             )
             .workstations(HNI.id(LargeLootFabricatorBlockEntity.ID))
             .register()
@@ -139,7 +148,12 @@ object HNIMachines {
 
         private val RECIPE_TYPE_NAMES = Maps.newHashMap<MachineRecipeType, String>()
 
-        fun create(
+        fun init(modBus: IEventBus) {
+            RECIPE_TYPES.register(modBus)
+            RECIPE_SERIALIZERS.register(modBus)
+        }
+
+        internal fun create(
             hook: MachineRecipeTypesMIHookContext,
             englishName: String,
             id: String,
@@ -156,22 +170,22 @@ object HNIMachines {
         RecipeTypes.ELECTRIC_SIM_CHAMBER = RecipeTypes.create(hook,
             ElectricSimChamberBlockEntity.NAME, ElectricSimChamberBlockEntity.ID,
             ::ElectricSimChamberRecipeType
-        ).withItemInputs().withItemOutputs()
+        ).withItemInputs().withItemOutputs().withFluidInputs().withFluidOutputs()
 
         RecipeTypes.LARGE_SIM_CHAMBER = RecipeTypes.create(hook,
             LargeSimChamberBlockEntity.NAME, LargeSimChamberBlockEntity.ID,
             ::LargeSimChamberRecipeType
-        ).withItemInputs().withItemOutputs()
+        ).withItemInputs().withItemOutputs().withFluidInputs().withFluidOutputs()
 
         RecipeTypes.MONO_LOOT_FABRICATOR = RecipeTypes.create(hook,
             MonoLootFabricatorBlockEntity.NAME, MonoLootFabricatorBlockEntity.ID,
             ::MonoLootFabricatorRecipeType
-        ).withItemInputs().withItemOutputs()
+        ).withItemInputs().withItemOutputs().withFluidInputs().withFluidOutputs()
 
         RecipeTypes.LARGE_LOOT_FABRICATOR = RecipeTypes.create(hook,
             LargeLootFabricatorBlockEntity.NAME, LargeLootFabricatorBlockEntity.ID,
             ::LargeLootFabricatorRecipeType
-        ).withItemInputs().withItemOutputs()
+        ).withItemInputs().withItemOutputs().withFluidInputs().withFluidOutputs()
     }
 
     object Casings {

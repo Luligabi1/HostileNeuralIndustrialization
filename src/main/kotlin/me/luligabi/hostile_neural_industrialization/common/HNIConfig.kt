@@ -26,53 +26,151 @@ interface HNIConfig {
         @Range.Double(min = 0.01, max = Double.MAX_VALUE)
         fun energyMultiplier() = 0.1
 
+        /** Fluid */
+        // OVERWORLD
+        @ConfigKey("overworld_fluid_input_id")
+        @ConfigComment(
+            "Required fluid for Overworld predictions",
+            "Leave empty to remove fluid requirement"
+        )
+        fun overworldFluidInputId() = ""
+
+        @ConfigKey("overworld_fluid_input_amount")
+        @ConfigComment("Amount of fluid required for Overworld predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun overworldFluidInputAmount() = 1_000
+
+        @ConfigKey("overworld_fluid_input_probability")
+        @ConfigComment("Probability the input fluid for Overworld predictions will be consumed")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun overworldFluidInputProbability() = 1.0
+
+        @ConfigKey("overworld_fluid_output_id")
+        @ConfigComment(
+            "Fluid outputted for Overworld predictions",
+            "Leave empty to remove fluid output"
+        )
+        fun overworldFluidOutputId() = ""
+
+        @ConfigKey("overworld_fluid_output_amount")
+        @ConfigComment("Amount of fluid outputted for Overworld predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun overworldFluidOutputAmount() = 1_000
+
+        @ConfigKey("overworld_fluid_output_probability")
+        @ConfigComment("Probability the output fluid for Overworld predictions will be produced")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun overworldFluidOutputProbability() = 1.0
+
+        // NETHER
+        @ConfigKey("nether_fluid_input_id")
+        @ConfigComment(
+            "Required fluid for Nether predictions",
+            "Leave empty to remove fluid requirement"
+        )
+        fun netherFluidInputId() = ""
+
+        @ConfigKey("nether_fluid_input_amount")
+        @ConfigComment("Amount of fluid required for Nether predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun netherFluidInputAmount() = 1_000
+
+        @ConfigKey("nether_fluid_input_probability")
+        @ConfigComment("Probability the input fluid for Nether predictions will be consumed")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun netherFluidInputProbability() = 1.0
+
+        @ConfigKey("nether_fluid_output_id")
+        @ConfigComment(
+            "Fluid outputted for Nether predictions",
+            "Leave empty to remove fluid output"
+        )
+        fun netherFluidOutputId() = ""
+
+        @ConfigKey("nether_fluid_output_amount")
+        @ConfigComment("Amount of fluid outputted for Nether predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun netherFluidOutputAmount() = 1_000
+
+        @ConfigKey("nether_fluid_output_probability")
+        @ConfigComment("Probability the output fluid for Nether predictions will be produced")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun netherFluidOutputProbability() = 1.0
+
+        // THE END
+        @ConfigKey("end_fluid_input_id")
+        @ConfigComment(
+            "Required fluid for The End predictions",
+            "Leave empty to remove fluid requirement"
+        )
+        fun theEndFluidInputId() = ""
+
+        @ConfigKey("end_fluid_input_amount")
+        @ConfigComment("Amount of fluid required for The End predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun theEndFluidInputAmount() = 1_000
+
+        @ConfigKey("end_fluid_input_probability")
+        @ConfigComment("Probability the input fluid for The End predictions will be consumed")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun theEndFluidInputProbability() = 1.0
+
+        @ConfigKey("end_fluid_output_id")
+        @ConfigComment(
+            "Fluid outputted for The End predictions",
+            "Leave empty to remove fluid output"
+        )
+        fun theEndFluidOutputId() = ""
+
+        @ConfigKey("end_fluid_output_amount")
+        @ConfigComment("Amount of fluid outputted for The End predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun theEndFluidOutputAmount() = 1_000
+
+        @ConfigKey("end_fluid_output_probability")
+        @ConfigComment("Probability the output fluid for The End predictions will be produced")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun theEndFluidOutputProbability() = 1.0
+
+        // TWILIGHT
+        @ConfigKey("twilight_fluid_input_id")
+        @ConfigComment(
+            "Required fluid for Twilight Forest predictions",
+            "Leave empty to remove fluid requirement"
+        )
+        fun twilightFluidInputId() = ""
+
+        @ConfigKey("twilight_fluid_input_amount")
+        @ConfigComment("Amount of fluid required for Twilight Forest predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun twilightFluidInputAmount() = 1_000
+
+        @ConfigKey("twilight_fluid_input_probability")
+        @ConfigComment("Probability the input fluid for Twilight Forest predictions will be consumed")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun twilightFluidInputProbability() = 1.0
+
+        @ConfigKey("twilight_fluid_output_id")
+        @ConfigComment(
+            "Fluid outputted for Twilight Forest predictions",
+            "Leave empty to remove fluid output"
+        )
+        fun twilightFluidOutputId() = ""
+
+        @ConfigKey("twilight_fluid_output_amount")
+        @ConfigComment("Amount of fluid outputted for Twilight Forest predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun twilightFluidOutputAmount() = 1_000
+
+        @ConfigKey("twilight_fluid_output_probability")
+        @ConfigComment("Probability the output fluid for Twilight Forest predictions will be produced")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun twilightFluidOutputProbability() = 1.0
+        /**********/
+
         @ConfigKey("runtime_recipes")
         @ConfigComment(
             "Whether Electic Simulation Chamber recipes should be generated automatically at runtime.",
-            "Disable this if you're a modpack creator and intend to manually create all recipes."
-        )
-        fun runtimeRecipes() = true
-
-    }
-
-    @ConfigKey("large_simulation_chamber")
-    @SubSection
-    fun largeSimChamber(): LargeSimChamber
-
-    interface LargeSimChamber {
-
-        @ConfigKey("input_amount_per_recipe")
-        @ConfigComment(
-            "Input amount on each generated recipe",
-            "Determines amount of data added to model and consumed Prediction Matrixes."
-        )
-        @Range.Integer(min = 1, max = 64)
-        fun inputPerRecipeAmount() = 2
-
-        @ConfigKey("output_amount_per_recipe")
-        @ConfigComment(
-            "Output amount on each generated recipe",
-            "Determines amount of (Generalized) Predictions crafted."
-        )
-        @Range.Integer(min = 1, max = 64)
-        fun outputPerRecipeAmount() = 4
-
-        @ConfigKey("duration")
-        @ConfigComment("Duration in ticks for generated recipes")
-        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
-        fun duration() = 1 * 60 * 20
-
-        @ConfigKey("energy_multiplier")
-        @ConfigComment(
-            "Energy per tick multiplier compared to model's simulation cost for generated recipes",
-            "i.e. 1,000RF * 0.1 multiplier = 100 EU/t"
-        )
-        @Range.Double(min = 0.01, max = Double.MAX_VALUE)
-        fun energyMultiplier() = 0.5
-
-        @ConfigKey("runtime_recipes")
-        @ConfigComment(
-            "Whether Large Simulation Chamber recipes should be generated automatically at runtime.",
             "Disable this if you're a modpack creator and intend to manually create all recipes."
         )
         fun runtimeRecipes() = true
@@ -98,17 +196,349 @@ interface HNIConfig {
         @Range.Integer(min = 1, max = Integer.MAX_VALUE)
         fun duration() = 10 * 20
 
+        @ConfigKey("energy")
+        @ConfigComment(
+            "Amount of energy used for generated recipes",
+            "In HNN, Loot Fabricators use 256 RF"
+        )
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun energy() = 15
+
+        /** Fluid */
+        // OVERWORLD
+        @ConfigKey("overworld_fluid_input_id")
+        @ConfigComment(
+            "Required fluid for Overworld predictions",
+            "Leave empty to remove fluid requirement"
+        )
+        fun overworldFluidInputId() = ""
+
+        @ConfigKey("overworld_fluid_input_amount")
+        @ConfigComment("Amount of fluid required for Overworld predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun overworldFluidInputAmount() = 1_000
+
+        @ConfigKey("overworld_fluid_input_probability")
+        @ConfigComment("Probability the input fluid for Overworld predictions will be consumed")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun overworldFluidInputProbability() = 1.0
+
+        @ConfigKey("overworld_fluid_output_id")
+        @ConfigComment(
+            "Fluid outputted for Overworld predictions",
+            "Leave empty to remove fluid output"
+        )
+        fun overworldFluidOutputId() = ""
+
+        @ConfigKey("overworld_fluid_output_amount")
+        @ConfigComment("Amount of fluid outputted for Overworld predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun overworldFluidOutputAmount() = 1_000
+
+        @ConfigKey("overworld_fluid_output_probability")
+        @ConfigComment("Probability the output fluid for Overworld predictions will be produced")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun overworldFluidOutputProbability() = 1.0
+
+        // NETHER
+        @ConfigKey("nether_fluid_input_id")
+        @ConfigComment(
+            "Required fluid for Nether predictions",
+            "Leave empty to remove fluid requirement"
+        )
+        fun netherFluidInputId() = ""
+
+        @ConfigKey("nether_fluid_input_amount")
+        @ConfigComment("Amount of fluid required for Nether predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun netherFluidInputAmount() = 1_000
+
+        @ConfigKey("nether_fluid_input_probability")
+        @ConfigComment("Probability the input fluid for Nether predictions will be consumed")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun netherFluidInputProbability() = 1.0
+
+        @ConfigKey("nether_fluid_output_id")
+        @ConfigComment(
+            "Fluid outputted for Nether predictions",
+            "Leave empty to remove fluid output"
+        )
+        fun netherFluidOutputId() = ""
+
+        @ConfigKey("nether_fluid_output_amount")
+        @ConfigComment("Amount of fluid outputted for Nether predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun netherFluidOutputAmount() = 1_000
+
+        @ConfigKey("nether_fluid_output_probability")
+        @ConfigComment("Probability the output fluid for Nether predictions will be produced")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun netherFluidOutputProbability() = 1.0
+
+        // THE END
+        @ConfigKey("end_fluid_input_id")
+        @ConfigComment(
+            "Required fluid for The End predictions",
+            "Leave empty to remove fluid requirement"
+        )
+        fun theEndFluidInputId() = ""
+
+        @ConfigKey("end_fluid_input_amount")
+        @ConfigComment("Amount of fluid required for The End predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun theEndFluidInputAmount() = 1_000
+
+        @ConfigKey("end_fluid_input_probability")
+        @ConfigComment("Probability the input fluid for The End predictions will be consumed")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun theEndFluidInputProbability() = 1.0
+
+        @ConfigKey("end_fluid_output_id")
+        @ConfigComment(
+            "Fluid outputted for The End predictions",
+            "Leave empty to remove fluid output"
+        )
+        fun theEndFluidOutputId() = ""
+
+        @ConfigKey("end_fluid_output_amount")
+        @ConfigComment("Amount of fluid outputted for The End predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun theEndFluidOutputAmount() = 1_000
+
+        @ConfigKey("end_fluid_output_probability")
+        @ConfigComment("Probability the output fluid for The End predictions will be produced")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun theEndFluidOutputProbability() = 1.0
+
+        // TWILIGHT
+        @ConfigKey("twilight_fluid_input_id")
+        @ConfigComment(
+            "Required fluid for Twilight Forest predictions",
+            "Leave empty to remove fluid requirement"
+        )
+        fun twilightFluidInputId() = ""
+
+        @ConfigKey("twilight_fluid_input_amount")
+        @ConfigComment("Amount of fluid required for Twilight Forest predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun twilightFluidInputAmount() = 1_000
+
+        @ConfigKey("twilight_fluid_input_probability")
+        @ConfigComment("Probability the input fluid for Twilight Forest predictions will be consumed")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun twilightFluidInputProbability() = 1.0
+
+        @ConfigKey("twilight_fluid_output_id")
+        @ConfigComment(
+            "Fluid outputted for Twilight Forest predictions",
+            "Leave empty to remove fluid output"
+        )
+        fun twilightFluidOutputId() = ""
+
+        @ConfigKey("twilight_fluid_output_amount")
+        @ConfigComment("Amount of fluid outputted for Twilight Forest predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun twilightFluidOutputAmount() = 1_000
+
+        @ConfigKey("twilight_fluid_output_probability")
+        @ConfigComment("Probability the output fluid for Twilight Forest predictions will be produced")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun twilightFluidOutputProbability() = 1.0
+        /**********/
+
+        @ConfigKey("runtime_recipes")
+        @ConfigComment(
+            "Whether Mono Loot Fabricator recipes should be generated automatically at runtime.",
+            "Disable this if you're a modpack creator and intend to manually create all recipes."
+        )
+        fun runtimeRecipes() = true
+
+    }
+
+    @ConfigKey("large_simulation_chamber")
+    @SubSection
+    fun largeSimChamber(): LargeSimChamber
+
+    interface LargeSimChamber {
+
+        @ConfigKey("matrixes_per_recipe")
+        @ConfigComment("Determines amount of consumed Prediction Matrixes on generated recipes")
+        @Range.Integer(min = 1, max = 64)
+        fun matrixesPerRecipeAmount() = 8
+
+        @ConfigKey("data_added_per_recipe")
+        @ConfigComment("Determines amount of data added to model. Applies to all recipes")
+        @Range.Integer(min = 1, max = 64)
+        fun dataPerRecipeAmount() = 2
+
+        @ConfigKey("prediction_amount_per_recipe")
+        @ConfigComment("Determines amount of Predictions crafted on generated recipes")
+        @Range.Integer(min = 1, max = 64)
+        fun predictionPerRecipeAmount() = 4
+
+        @ConfigKey("generalized_prediction_amount_per_recipe")
+        @ConfigComment("Determines amount of Generalized Predictions crafted on generated recipes")
+        @Range.Integer(min = 1, max = 64)
+        fun generalizedPredictionPerRecipeAmount() = 4
+
+        @ConfigKey("duration")
+        @ConfigComment("Duration in ticks for generated recipes")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun duration() = 1 * 60 * 20
+
         @ConfigKey("energy_multiplier")
         @ConfigComment(
             "Energy per tick multiplier compared to model's simulation cost for generated recipes",
             "i.e. 1,000RF * 0.1 multiplier = 100 EU/t"
         )
         @Range.Double(min = 0.01, max = Double.MAX_VALUE)
-        fun energyMultiplier() = 0.1
+        fun energyMultiplier() = 0.5
+
+        /** Fluid */
+        // OVERWORLD
+        @ConfigKey("overworld_fluid_input_id")
+        @ConfigComment(
+            "Required fluid for Overworld predictions",
+            "Leave empty to remove fluid requirement"
+        )
+        fun overworldFluidInputId() = ""
+
+        @ConfigKey("overworld_fluid_input_amount")
+        @ConfigComment("Amount of fluid required for Overworld predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun overworldFluidInputAmount() = 1_000
+
+        @ConfigKey("overworld_fluid_input_probability")
+        @ConfigComment("Probability the input fluid for Overworld predictions will be consumed")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun overworldFluidInputProbability() = 1.0
+
+        @ConfigKey("overworld_fluid_output_id")
+        @ConfigComment(
+            "Fluid outputted for Overworld predictions",
+            "Leave empty to remove fluid output"
+        )
+        fun overworldFluidOutputId() = ""
+
+        @ConfigKey("overworld_fluid_output_amount")
+        @ConfigComment("Amount of fluid outputted for Overworld predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun overworldFluidOutputAmount() = 1_000
+
+        @ConfigKey("overworld_fluid_output_probability")
+        @ConfigComment("Probability the output fluid for Overworld predictions will be produced")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun overworldFluidOutputProbability() = 1.0
+
+        // NETHER
+        @ConfigKey("nether_fluid_input_id")
+        @ConfigComment(
+            "Required fluid for Nether predictions",
+            "Leave empty to remove fluid requirement"
+        )
+        fun netherFluidInputId() = ""
+
+        @ConfigKey("nether_fluid_input_amount")
+        @ConfigComment("Amount of fluid required for Nether predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun netherFluidInputAmount() = 1_000
+
+        @ConfigKey("nether_fluid_input_probability")
+        @ConfigComment("Probability the input fluid for Nether predictions will be consumed")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun netherFluidInputProbability() = 1.0
+
+        @ConfigKey("nether_fluid_output_id")
+        @ConfigComment(
+            "Fluid outputted for Nether predictions",
+            "Leave empty to remove fluid output"
+        )
+        fun netherFluidOutputId() = ""
+
+        @ConfigKey("nether_fluid_output_amount")
+        @ConfigComment("Amount of fluid outputted for Nether predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun netherFluidOutputAmount() = 1_000
+
+        @ConfigKey("nether_fluid_output_probability")
+        @ConfigComment("Probability the output fluid for Nether predictions will be produced")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun netherFluidOutputProbability() = 1.0
+
+        // THE END
+        @ConfigKey("end_fluid_input_id")
+        @ConfigComment(
+            "Required fluid for The End predictions",
+            "Leave empty to remove fluid requirement"
+        )
+        fun theEndFluidInputId() = ""
+
+        @ConfigKey("end_fluid_input_amount")
+        @ConfigComment("Amount of fluid required for The End predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun theEndFluidInputAmount() = 1_000
+
+        @ConfigKey("end_fluid_input_probability")
+        @ConfigComment("Probability the input fluid for The End predictions will be consumed")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun theEndFluidInputProbability() = 1.0
+
+        @ConfigKey("end_fluid_output_id")
+        @ConfigComment(
+            "Fluid outputted for The End predictions",
+            "Leave empty to remove fluid output"
+        )
+        fun theEndFluidOutputId() = ""
+
+        @ConfigKey("end_fluid_output_amount")
+        @ConfigComment("Amount of fluid outputted for The End predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun theEndFluidOutputAmount() = 1_000
+
+        @ConfigKey("end_fluid_output_probability")
+        @ConfigComment("Probability the output fluid for The End predictions will be produced")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun theEndFluidOutputProbability() = 1.0
+
+        // TWILIGHT
+        @ConfigKey("twilight_fluid_input_id")
+        @ConfigComment(
+            "Required fluid for Twilight Forest predictions",
+            "Leave empty to remove fluid requirement"
+        )
+        fun twilightFluidInputId() = ""
+
+        @ConfigKey("twilight_fluid_input_amount")
+        @ConfigComment("Amount of fluid required for Twilight Forest predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun twilightFluidInputAmount() = 1_000
+
+        @ConfigKey("twilight_fluid_input_probability")
+        @ConfigComment("Probability the input fluid for Twilight Forest predictions will be consumed")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun twilightFluidInputProbability() = 1.0
+
+        @ConfigKey("twilight_fluid_output_id")
+        @ConfigComment(
+            "Fluid outputted for Twilight Forest predictions",
+            "Leave empty to remove fluid output"
+        )
+        fun twilightFluidOutputId() = ""
+
+        @ConfigKey("twilight_fluid_output_amount")
+        @ConfigComment("Amount of fluid outputted for Twilight Forest predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun twilightFluidOutputAmount() = 1_000
+
+        @ConfigKey("twilight_fluid_output_probability")
+        @ConfigComment("Probability the output fluid for Twilight Forest predictions will be produced")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun twilightFluidOutputProbability() = 1.0
+        /**********/
 
         @ConfigKey("runtime_recipes")
         @ConfigComment(
-            "Whether Mono Loot Fabricator recipes should be generated automatically at runtime.",
+            "Whether Large Simulation Chamber recipes should be generated automatically at runtime.",
             "Disable this if you're a modpack creator and intend to manually create all recipes."
         )
         fun runtimeRecipes() = true
@@ -161,6 +591,148 @@ interface HNIConfig {
         )
         @Range.Double(min = 0.01, max = Double.MAX_VALUE)
         fun energyMultiplier() = 0.1
+
+        /** Fluid */
+        // OVERWORLD
+        @ConfigKey("overworld_fluid_input_id")
+        @ConfigComment(
+            "Required fluid for Overworld predictions",
+            "Leave empty to remove fluid requirement"
+        )
+        fun overworldFluidInputId() = ""
+
+        @ConfigKey("overworld_fluid_input_amount")
+        @ConfigComment("Amount of fluid required for Overworld predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun overworldFluidInputAmount() = 1_000
+
+        @ConfigKey("overworld_fluid_input_probability")
+        @ConfigComment("Probability the input fluid for Overworld predictions will be consumed")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun overworldFluidInputProbability() = 1.0
+
+        @ConfigKey("overworld_fluid_output_id")
+        @ConfigComment(
+            "Fluid outputted for Overworld predictions",
+            "Leave empty to remove fluid output"
+        )
+        fun overworldFluidOutputId() = ""
+
+        @ConfigKey("overworld_fluid_output_amount")
+        @ConfigComment("Amount of fluid outputted for Overworld predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun overworldFluidOutputAmount() = 1_000
+
+        @ConfigKey("overworld_fluid_output_probability")
+        @ConfigComment("Probability the output fluid for Overworld predictions will be produced")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun overworldFluidOutputProbability() = 1.0
+
+        // NETHER
+        @ConfigKey("nether_fluid_input_id")
+        @ConfigComment(
+            "Required fluid for Nether predictions",
+            "Leave empty to remove fluid requirement"
+        )
+        fun netherFluidInputId() = ""
+
+        @ConfigKey("nether_fluid_input_amount")
+        @ConfigComment("Amount of fluid required for Nether predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun netherFluidInputAmount() = 1_000
+
+        @ConfigKey("nether_fluid_input_probability")
+        @ConfigComment("Probability the input fluid for Nether predictions will be consumed")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun netherFluidInputProbability() = 1.0
+
+        @ConfigKey("nether_fluid_output_id")
+        @ConfigComment(
+            "Fluid outputted for Nether predictions",
+            "Leave empty to remove fluid output"
+        )
+        fun netherFluidOutputId() = ""
+
+        @ConfigKey("nether_fluid_output_amount")
+        @ConfigComment("Amount of fluid outputted for Nether predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun netherFluidOutputAmount() = 1_000
+
+        @ConfigKey("nether_fluid_output_probability")
+        @ConfigComment("Probability the output fluid for Nether predictions will be produced")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun netherFluidOutputProbability() = 1.0
+
+        // THE END
+        @ConfigKey("end_fluid_input_id")
+        @ConfigComment(
+            "Required fluid for The End predictions",
+            "Leave empty to remove fluid requirement"
+        )
+        fun theEndFluidInputId() = ""
+
+        @ConfigKey("end_fluid_input_amount")
+        @ConfigComment("Amount of fluid required for The End predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun theEndFluidInputAmount() = 1_000
+
+        @ConfigKey("end_fluid_input_probability")
+        @ConfigComment("Probability the input fluid for The End predictions will be consumed")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun theEndFluidInputProbability() = 1.0
+
+        @ConfigKey("end_fluid_output_id")
+        @ConfigComment(
+            "Fluid outputted for The End predictions",
+            "Leave empty to remove fluid output"
+        )
+        fun theEndFluidOutputId() = ""
+
+        @ConfigKey("end_fluid_output_amount")
+        @ConfigComment("Amount of fluid outputted for The End predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun theEndFluidOutputAmount() = 1_000
+
+        @ConfigKey("end_fluid_output_probability")
+        @ConfigComment("Probability the output fluid for The End predictions will be produced")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun theEndFluidOutputProbability() = 1.0
+
+        // TWILIGHT
+        @ConfigKey("twilight_fluid_input_id")
+        @ConfigComment(
+            "Required fluid for Twilight Forest predictions",
+            "Leave empty to remove fluid requirement"
+        )
+        fun twilightFluidInputId() = ""
+
+        @ConfigKey("twilight_fluid_input_amount")
+        @ConfigComment("Amount of fluid required for Twilight Forest predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun twilightFluidInputAmount() = 1_000
+
+        @ConfigKey("twilight_fluid_input_probability")
+        @ConfigComment("Probability the input fluid for Twilight Forest predictions will be consumed")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun twilightFluidInputProbability() = 1.0
+
+        @ConfigKey("twilight_fluid_output_id")
+        @ConfigComment(
+            "Fluid outputted for Twilight Forest predictions",
+            "Leave empty to remove fluid output"
+        )
+        fun twilightFluidOutputId() = ""
+
+        @ConfigKey("twilight_fluid_output_amount")
+        @ConfigComment("Amount of fluid outputted for Twilight Forest predictions")
+        @Range.Integer(min = 1, max = Integer.MAX_VALUE)
+        fun twilightFluidOutputAmount() = 1_000
+
+        @ConfigKey("twilight_fluid_output_probability")
+        @ConfigComment("Probability the output fluid for Twilight Forest predictions will be produced")
+        @Range.Double(min = 0.01, max = 1.0)
+        fun twilightFluidOutputProbability() = 1.0
+        /**********/
 
         @ConfigKey("runtime_recipes")
         @ConfigComment(

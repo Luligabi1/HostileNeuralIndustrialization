@@ -1,4 +1,4 @@
-package me.luligabi.hostile_neural_industrialization.common.network
+package me.luligabi.hostile_neural_industrialization.common.misc.network
 
 import aztech.modern_industrialization.machines.gui.MachineScreen
 import me.luligabi.hostile_neural_industrialization.client.LootSelectorClient

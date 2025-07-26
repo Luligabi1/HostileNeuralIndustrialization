@@ -1,4 +1,4 @@
-package me.luligabi.hostile_neural_industrialization.common.network
+package me.luligabi.hostile_neural_industrialization.common.misc.network
 
 import me.luligabi.hostile_neural_industrialization.common.HNI
 import net.minecraft.network.RegistryFriendlyByteBuf

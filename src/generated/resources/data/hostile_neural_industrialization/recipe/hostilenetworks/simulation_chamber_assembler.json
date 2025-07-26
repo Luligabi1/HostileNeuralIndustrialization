@@ -1,0 +1,33 @@
+{
+  "type": "modern_industrialization:assembler",
+  "duration": 200,
+  "eu": 8,
+  "item_inputs": [
+    {
+      "amount": 1,
+      "item": "minecraft:comparator"
+    },
+    {
+      "amount": 2,
+      "tag": "c:ender_pearls"
+    },
+    {
+      "amount": 1,
+      "tag": "c:glass_panes"
+    },
+    {
+      "amount": 2,
+      "tag": "c:gems/lapis"
+    },
+    {
+      "amount": 1,
+      "tag": "c:obsidians"
+    }
+  ],
+  "item_outputs": [
+    {
+      "amount": 1,
+      "item": "hostilenetworks:sim_chamber"
+    }
+  ]
+}

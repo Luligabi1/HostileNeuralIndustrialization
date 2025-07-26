@@ -1,0 +1,29 @@
+{
+  "type": "modern_industrialization:assembler",
+  "duration": 200,
+  "eu": 8,
+  "item_inputs": [
+    {
+      "amount": 4,
+      "tag": "c:glass_panes"
+    },
+    {
+      "amount": 1,
+      "tag": "c:ingots/gold"
+    },
+    {
+      "amount": 1,
+      "tag": "c:ingots/iron"
+    },
+    {
+      "amount": 1,
+      "item": "minecraft:clay_ball"
+    }
+  ],
+  "item_outputs": [
+    {
+      "amount": 16,
+      "item": "hostilenetworks:prediction_matrix"
+    }
+  ]
+}

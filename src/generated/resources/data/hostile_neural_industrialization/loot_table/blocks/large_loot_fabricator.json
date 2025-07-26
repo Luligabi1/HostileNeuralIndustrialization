@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "hostile_neural_industrialization:large_loot_fabricator"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "hostile_neural_industrialization:blocks/large_loot_fabricator"
+}

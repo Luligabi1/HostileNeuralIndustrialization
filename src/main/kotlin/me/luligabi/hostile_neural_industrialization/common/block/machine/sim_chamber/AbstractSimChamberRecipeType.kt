@@ -2,16 +2,14 @@ package me.luligabi.hostile_neural_industrialization.common.block.machine.sim_ch
 
 import aztech.modern_industrialization.machines.recipe.MachineRecipe
 import aztech.modern_industrialization.machines.recipe.ProxyableMachineRecipeType
+import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import dev.shadowsoffire.hostilenetworks.Hostile
-import dev.shadowsoffire.hostilenetworks.data.DataModel
-import dev.shadowsoffire.hostilenetworks.data.DataModelInstance
-import dev.shadowsoffire.hostilenetworks.data.DataModelRegistry
-import dev.shadowsoffire.hostilenetworks.data.ModelTier
-import dev.shadowsoffire.hostilenetworks.data.ModelTierRegistry
+import dev.shadowsoffire.hostilenetworks.data.*
 import dev.shadowsoffire.hostilenetworks.item.DataModelItem
 import me.luligabi.hostile_neural_industrialization.common.HNI
+import me.luligabi.hostile_neural_industrialization.common.misc.HNIIngredients
 import me.luligabi.hostile_neural_industrialization.mixin.DataModelRegistryAccessor
 import me.luligabi.hostile_neural_industrialization.mixin.ModelTierRegistryAccessor
 import net.minecraft.core.registries.BuiltInRegistries
@@ -20,7 +18,6 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.level.Level
 import net.neoforged.neoforge.common.crafting.ICustomIngredient
-import net.neoforged.neoforge.common.crafting.IngredientType
 import java.util.stream.Stream
 import kotlin.jvm.optionals.getOrNull
 
@@ -32,7 +29,7 @@ abstract class AbstractSimChamberRecipeType (id: ResourceLocation): ProxyableMac
 
     abstract fun generatesRuntime(): Boolean
 
-    private fun getModelRecipes(): MutableList<RecipeHolder<MachineRecipe>> {
+    fun getModelRecipes(): MutableList<RecipeHolder<MachineRecipe>> {
         if ((ModelTierRegistry.INSTANCE as ModelTierRegistryAccessor).sorted.isEmpty()) return mutableListOf()
         if ((DataModelRegistry.INSTANCE as DataModelRegistryAccessor).modelsByType.isEmpty()) return mutableListOf()
 
@@ -58,7 +55,7 @@ abstract class AbstractSimChamberRecipeType (id: ResourceLocation): ProxyableMac
 
                 recipes.add(
                     generate(
-                        ResourceLocation.parse("${HNI.ID}:${machineId}/$entityId/$tierId"),
+                        ResourceLocation.parse("${HNI.ID}:/${machineId}/$entityId/$tierId"),
                         DataModelInstance(stack, 0),
                         tier
                     )
@@ -78,18 +75,42 @@ abstract class AbstractSimChamberRecipeType (id: ResourceLocation): ProxyableMac
     }
 
 
-    class ModelTierIngredient(private val model: DataModel, private val tier: ModelTier): ICustomIngredient {
+    class DataModelIngredient(
+        private val modelId: ResourceLocation,
+        private val tierId: ResourceLocation,
+        private val allowHigherTiers: Boolean = false
+    ): ICustomIngredient {
+
+        constructor(model: DataModel, tier: ModelTier, allowHigherTiers: Boolean = false): this(
+            DataModelRegistry.INSTANCE.getKey(model) ?: throw IllegalArgumentException("Data Model $model not found!"),
+            ModelTierRegistry.INSTANCE.getKey(tier) ?: throw IllegalArgumentException("Model Tier $tier not found!"),
+            allowHigherTiers
+        )
+
+        private val model by lazy {
+            DataModelRegistry.INSTANCE.getValue(modelId) ?: throw IllegalArgumentException("Data Model $modelId not found!")
+        }
+
+        private val tier by lazy {
+            ModelTierRegistry.INSTANCE.getValue(tierId) ?: throw IllegalArgumentException("Model Tier $tierId not found!")
+        }
 
         override fun test(stack: ItemStack): Boolean {
-            if (!stack.`is`(Hostile.Items.DATA_MODEL.value())) return false
-
             val model = stack.get(Hostile.Components.DATA_MODEL)?.get() ?: return false
             if (model != this.model) return false
 
             val data = stack.get(Hostile.Components.DATA) ?: return false
             val tier = ModelTierRegistry.getByData(model, data).asHolder().optional.getOrNull() ?: return false
 
-            return tier == this.tier
+            if (!allowHigherTiers) {
+                return tier == this.tier
+            }
+
+            return getTierIndex(tier) >= getTierIndex(this.tier)
+        }
+
+        private fun getTierIndex(tier: ModelTier): Int {
+            return (ModelTierRegistry.INSTANCE as ModelTierRegistryAccessor).sorted.indexOf(tier)
         }
 
         override fun getItems(): Stream<ItemStack> {
@@ -105,18 +126,17 @@ abstract class AbstractSimChamberRecipeType (id: ResourceLocation): ProxyableMac
 
         override fun isSimple() = false
 
-        override fun getType() = INGREDIENT_TYPE
+        override fun getType() = HNIIngredients.DATA_MODEL.value()
 
-        private companion object {
+        companion object {
 
-            val CODEC: MapCodec<ModelTierIngredient> = RecordCodecBuilder.mapCodec {
+            val CODEC: MapCodec<DataModelIngredient> = RecordCodecBuilder.mapCodec {
                 it.group(
-                    DataModel.CODEC.fieldOf("model").forGetter(ModelTierIngredient::model),
-                    ModelTier.CODEC.fieldOf("tier").forGetter(ModelTierIngredient::tier)
-                ).apply(it, ::ModelTierIngredient)
+                    ResourceLocation.CODEC.fieldOf("model").forGetter(DataModelIngredient::modelId),
+                    ResourceLocation.CODEC.fieldOf("tier").forGetter(DataModelIngredient::tierId),
+                    Codec.BOOL.optionalFieldOf("allow_higher_tiers", false).forGetter(DataModelIngredient::allowHigherTiers),
+                ).apply(it, ::DataModelIngredient)
             }
-
-            val INGREDIENT_TYPE = IngredientType(CODEC)
 
         }
 

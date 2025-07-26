@@ -1,0 +1,11 @@
+{
+  "casing": "hostile_neural_industrialization:prediction_machine_casing",
+  "default_overlays": {
+    "fluid_auto": "modern_industrialization:block/overlays/fluid_auto",
+    "front": "hostile_neural_industrialization:block/machines/large_simulation_chamber/overlay_front",
+    "front_active": "hostile_neural_industrialization:block/machines/large_simulation_chamber/overlay_front_active",
+    "item_auto": "modern_industrialization:block/overlays/item_auto",
+    "output": "modern_industrialization:block/overlays/output"
+  },
+  "loader": "modern_industrialization:machine"
+}

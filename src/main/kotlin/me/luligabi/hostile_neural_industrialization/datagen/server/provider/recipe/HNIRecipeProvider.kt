@@ -187,7 +187,7 @@ class HNIRecipeProvider(event: GatherDataEvent): RecipeProvider(event.generator.
 
         assembler(
             "hostilenetworks/prediction_matrix",
-            Hostile.Items.PREDICTION_MATRIX.value(), 1,
+            Hostile.Items.PREDICTION_MATRIX.value(), 16,
             { builder -> builder
                 .define('I', Tags.Items.INGOTS_IRON)
                 .define('P', Tags.Items.GLASS_PANES)

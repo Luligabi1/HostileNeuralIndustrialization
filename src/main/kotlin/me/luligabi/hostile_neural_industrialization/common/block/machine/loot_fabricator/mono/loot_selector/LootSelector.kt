@@ -10,22 +10,21 @@ class LootSelector {
 
     interface Behavior {
 
-        fun handleClick(index: Int)
-
+        fun handleClick(id: ResourceLocation)
     }
 
     class Server(
         val behavior: Behavior,
-        private val selectedIndexSupplier: () -> Int,
+        private val selectedIdSupplier: () -> ResourceLocation?,
         private val lootListSupplier: () -> List<ItemStack>
     ): GuiComponent.Server<Data> {
 
         override fun copyData(): Data {
-            return Data(selectedIndexSupplier(), lootListSupplier())
+            return Data(selectedIdSupplier(), lootListSupplier())
         }
 
         override fun needsSync(cachedData: Data): Boolean {
-            if (cachedData.selectedIndex != selectedIndexSupplier()) return true
+            if (cachedData.selectedId != selectedIdSupplier()) return true
 
             cachedData.lootList.forEachIndexed { i, stack ->
                 if (stack != lootListSupplier().getOrNull(i)) return true
@@ -35,7 +34,7 @@ class LootSelector {
         }
 
         override fun writeInitialData(buf: RegistryFriendlyByteBuf) {
-            buf.writeInt(selectedIndexSupplier())
+            buf.writeResourceLocation(selectedIdSupplier() ?: NONE)
             ItemStack.LIST_STREAM_CODEC.encode(buf, lootListSupplier())
         }
 
@@ -47,11 +46,13 @@ class LootSelector {
 
     }
 
-    data class Data(val selectedIndex: Int, val lootList: List<ItemStack>)
+    data class Data(val selectedId: ResourceLocation?, val lootList: List<ItemStack>)
 
     companion object {
 
         val ID: ResourceLocation = HNI.id("loot_selector")
+
+        val NONE = HNI.id("none")
 
     }
 

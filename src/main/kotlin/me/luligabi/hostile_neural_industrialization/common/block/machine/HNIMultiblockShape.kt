@@ -10,12 +10,15 @@ import me.luligabi.hostile_neural_industrialization.common.block.HNIBlocks
 
 interface HNIMultiblockShape {
 
-
     companion object {
 
-        val ITEM_AND_ENERGY_HATCHES: HatchFlags
+        val HATCHES: HatchFlags
             get() = HatchFlags.Builder()
-                .with(HatchType.ITEM_INPUT, HatchType.ITEM_OUTPUT, HatchType.ENERGY_INPUT)
+                .with(
+                    HatchType.ITEM_INPUT, HatchType.ITEM_OUTPUT,
+                    HatchType.FLUID_INPUT, HatchType.FLUID_OUTPUT,
+                    HatchType.ENERGY_INPUT
+                )
                 .build()
 
         val PREDICTION_CASING = SimpleMember.forBlock { HNIBlocks.PREDICTION_MACHINE_CASING.get() }
@@ -49,7 +52,7 @@ interface HNIMultiblockShape {
                 if (row[x] == '_') continue
 
                 val block = materialRules.entries.find { it.key(row[x], y) }?.value ?: continue
-                add(x + controllerXOffset, y, z + controllerZOffset, block, if (block == PREDICTION_CASING) ITEM_AND_ENERGY_HATCHES else null)
+                add(x + controllerXOffset, y, z + controllerZOffset, block, if (block == PREDICTION_CASING) HATCHES else null)
             }
         }
 

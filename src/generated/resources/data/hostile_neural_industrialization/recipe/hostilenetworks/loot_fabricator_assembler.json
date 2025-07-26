@@ -1,0 +1,33 @@
+{
+  "type": "modern_industrialization:assembler",
+  "duration": 200,
+  "eu": 8,
+  "item_inputs": [
+    {
+      "amount": 1,
+      "item": "minecraft:comparator"
+    },
+    {
+      "amount": 2,
+      "tag": "c:gems/diamond"
+    },
+    {
+      "amount": 2,
+      "tag": "c:ingots/gold"
+    },
+    {
+      "amount": 1,
+      "tag": "c:ingots/netherite"
+    },
+    {
+      "amount": 1,
+      "tag": "c:obsidians"
+    }
+  ],
+  "item_outputs": [
+    {
+      "amount": 1,
+      "item": "hostilenetworks:loot_fabricator"
+    }
+  ]
+}
