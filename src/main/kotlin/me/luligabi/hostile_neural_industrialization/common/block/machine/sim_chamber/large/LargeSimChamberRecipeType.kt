@@ -8,6 +8,7 @@ import dev.shadowsoffire.hostilenetworks.data.ModelTier
 import me.luligabi.hostile_neural_industrialization.common.HNI
 import me.luligabi.hostile_neural_industrialization.common.block.machine.sim_chamber.AbstractSimChamberRecipeType
 import me.luligabi.hostile_neural_industrialization.common.util.getDimensionFluid
+import me.luligabi.hostile_neural_industrialization.common.util.largeSimChamberCost
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.crafting.RecipeHolder
 import net.swedz.tesseract.neoforge.compat.mi.recipe.MIMachineRecipeBuilder
@@ -24,7 +25,7 @@ class LargeSimChamberRecipeType(id: ResourceLocation): AbstractSimChamberRecipeT
 
         val recipeBuilder = MIMachineRecipeBuilder(
             this,
-            /*instance.model.largeSimChamberCost*/ 2,
+            instance.model.largeSimChamberCost,
             HNI.CONFIG.largeSimChamber().duration()
         ).apply {
             addItemInput(DataModelIngredient(instance.model, tier).toVanilla(), 1, 0f)

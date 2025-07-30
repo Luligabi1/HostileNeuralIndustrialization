@@ -14,7 +14,7 @@ interface HNIConfig {
     interface ElectricSimChamber {
 
         @ConfigKey("duration")
-        @ConfigComment("Duration in ticks for generated recipes")
+        @ConfigComment("Duration in ticks for generated recipes. Default: 17 seconds")
         @Range.Integer(min = 1, max = Integer.MAX_VALUE)
         fun duration() = 17 * 20
 
@@ -24,7 +24,7 @@ interface HNIConfig {
             "i.e. 1,000RF * 0.1 multiplier = 100 EU/t"
         )
         @Range.Double(min = 0.01, max = Double.MAX_VALUE)
-        fun energyMultiplier() = 0.1
+        fun energyMultiplier() = 0.25
 
         /** Fluid */
         // OVERWORLD
@@ -192,7 +192,7 @@ interface HNIConfig {
         fun outputAmountMultiplier() = 1.0
 
         @ConfigKey("duration")
-        @ConfigComment("Duration in ticks for generated recipes")
+        @ConfigComment("Duration in ticks for generated recipes. Default: 10 seconds")
         @Range.Integer(min = 1, max = Integer.MAX_VALUE)
         fun duration() = 10 * 20
 
@@ -361,15 +361,15 @@ interface HNIConfig {
 
     interface LargeSimChamber {
 
-        @ConfigKey("matrixes_per_recipe")
-        @ConfigComment("Determines amount of consumed Prediction Matrixes on generated recipes")
-        @Range.Integer(min = 1, max = 64)
-        fun matrixesPerRecipeAmount() = 8
-
         @ConfigKey("data_added_per_recipe")
         @ConfigComment("Determines amount of data added to model. Applies to all recipes")
         @Range.Integer(min = 1, max = 64)
         fun dataPerRecipeAmount() = 2
+
+        @ConfigKey("matrixes_per_recipe")
+        @ConfigComment("Determines amount of consumed Prediction Matrixes on generated recipes")
+        @Range.Integer(min = 1, max = 64)
+        fun matrixesPerRecipeAmount() = 8
 
         @ConfigKey("prediction_amount_per_recipe")
         @ConfigComment("Determines amount of Predictions crafted on generated recipes")
@@ -382,7 +382,7 @@ interface HNIConfig {
         fun generalizedPredictionPerRecipeAmount() = 4
 
         @ConfigKey("duration")
-        @ConfigComment("Duration in ticks for generated recipes")
+        @ConfigComment("Duration in ticks for generated recipes. Default: 1 minute")
         @Range.Integer(min = 1, max = Integer.MAX_VALUE)
         fun duration() = 1 * 60 * 20
 
@@ -580,9 +580,9 @@ interface HNIConfig {
         fun outputAmountMultiplier() = 1.0
 
         @ConfigKey("duration")
-        @ConfigComment("Duration in ticks for generated recipes")
+        @ConfigComment("Duration in ticks for generated recipes. Default: 3 minutes")
         @Range.Integer(min = 1, max = Integer.MAX_VALUE)
-        fun duration() = 7 * 60 * 20
+        fun duration() = 3 * 60 * 20
 
         @ConfigKey("energy_multiplier")
         @ConfigComment(
@@ -590,7 +590,7 @@ interface HNIConfig {
             "i.e. 1,000RF * 0.1 multiplier = 100 EU/t"
         )
         @Range.Double(min = 0.01, max = Double.MAX_VALUE)
-        fun energyMultiplier() = 0.1
+        fun energyMultiplier() = 0.45
 
         /** Fluid */
         // OVERWORLD
