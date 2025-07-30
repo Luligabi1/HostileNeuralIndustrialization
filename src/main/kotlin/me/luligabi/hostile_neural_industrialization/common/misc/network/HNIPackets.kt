@@ -7,7 +7,6 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent
 import net.swedz.tesseract.neoforge.packet.CustomPacket
 import net.swedz.tesseract.neoforge.packet.PacketRegistry
 
-
 object HNIPackets {
 
     fun init(event: RegisterPayloadHandlersEvent) {

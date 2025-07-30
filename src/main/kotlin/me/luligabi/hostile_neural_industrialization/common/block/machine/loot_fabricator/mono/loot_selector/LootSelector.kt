@@ -25,10 +25,7 @@ class LootSelector {
 
         override fun needsSync(cachedData: Data): Boolean {
             if (cachedData.selectedId != selectedIdSupplier()) return true
-
-            cachedData.lootList.forEachIndexed { i, stack ->
-                if (stack != lootListSupplier().getOrNull(i)) return true
-            }
+            if (cachedData.lootList != lootListSupplier()) return true
 
             return false
         }

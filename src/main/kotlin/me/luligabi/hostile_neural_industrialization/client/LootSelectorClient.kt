@@ -10,6 +10,7 @@ import me.luligabi.hostile_neural_industrialization.common.HNI
 import me.luligabi.hostile_neural_industrialization.common.block.machine.loot_fabricator.mono.loot_selector.LootSelector
 import me.luligabi.hostile_neural_industrialization.common.misc.network.SelectLootPacket
 import me.luligabi.hostile_neural_industrialization.common.util.HNIText
+import me.luligabi.hostile_neural_industrialization.mixin.ScreenAccessor
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.core.registries.BuiltInRegistries
@@ -17,16 +18,17 @@ import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
 
-class LootSelectorClient(buf: RegistryFriendlyByteBuf): GuiComponentClient {
+class LootSelectorClient(buf: RegistryFriendlyByteBuf) : GuiComponentClient {
 
     private companion object {
-        
+
         val BUTTONS = HNI.id("textures/gui/loot_selector/buttons.png")
         val BACKGROUND = HNI.id("textures/gui/loot_selector/background.png")
 
         // TODO Accesswiden from StonecutterScreen
         val RECIPE_SELECTED_SPRITE = ResourceLocation.withDefaultNamespace("container/stonecutter/recipe_selected")
-        val RECIPE_HIGHLIGHTED_SPRITE = ResourceLocation.withDefaultNamespace("container/stonecutter/recipe_highlighted")
+        val RECIPE_HIGHLIGHTED_SPRITE =
+            ResourceLocation.withDefaultNamespace("container/stonecutter/recipe_highlighted")
         val RECIPE_SPRITE = ResourceLocation.withDefaultNamespace("container/stonecutter/recipe")
     }
 
@@ -48,9 +50,10 @@ class LootSelectorClient(buf: RegistryFriendlyByteBuf): GuiComponentClient {
 
     override fun createRenderer(screen: MachineScreen) = Renderer(screen)
 
-    inner class Renderer(private val screen: MachineScreen): ClientComponentRenderer {
+    inner class Renderer(private val screen: MachineScreen) : ClientComponentRenderer {
 
         private var isPanelOpen = false
+
         private val panelWidth = 109
         private val panelHeight = 94
 
@@ -58,10 +61,12 @@ class LootSelectorClient(buf: RegistryFriendlyByteBuf): GuiComponentClient {
             screen.addButton(
                 -24, 17, 20, 20,
                 { _ -> isPanelOpen = !isPanelOpen },
-                { listOf(
-                    HNIText.LOOT_SELECTOR_TITLE.text(),
-                    HNIText.LOOT_SELECTOR_DESCRIPTION.text().setStyle(TextHelper.GRAY_TEXT)
-                ) },
+                {
+                    listOf(
+                        HNIText.LOOT_SELECTOR_TITLE.text(),
+                        HNIText.LOOT_SELECTOR_DESCRIPTION.text().setStyle(TextHelper.GRAY_TEXT)
+                    )
+                },
                 { screen, button, gui, _, _, _ ->
 
                     val selectedId = this@LootSelectorClient.selectedId
@@ -79,24 +84,8 @@ class LootSelectorClient(buf: RegistryFriendlyByteBuf): GuiComponentClient {
                         gui.renderItem(ItemStack(BuiltInRegistries.ITEM.get(it)), button.x + 2, button.y + 2)
                     }
 
-//                    if (selectedId != null /*&& this@LootSelectorClient.lootList.size > selectedId*/) {
-//                        gui.renderItem(this@LootSelectorClient.lootList[selectedId], button.x + 2, button.y + 2)
-//                    }
-
                 }
             )
-
-            addSelectionButtons(false)
-        }
-
-        fun addSelectionButtons(removePrevious: Boolean) {
-
-            if (removePrevious) {
-                screen.renderables.removeIf {
-                    val button = (it as? MachineScreen.MachineButton) ?: return@removeIf false
-                    button.x == 16 && button.y == 18
-                }
-            }
 
             this@LootSelectorClient.lootList.forEachIndexed { i, stack ->
 
@@ -109,12 +98,14 @@ class LootSelectorClient(buf: RegistryFriendlyByteBuf): GuiComponentClient {
                 screen.addButton(
                     x, y, 16, 18,
                     { syncId -> SelectLootPacket(syncId, BuiltInRegistries.ITEM.getKey(stack.item)).sendToServer() },
-                    { listOf(
-                        (HNIText.LOOT_SELECTOR_MEMBER_NAME
-                            .arg(stack.count)
-                            .arg(stack.hoverName))
+                    {
+                        listOf(
+                            (HNIText.LOOT_SELECTOR_MEMBER_NAME
+                                .arg(stack.count)
+                                .arg(stack.hoverName))
                                 .withStyle(TextHelper.GRAY_TEXT)
-                    ) },
+                        )
+                    },
                     { _, button, gui, _, _, _ ->
 
                         val texture = when {
@@ -134,12 +125,18 @@ class LootSelectorClient(buf: RegistryFriendlyByteBuf): GuiComponentClient {
 
         }
 
+        fun refreshSelectionButtons() {
+            DelayedClientTask.runLater(2) {
+                (screen as ScreenAccessor).invokeRebuildWidgets() // TODO overkill, could check for the specific buttons
+            }
+        }
+
         override fun renderBackground(gui: GuiGraphics, leftPos: Int, topPos: Int) {
             val box = getBox(leftPos, topPos)
             gui.blit(MachineScreen.BACKGROUND, box.x(), box.y(), 0, 0, box.w(), box.h() - 4)
             gui.blit(MachineScreen.BACKGROUND, box.x(), box.y() + box.h() - 4, 0, 252, box.w(), 4)
 
-            if (isPanelOpen)  {
+            if (isPanelOpen) {
                 gui.blit(BACKGROUND, box.x() + 7, box.y() + 31, 0f, 0f, 98, 56, 98, 56)
             }
 
@@ -159,7 +156,7 @@ class LootSelectorClient(buf: RegistryFriendlyByteBuf): GuiComponentClient {
         override fun addExtraBoxes(rectangles: MutableList<Rectangle>, leftPos: Int, topPos: Int) {
             rectangles.add(getBox(leftPos, topPos))
         }
-        
+
     }
 
 }

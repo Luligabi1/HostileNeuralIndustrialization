@@ -25,7 +25,7 @@ class RefreshLootListPacket private constructor(): CustomPacket {
         (Minecraft.getInstance().screen as? MachineScreen)?.let { screen ->
 
             val lootSelector = ((screen as MachineScreenAccessor).renderers.find { it is LootSelectorClient.Renderer } as? LootSelectorClient.Renderer) ?: return
-            lootSelector.addSelectionButtons(true)
+            lootSelector.refreshSelectionButtons()
         }
 
     }

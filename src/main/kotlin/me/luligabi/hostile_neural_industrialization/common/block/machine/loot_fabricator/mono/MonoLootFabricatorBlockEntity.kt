@@ -4,7 +4,10 @@ import aztech.modern_industrialization.MICapabilities
 import aztech.modern_industrialization.api.energy.EnergyApi
 import aztech.modern_industrialization.api.machine.holder.CrafterComponentHolder
 import aztech.modern_industrialization.api.machine.holder.EnergyComponentHolder
-import aztech.modern_industrialization.inventory.*
+import aztech.modern_industrialization.inventory.ConfigurableFluidStack
+import aztech.modern_industrialization.inventory.ConfigurableItemStack
+import aztech.modern_industrialization.inventory.MIInventory
+import aztech.modern_industrialization.inventory.SlotPositions
 import aztech.modern_industrialization.machines.BEP
 import aztech.modern_industrialization.machines.MachineBlockEntity
 import aztech.modern_industrialization.machines.components.*
@@ -18,7 +21,6 @@ import dev.shadowsoffire.hostilenetworks.item.DataModelItem
 import me.luligabi.hostile_neural_industrialization.common.block.machine.HNIMachines
 import me.luligabi.hostile_neural_industrialization.common.block.machine.loot_fabricator.mono.loot_selector.LootSelector
 import me.luligabi.hostile_neural_industrialization.common.block.machine.loot_fabricator.mono.loot_selector.LootSelectorComponent
-import me.luligabi.hostile_neural_industrialization.common.misc.network.RefreshLootListPacket
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerLevel
@@ -59,7 +61,7 @@ class MonoLootFabricatorBlockEntity private constructor(
         }
     }
 
-    private val inventory = buildInventory()
+    val inventory = buildInventory()
     private val crafter = CrafterComponent(this, inventory, this)
     private val isActiveComponent = IsActiveComponent()
 
@@ -71,17 +73,7 @@ class MonoLootFabricatorBlockEntity private constructor(
     private val energy = EnergyComponent(this) { casing.euCapacity }
     private val insertable = energy.buildInsertable { tier -> casing.canInsertEu(tier) }
 
-    val lootSelector = LootSelectorComponent()
-
-    private val listener = object : ChangeListener() {
-
-        override fun onChange() { // TODO PR way to check change's source slot?
-            println("changed!")
-            RefreshLootListPacket.INSTANCE.broadcastToClients((level as ServerLevel), blockPos, 10.0)
-        }
-
-        override fun isValid(token: Any?) = true
-    }
+    val lootSelector = LootSelectorComponent({ this })
 
     constructor(bep: BEP): this(bep,
         MachineGuiParameters.Builder(ID, true).build(),
@@ -134,8 +126,6 @@ class MonoLootFabricatorBlockEntity private constructor(
             inventory, crafter, isActiveComponent,
             lootSelector
         )
-
-        inventory.inventory.addListener(listener, null)
     }
 
     override fun onCraft() {
@@ -189,8 +179,17 @@ class MonoLootFabricatorBlockEntity private constructor(
         return data
     }
 
+
+    private var inputListenerLoaded = false
     override fun tick() {
         if(level?.isClientSide == true) return
+
+        // ugly hack due to listeners not working for machines placed before the current session... ugh
+        if (!inputListenerLoaded) {
+            println("inputListenerLoaded")
+            lootSelector.initInputStackListener(false)
+            inputListenerLoaded = true
+        }
 
         val active = crafter.tickRecipe()
         isActiveComponent.updateActive(active, this)
