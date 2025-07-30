@@ -7,7 +7,6 @@ import net.minecraft.world.flag.FeatureFlags
 
 class HNILootTableProvider(registries: HolderLookup.Provider): BlockLootSubProvider(emptySet(), FeatureFlags.VANILLA_SET, registries) {
 
-
     override fun getKnownBlocks() = HNIBlocks.values()
         .filter { it.hasLootTable() }
         .map { it.get() }

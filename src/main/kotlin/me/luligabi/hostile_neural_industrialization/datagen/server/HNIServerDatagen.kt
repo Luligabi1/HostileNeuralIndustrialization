@@ -1,6 +1,7 @@
 package me.luligabi.hostile_neural_industrialization.datagen.server
 
 import me.luligabi.hostile_neural_industrialization.datagen.HNIDatagenEntrypoint
+import me.luligabi.hostile_neural_industrialization.datagen.server.provider.HNIBlockTagProvider
 import me.luligabi.hostile_neural_industrialization.datagen.server.provider.HNILootTableProvider
 import me.luligabi.hostile_neural_industrialization.datagen.server.provider.recipe.HNIRecipeProvider
 import net.minecraft.core.HolderLookup
@@ -14,6 +15,7 @@ object HNIServerDatagen: HNIDatagenEntrypoint {
 
     fun onGatherData(event: GatherDataEvent) {
         event.add(::HNIRecipeProvider)
+        event.add(::HNIBlockTagProvider)
         event.addLootTable(::HNILootTableProvider)
     }
 
