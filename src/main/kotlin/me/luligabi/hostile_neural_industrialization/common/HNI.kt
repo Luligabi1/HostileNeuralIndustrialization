@@ -4,6 +4,7 @@ import me.luligabi.hostile_neural_industrialization.common.block.HNIBlocks
 import me.luligabi.hostile_neural_industrialization.common.block.machine.HNIMachines
 import me.luligabi.hostile_neural_industrialization.common.compat.guideme.HNIGuide
 import me.luligabi.hostile_neural_industrialization.common.item.HNIItems
+import me.luligabi.hostile_neural_industrialization.common.misc.HNICreativeTab
 import me.luligabi.hostile_neural_industrialization.common.misc.HNIIngredients
 import me.luligabi.hostile_neural_industrialization.common.misc.network.HNIPackets
 import me.luligabi.hostile_neural_industrialization.datagen.HNIDatagen

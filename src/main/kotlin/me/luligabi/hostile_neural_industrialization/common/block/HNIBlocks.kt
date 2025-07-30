@@ -2,8 +2,8 @@ package me.luligabi.hostile_neural_industrialization.common.block
 
 import com.google.common.collect.Sets
 import me.luligabi.hostile_neural_industrialization.common.HNI
-import me.luligabi.hostile_neural_industrialization.common.HNICreativeTab
 import me.luligabi.hostile_neural_industrialization.common.item.HNIItems
+import me.luligabi.hostile_neural_industrialization.common.misc.HNICreativeTab
 import net.minecraft.core.registries.Registries
 import net.minecraft.world.item.BlockItem
 import net.minecraft.world.item.Item

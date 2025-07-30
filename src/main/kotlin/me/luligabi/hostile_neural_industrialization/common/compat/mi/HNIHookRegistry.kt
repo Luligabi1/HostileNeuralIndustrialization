@@ -1,10 +1,10 @@
 package me.luligabi.hostile_neural_industrialization.common.compat.mi
 
 import aztech.modern_industrialization.machines.recipe.MachineRecipeType
-import me.luligabi.hostile_neural_industrialization.common.HNICreativeTab
 import me.luligabi.hostile_neural_industrialization.common.block.HNIBlocks
 import me.luligabi.hostile_neural_industrialization.common.block.machine.HNIMachines
 import me.luligabi.hostile_neural_industrialization.common.item.HNIItems
+import me.luligabi.hostile_neural_industrialization.common.misc.HNICreativeTab
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.swedz.tesseract.neoforge.compat.mi.hook.MIHookEntrypoint
 import net.swedz.tesseract.neoforge.compat.mi.hook.MIHookRegistry

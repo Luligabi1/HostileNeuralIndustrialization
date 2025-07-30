@@ -1,7 +1,7 @@
-package me.luligabi.hostile_neural_industrialization.common
+package me.luligabi.hostile_neural_industrialization.common.misc
 
+import me.luligabi.hostile_neural_industrialization.common.HNI
 import me.luligabi.hostile_neural_industrialization.common.block.machine.HNIMachines
-import me.luligabi.hostile_neural_industrialization.common.block.machine.loot_fabricator.large.LargeLootFabricatorBlockEntity
 import me.luligabi.hostile_neural_industrialization.common.block.machine.sim_chamber.large.LargeSimChamberBlockEntity
 import me.luligabi.hostile_neural_industrialization.common.item.HNIItems
 import net.minecraft.core.registries.Registries
@@ -15,13 +15,13 @@ import java.util.function.Supplier
 
 object HNICreativeTab {
 
-    private val CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, HNI.ID)
+    private val CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, HNI.Companion.ID)
 
-    val CREATIVE_TAB = CREATIVE_MODE_TABS.register(HNI.ID, Supplier {
+    val CREATIVE_TAB = CREATIVE_MODE_TABS.register(HNI.Companion.ID, Supplier {
 
         CreativeModeTab.builder()
-            .title(Component.translatable("itemGroup.${HNI.ID}.${HNI.ID}"))
-            .icon { HNIMachines.getMachineFromId(LargeSimChamberBlockEntity.ID).defaultInstance }
+            .title(Component.translatable("itemGroup.${HNI.Companion.ID}.${HNI.Companion.ID}"))
+            .icon { HNIMachines.getMachineFromId(LargeSimChamberBlockEntity.Companion.ID).defaultInstance }
             .displayItems { _, output ->
 
                 val compareBySortOrder = Comparator.comparing { obj: ItemHolder<*> -> obj.sortOrder() }

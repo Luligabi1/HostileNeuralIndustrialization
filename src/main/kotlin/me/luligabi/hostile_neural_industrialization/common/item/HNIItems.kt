@@ -2,7 +2,7 @@ package me.luligabi.hostile_neural_industrialization.common.item
 
 import com.google.common.collect.Sets
 import me.luligabi.hostile_neural_industrialization.common.HNI
-import me.luligabi.hostile_neural_industrialization.common.HNICreativeTab
+import me.luligabi.hostile_neural_industrialization.common.misc.HNICreativeTab
 import net.minecraft.world.item.Item
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.neoforge.registries.DeferredRegister
