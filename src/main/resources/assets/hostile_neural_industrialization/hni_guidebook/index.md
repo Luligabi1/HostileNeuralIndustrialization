@@ -6,17 +6,10 @@ navigation:
 
 # Hostile Neural Industrialization
 
-![Pipes, pipes and more pipes](assets/pipes_pipes_pipes.png)
+Welcome to **Hostile Neural Industrialization**!
 
-*Hostile Neural Networks meets Modern Industrialization*
+![Predictions, predictions and more predictions](assets/predictions_predictions_predictions.png)
 
+## Introduction
 
-HNI offers electric, overclockable and very powerful versions of HNN's default machines.
-
-It is **absolutely required** that you have the following to progress:
-
-- A good production of **Stainless Steel** and a meaty energy production for overclocking;
-
-AAAAAAAAAAAAAAAAAAAA TODO
-
-
+HNI closes off one of Modern Industrialization's blind spots: mob farming. By harnessing Hostile Neural Networks's mechanics, you'll be able to fully automate mob loot with ease.
