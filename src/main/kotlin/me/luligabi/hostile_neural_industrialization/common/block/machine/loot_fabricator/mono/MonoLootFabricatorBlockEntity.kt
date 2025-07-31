@@ -186,7 +186,6 @@ class MonoLootFabricatorBlockEntity private constructor(
 
         // ugly hack due to listeners not working for machines placed before the current session... ugh
         if (!inputListenerLoaded) {
-            println("inputListenerLoaded")
             lootSelector.initInputStackListener(false)
             inputListenerLoaded = true
         }

@@ -165,6 +165,7 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
             mod_authors            : mod_authors,
             mod_description        : mod_description,
             modern_industrialization_version_range : modern_industrialization_version_range,
+            tesseract_version_range : tesseract_version_range,
             hnn_version_range : hnn_version_range
     ]
     inputs.properties replaceProperties
