@@ -5,6 +5,7 @@ plugins {
     id 'maven-publish'
     id 'net.neoforged.moddev' version '1.0.21'
     id "org.jetbrains.kotlin.jvm" version ("2.0.21")
+    id "me.modmuss50.mod-publish-plugin" version "0.8.4"
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -204,5 +205,56 @@ idea {
     module {
         downloadSources = true
         downloadJavadoc = true
+    }
+}
+
+ext.getChangeLog = { ->
+    return ""
+}
+
+publishMods {
+    file = jar.archiveFile
+    version = "${project.mod_version}"
+    displayName = "${project.mod_version}"
+    modLoaders.add("neoforge")
+    type = STABLE
+    changelog = project.getChangeLog()
+
+    curseforge {
+        accessToken = providers.environmentVariable("CURSEFORGE_API_KEY")
+        projectId = "1312953"
+        projectSlug = "hostile-neural-industrialization"
+        minecraftVersions.add("${project.minecraft_version}")
+
+        requires("modern-industrialization")
+        requires("hostile-neural-networks")
+        requires("tesseract-api-neoforge")
+        requires("kotlin-for-forge")
+        optional("emi")
+        optional("jei")
+
+        announcementTitle = "Download from CurseForge"
+    }
+
+    modrinth {
+        accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+        projectId = "syei9a1e"
+        minecraftVersions.add("${project.minecraft_version}")
+
+        requires("modern-industrialization")
+        requires("tesseract-api")
+        requires("kotlin-for-forge")
+        optional("emi")
+        optional("jei")
+
+        announcementTitle = "Download from Modrinth"
+    }
+
+    discord {
+        webhookUrl = providers.environmentVariable("CAFETERIA_MOD_RELEASE_WEBHOOK")
+        username = "${rootProject.mod_name}"
+        avatarUrl = "https://cdn.modrinth.com/data/syei9a1e/09d0c4c2edd5532bbc95a2aff5140dca969ce08e.gif"
+
+        content = changelog.map { "# " + (rootProject.mod_name as String) + " " + (project.mod_version as String) + " has been released \n" + it}
     }
 }
