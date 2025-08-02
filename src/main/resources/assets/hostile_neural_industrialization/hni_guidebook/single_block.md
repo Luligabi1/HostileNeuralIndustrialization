@@ -11,6 +11,6 @@ HNI offers MI-styled **Simulation Chambers** and **Loot Fabricators** in the for
 
 Make sure you have the following before proceeding: 
 - 
-- Analog Circuits and the ability to craft its components;
+- **Analog Circuits** and the ability to craft its components;
 - Sufficient energy generation for MI. You cannot use the same energy as HNN for these machines;
 - Any Data Model at Basic tier or higher.
