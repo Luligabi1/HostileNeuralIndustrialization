@@ -2,7 +2,11 @@ package me.luligabi.hostile_neural_industrialization.common.util
 
 import dev.shadowsoffire.hostilenetworks.Hostile
 import dev.shadowsoffire.hostilenetworks.data.DataModel
+import dev.shadowsoffire.hostilenetworks.data.DataModelRegistry
+import dev.shadowsoffire.hostilenetworks.data.ModelTierRegistry
 import me.luligabi.hostile_neural_industrialization.common.HNI
+import me.luligabi.hostile_neural_industrialization.mixin.DataModelRegistryAccessor
+import me.luligabi.hostile_neural_industrialization.mixin.ModelTierRegistryAccessor
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
@@ -44,3 +48,9 @@ private fun parseFluid(fluidId: String, amount: Int, probability: Float): Triple
 
     return Triple(fluid, amount, probability)
 }
+
+fun isHNNRegistryLoaded() = isTierRegistryLoaded() && isModelRegistryLoaded()
+
+fun isTierRegistryLoaded() = !(ModelTierRegistry.INSTANCE as ModelTierRegistryAccessor).sorted.isEmpty()
+
+fun isModelRegistryLoaded() = !(DataModelRegistry.INSTANCE as DataModelRegistryAccessor).modelsByType.isEmpty

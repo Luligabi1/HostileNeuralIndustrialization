@@ -10,7 +10,7 @@ import dev.shadowsoffire.hostilenetworks.data.*
 import dev.shadowsoffire.hostilenetworks.item.DataModelItem
 import me.luligabi.hostile_neural_industrialization.common.HNI
 import me.luligabi.hostile_neural_industrialization.common.misc.HNIIngredients
-import me.luligabi.hostile_neural_industrialization.mixin.DataModelRegistryAccessor
+import me.luligabi.hostile_neural_industrialization.common.util.isHNNRegistryLoaded
 import me.luligabi.hostile_neural_industrialization.mixin.ModelTierRegistryAccessor
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.resources.ResourceLocation
@@ -30,8 +30,7 @@ abstract class AbstractSimChamberRecipeType (id: ResourceLocation): ProxyableMac
     abstract fun generatesRuntime(): Boolean
 
     fun getModelRecipes(): MutableList<RecipeHolder<MachineRecipe>> {
-        if ((ModelTierRegistry.INSTANCE as ModelTierRegistryAccessor).sorted.isEmpty()) return mutableListOf()
-        if ((DataModelRegistry.INSTANCE as DataModelRegistryAccessor).modelsByType.isEmpty()) return mutableListOf()
+        if (!isHNNRegistryLoaded()) false
 
         val recipes = mutableListOf<RecipeHolder<MachineRecipe>>()
 

@@ -8,8 +8,8 @@ import dev.shadowsoffire.hostilenetworks.data.DataModelRegistry
 import me.luligabi.hostile_neural_industrialization.common.HNI
 import me.luligabi.hostile_neural_industrialization.common.block.machine.loot_fabricator.PredictionIngredient
 import me.luligabi.hostile_neural_industrialization.common.util.getDimensionFluid
+import me.luligabi.hostile_neural_industrialization.common.util.isModelRegistryLoaded
 import me.luligabi.hostile_neural_industrialization.common.util.largeLootFabricatorCost
-import me.luligabi.hostile_neural_industrialization.mixin.DataModelRegistryAccessor
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.crafting.RecipeHolder
@@ -58,7 +58,7 @@ class LargeLootFabricatorRecipeType(id: ResourceLocation): ProxyableMachineRecip
     }
 
     private fun getPredictionRecipes(): MutableList<RecipeHolder<MachineRecipe>> {
-        if ((DataModelRegistry.INSTANCE as DataModelRegistryAccessor).modelsByType.isEmpty()) return mutableListOf()
+        if (!isModelRegistryLoaded()) return mutableListOf()
 
         val recipes = mutableListOf<RecipeHolder<MachineRecipe>>()
         for (model in DataModelRegistry.INSTANCE.values) {

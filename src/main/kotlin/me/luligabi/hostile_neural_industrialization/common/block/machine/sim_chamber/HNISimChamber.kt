@@ -5,6 +5,7 @@ import aztech.modern_industrialization.thirdparty.fabrictransfer.api.item.ItemVa
 import dev.shadowsoffire.hostilenetworks.HostileConfig
 import dev.shadowsoffire.hostilenetworks.data.DataModelInstance
 import dev.shadowsoffire.hostilenetworks.item.DataModelItem
+import me.luligabi.hostile_neural_industrialization.common.util.isHNNRegistryLoaded
 import me.luligabi.hostile_neural_industrialization.mixin.AbstractConfigurableStackAccessor
 import net.minecraft.world.item.ItemStack
 
@@ -14,6 +15,7 @@ interface HNISimChamber {
         get() = 1
 
     fun getUpdatedModel(configurable: ConfigurableItemStack) = configurable.toStack().let {
+        if (!isHNNRegistryLoaded()) return@let it
 
         val model = DataModelInstance(it, 0)
         val tier = model.getTier()
