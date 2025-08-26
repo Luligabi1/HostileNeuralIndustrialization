@@ -9,7 +9,7 @@ import aztech.modern_industrialization.machines.components.UpgradeComponent
 import aztech.modern_industrialization.machines.guicomponents.SlotPanel
 import aztech.modern_industrialization.machines.init.MachineTier
 import aztech.modern_industrialization.machines.multiblocks.HatchBlockEntity
-import aztech.modern_industrialization.machines.multiblocks.HatchType
+import aztech.modern_industrialization.machines.multiblocks.HatchTypes
 import aztech.modern_industrialization.machines.multiblocks.ShapeTemplate
 import aztech.modern_industrialization.machines.multiblocks.SimpleMember
 import dev.shadowsoffire.hostilenetworks.Hostile
@@ -85,7 +85,7 @@ class LargeSimChamberBlockEntity(bep: BEP): AbstractElectricCraftingMultiblockBl
         // Search the model on all input hatches
         // this might use the wrong model if there's more than one... skill issue tbh
         for (hatch in (this as MultiblockMachineBlockEntityAccessor).shapeMatcher.matchedHatches) {
-            if (hatch.hatchType != HatchType.ITEM_INPUT) continue
+            if (hatch.hatchType != HatchTypes.ITEM_INPUT) continue
 
             val index = hatch.inventory.itemStacks.indexOfFirst { it.toStack().`is`(Hostile.Items.DATA_MODEL) }
             if (index == -1) continue

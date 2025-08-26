@@ -1,7 +1,7 @@
 package me.luligabi.hostile_neural_industrialization.common.block.machine
 
 import aztech.modern_industrialization.machines.multiblocks.HatchFlags
-import aztech.modern_industrialization.machines.multiblocks.HatchType
+import aztech.modern_industrialization.machines.multiblocks.HatchTypes
 import aztech.modern_industrialization.machines.multiblocks.ShapeTemplate
 import aztech.modern_industrialization.machines.multiblocks.SimpleMember
 import aztech.modern_industrialization.materials.MIMaterials
@@ -15,9 +15,9 @@ interface HNIMultiblockShape {
         val HATCHES: HatchFlags
             get() = HatchFlags.Builder()
                 .with(
-                    HatchType.ITEM_INPUT, HatchType.ITEM_OUTPUT,
-                    HatchType.FLUID_INPUT, HatchType.FLUID_OUTPUT,
-                    HatchType.ENERGY_INPUT
+                    HatchTypes.ITEM_INPUT, HatchTypes.ITEM_OUTPUT,
+                    HatchTypes.FLUID_INPUT, HatchTypes.FLUID_OUTPUT,
+                    HatchTypes.ENERGY_INPUT
                 )
                 .build()
 
