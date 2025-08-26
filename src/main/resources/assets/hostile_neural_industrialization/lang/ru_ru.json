@@ -1,0 +1,17 @@
+{
+  "block.hostile_neural_industrialization.electric_simulation_chamber": "Электрическая симуляционная камера",
+  "block.hostile_neural_industrialization.large_loot_fabricator": "Большой производитель добычи",
+  "block.hostile_neural_industrialization.large_simulation_chamber": "Большая симуляционная камера",
+  "block.hostile_neural_industrialization.mono_loot_fabricator": "Одиночный производитель добычи",
+  "block.hostile_neural_industrialization.prediction_machine_casing": "Корпус предвычислительной машины",
+  "item.hostile_neural_industrialization.guidebook": "Руководство HNI",
+  "itemGroup.hostile_neural_industrialization.hostile_neural_industrialization": "Hostile Neural Industrialization",
+  "rei_categories.hostile_neural_industrialization.electric_simulation_chamber": "Электрическая симуляционная камера",
+  "rei_categories.hostile_neural_industrialization.large_loot_fabricator": "Большой производитель добычи",
+  "rei_categories.hostile_neural_industrialization.large_simulation_chamber": "Большая симуляционная камера",
+  "rei_categories.hostile_neural_industrialization.mono_loot_fabricator": "Одиночный производитель добычи",
+  "text.hostile_neural_industrialization.guidebook_tooltip": "Нейросеть должна расти.",
+  "text.hostile_neural_industrialization.loot_selector_description": "Нажмите, чтобы открыть панель выбора добычи.",
+  "text.hostile_neural_industrialization.loot_selector_member_name": "%dx %s",
+  "text.hostile_neural_industrialization.loot_selector_title": "Выбор выпадаемого предмета"
+}
