@@ -1,6 +1,5 @@
 package me.luligabi.hostile_neural_industrialization.common.block.machine.loot_fabricator.large
 
-import aztech.modern_industrialization.compat.rei.machines.ReiMachineRecipes
 import aztech.modern_industrialization.machines.BEP
 import aztech.modern_industrialization.machines.blockentities.multiblocks.AbstractElectricCraftingMultiblockBlockEntity
 import aztech.modern_industrialization.machines.components.OrientationComponent
@@ -10,7 +9,6 @@ import aztech.modern_industrialization.machines.guicomponents.SlotPanel
 import aztech.modern_industrialization.machines.init.MachineTier
 import aztech.modern_industrialization.machines.multiblocks.ShapeTemplate
 import aztech.modern_industrialization.machines.multiblocks.SimpleMember
-import me.luligabi.hostile_neural_industrialization.common.HNI
 import me.luligabi.hostile_neural_industrialization.common.block.machine.HNIMachines
 import me.luligabi.hostile_neural_industrialization.common.block.machine.HNIMultiblockShape
 import me.luligabi.hostile_neural_industrialization.common.block.machine.HNIMultiblockShape.Companion.CLEAN_STEEL_CASING
@@ -27,10 +25,6 @@ class LargeLootFabricatorBlockEntity(bep: BEP): AbstractElectricCraftingMultiblo
 
         const val ID = "large_loot_fabricator"
         const val NAME = "Large Loot Fabricator"
-
-        fun registerReiShapes() {
-            ReiMachineRecipes.registerMultiblockShape(HNI.id(ID), SHAPE)
-        }
 
         override val pattern = listOf(
             "___#@#___",
@@ -53,7 +47,7 @@ class LargeLootFabricatorBlockEntity(bep: BEP): AbstractElectricCraftingMultiblo
 
         override val controllerXOffset = -4
 
-        private val SHAPE = ShapeTemplate.Builder(HNIMachines.Casings.PREDICTION_MACHINE_CASING)
+        val SHAPE = ShapeTemplate.Builder(HNIMachines.Casings.PREDICTION_MACHINE_CASING)
             .addLayer(-1)
             .addLayer(0)
             .addLayer(1)

@@ -15,7 +15,7 @@ Sua cadeia de produção pode ser ainda melhor utilizando as versões multibloco
 Certifique-se que você tem tudo a seguir antes de prosseguir:
 - 
 - Uma linha de produção de **Aço Inoxidável**;
-- Lots of **Prediction Matrixes** para fabricar **Carcaças de Máquina de Predição**. Mas relaxa, você pode automatizá-las usando um Montador;
+- Um montão de **Matrizes de Predição** para fabricar **Carcaças de Máquina de Predição**. Mas relaxa, você pode automatizá-las usando um Montador;
 - Acesso a **Motores Avançados**.
 
 <Recipe id="hostile_neural_industrialization:prediction_machine_casing" />

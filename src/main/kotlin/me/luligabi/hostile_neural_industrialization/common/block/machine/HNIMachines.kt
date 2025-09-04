@@ -1,12 +1,7 @@
 package me.luligabi.hostile_neural_industrialization.common.block.machine
 
 import aztech.modern_industrialization.api.energy.CableTier
-import aztech.modern_industrialization.compat.rei.machines.MachineCategoryParams
 import aztech.modern_industrialization.compat.rei.machines.SteamMode
-import aztech.modern_industrialization.inventory.SlotPositions
-import aztech.modern_industrialization.machines.guicomponents.ProgressBar
-import aztech.modern_industrialization.machines.init.MultiblockMachines.Rei
-import aztech.modern_industrialization.machines.init.SingleBlockCraftingMachines
 import aztech.modern_industrialization.machines.models.MachineCasing
 import aztech.modern_industrialization.machines.recipe.MachineRecipeType
 import com.google.common.collect.Maps
@@ -21,8 +16,6 @@ import me.luligabi.hostile_neural_industrialization.common.block.machine.sim_cha
 import me.luligabi.hostile_neural_industrialization.common.block.machine.sim_chamber.large.LargeSimChamberBlockEntity
 import me.luligabi.hostile_neural_industrialization.common.block.machine.sim_chamber.large.LargeSimChamberRecipeType
 import me.luligabi.hostile_neural_industrialization.common.item.HNIItems
-import me.luligabi.hostile_neural_industrialization.mixin.HackedMachineRegistrationHelperAccessor
-import me.luligabi.hostile_neural_industrialization.mixin.MIHookContextAccessor
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Item
@@ -30,7 +23,6 @@ import net.minecraft.world.item.crafting.RecipeSerializer
 import net.minecraft.world.item.crafting.RecipeType
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.neoforge.registries.DeferredRegister
-import net.swedz.tesseract.neoforge.compat.mi.hook.MIHookTracker
 import net.swedz.tesseract.neoforge.compat.mi.hook.context.listener.MachineCasingsMIHookContext
 import net.swedz.tesseract.neoforge.compat.mi.hook.context.listener.MachineRecipeTypesMIHookContext
 import net.swedz.tesseract.neoforge.compat.mi.hook.context.listener.MultiblockMachinesMIHookContext
@@ -39,99 +31,67 @@ import net.swedz.tesseract.neoforge.compat.mi.hook.context.listener.SingleBlockS
 object HNIMachines {
 
     fun singleBlockSpecial(hook: SingleBlockSpecialMachinesMIHookContext) {
+        hook.builder(ElectricSimChamberBlockEntity.ID, ElectricSimChamberBlockEntity.NAME, ::ElectricSimChamberBlockEntity)
+            .builtinModel(CableTier.LV.casing, ElectricSimChamberBlockEntity.ID, { it.front(true).active(true) })
+            .registrator(ElectricSimChamberBlockEntity::registerCapabilities)
+            .gui(SteamMode.ELECTRIC_ONLY, RecipeTypes.ELECTRIC_SIM_CHAMBER, {
+                it.slots { slots ->
+                    slots.itemInputs(57, 27, 1, 2)
+                    slots.itemOutputs(103, 27, 1, 2)
+                    slots.fluidInput(39, 27, 16_000)
+                    slots.fluidOutput(121, 27, 16_000)
+                }
+                it.progressBar(79, 34, "compress")
+            })
+            .registerRecipeCategory()
+            .registerMachine()
 
-        hook.register(
-            ElectricSimChamberBlockEntity.NAME, ElectricSimChamberBlockEntity.ID, ElectricSimChamberBlockEntity.ID,
-            CableTier.LV.casing, true, false, false, true,
-            ::ElectricSimChamberBlockEntity,
-            ElectricSimChamberBlockEntity::registerEnergyApi
-        )
-        HackedMachineRegistrationHelperAccessor.invokeRegisterReiTiers(
-            (hook as MIHookContextAccessor).hook,
-            ElectricSimChamberBlockEntity.NAME, ElectricSimChamberBlockEntity.ID,
-            RecipeTypes.ELECTRIC_SIM_CHAMBER,
-            MachineCategoryParams(
-                null, null,
-                SlotPositions.Builder().addSlots(57, 27, 1, 2).build(),
-                SlotPositions.Builder().addSlots(103, 27, 1, 2).build(),
-                SlotPositions.Builder().addSlot(39, 27).build(),
-                SlotPositions.Builder().addSlot(121, 27).build(),
-                ProgressBar.Parameters(79, 34, "compress"),
-                RecipeTypes.ELECTRIC_SIM_CHAMBER,
-                null,
-                false,
-                SteamMode.ELECTRIC_ONLY
-            ),
-            SingleBlockCraftingMachines.TIER_ELECTRIC
-        )
-
-        hook.register(
-            MonoLootFabricatorBlockEntity.NAME, MonoLootFabricatorBlockEntity.ID, MonoLootFabricatorBlockEntity.ID,
-            CableTier.LV.casing, true, false, false, true,
-            ::MonoLootFabricatorBlockEntity,
-            MonoLootFabricatorBlockEntity::registerEnergyApi
-        )
-        HackedMachineRegistrationHelperAccessor.invokeRegisterReiTiers(
-            (hook as MIHookContextAccessor).hook,
-            MonoLootFabricatorBlockEntity.NAME, MonoLootFabricatorBlockEntity.ID,
-            RecipeTypes.MONO_LOOT_FABRICATOR,
-            MachineCategoryParams(
-                null, null,
-                SlotPositions.Builder().addSlot(56, 39).build(),
-                SlotPositions.Builder().addSlot(102, 39).build(),
-                SlotPositions.Builder().addSlot(56, 57).build(),
-                SlotPositions.Builder().addSlot(102, 57).build(),
-                ProgressBar.Parameters(78, 43, "compress"),
-                RecipeTypes.MONO_LOOT_FABRICATOR,
-                null,
-                false,
-                SteamMode.ELECTRIC_ONLY
-            ),
-            SingleBlockCraftingMachines.TIER_ELECTRIC
-        )
-
+        hook.builder(MonoLootFabricatorBlockEntity.ID, MonoLootFabricatorBlockEntity.NAME, ::MonoLootFabricatorBlockEntity)
+            .builtinModel(CableTier.LV.casing, MonoLootFabricatorBlockEntity.ID, { it.front(true).active(true) })
+            .registrator(MonoLootFabricatorBlockEntity::registerCapabilities)
+            .gui(SteamMode.ELECTRIC_ONLY, RecipeTypes.MONO_LOOT_FABRICATOR, {
+                it.slots { slots ->
+                    slots.itemInput(56, 39)
+                    slots.itemOutput(102, 39)
+                    slots.fluidInput(56, 57, 16_000)
+                    slots.fluidOutput(102, 57, 16_000)
+                }
+                it.progressBar(78, 43, "compress")
+            })
+            .registerRecipeCategory()
+            .registerMachine()
     }
 
     fun multiblockMachines(hook: MultiblockMachinesMIHookContext) {
+        hook.builder(LargeSimChamberBlockEntity.ID, LargeSimChamberBlockEntity.NAME, ::LargeSimChamberBlockEntity)
+            .builtinModel(Casings.PREDICTION_MACHINE_CASING, LargeSimChamberBlockEntity.ID, { it.front(true).active(true) })
+            .gui(SteamMode.ELECTRIC_ONLY, RecipeTypes.LARGE_SIM_CHAMBER, {
+                it.slots { slots ->
+                    slots.itemInputs(58, 27, 1, 2)
+                    slots.itemOutputs(102, 27, 1, 2)
+                    slots.fluidInput(40, 27, 16_000)
+                    slots.fluidOutput(120, 27, 16_000)
+                }
+                it.progressBar(77, 33, "compress")
+            })
+            .registerRecipeCategory()
+            .registerMultiblockShape(LargeSimChamberBlockEntity.SHAPE)
+            .registerMachine()
 
-        hook.register(
-            LargeSimChamberBlockEntity.NAME, LargeSimChamberBlockEntity.ID, LargeSimChamberBlockEntity.ID,
-            Casings.PREDICTION_MACHINE_CASING, true, false, false, true,
-            ::LargeSimChamberBlockEntity,
-            { LargeSimChamberBlockEntity.registerReiShapes() }
-        )
-        Rei(LargeSimChamberBlockEntity.NAME, HNI.id(LargeSimChamberBlockEntity.ID), RecipeTypes.LARGE_SIM_CHAMBER, ProgressBar.Parameters(77, 33, "compress"))
-            .items(
-                { it.addSlots(58, 27, 1, 2) },
-                { it.addSlots(102, 27, 1, 2) }
-            )
-            .fluids(
-                { it.addSlot(40, 27) },
-                { it.addSlot(120, 27) }
-            )
-            .workstations(HNI.id(LargeSimChamberBlockEntity.ID))
-            .register()
-        MIHookTracker.addReiCategoryName(HNI.id(LargeSimChamberBlockEntity.ID), LargeSimChamberBlockEntity.NAME)
-
-        hook.register(
-            LargeLootFabricatorBlockEntity.NAME, LargeLootFabricatorBlockEntity.ID, LargeLootFabricatorBlockEntity.ID,
-            Casings.PREDICTION_MACHINE_CASING, true, false, false, true,
-            ::LargeLootFabricatorBlockEntity,
-            { LargeLootFabricatorBlockEntity.registerReiShapes() }
-        )
-        Rei(LargeLootFabricatorBlockEntity.NAME, HNI.id(LargeLootFabricatorBlockEntity.ID), RecipeTypes.LARGE_LOOT_FABRICATOR, ProgressBar.Parameters(77, 33, "compress"))
-            .items(
-                { it.addSlot(56, 35) },
-                { it.addSlots(102, 35, 5, 4) }
-            )
-            .fluids(
-                { it.addSlot(56, 53) },
-                { it.addSlot(84, 89) }
-            )
-            .workstations(HNI.id(LargeLootFabricatorBlockEntity.ID))
-            .register()
-        MIHookTracker.addReiCategoryName(HNI.id(LargeLootFabricatorBlockEntity.ID), LargeLootFabricatorBlockEntity.NAME)
-
+        hook.builder(LargeLootFabricatorBlockEntity.ID, LargeLootFabricatorBlockEntity.NAME, ::LargeLootFabricatorBlockEntity)
+            .builtinModel(Casings.PREDICTION_MACHINE_CASING, LargeLootFabricatorBlockEntity.ID, { it.front(true).active(true) })
+            .gui(SteamMode.ELECTRIC_ONLY, RecipeTypes.LARGE_LOOT_FABRICATOR, {
+                it.slots { slots ->
+                    slots.itemInput(56, 35)
+                    slots.itemOutputs(102, 35, 5, 4)
+                    slots.fluidInput(56, 53, 16_000)
+                    slots.fluidOutput(84, 89, 16_000)
+                }
+                it.progressBar(77, 33, "compress")
+            })
+            .registerRecipeCategory()
+            .registerMultiblockShape(LargeLootFabricatorBlockEntity.SHAPE)
+            .registerMachine()
     }
 
     object RecipeTypes {

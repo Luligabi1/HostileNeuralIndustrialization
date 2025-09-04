@@ -19,6 +19,7 @@ import aztech.modern_industrialization.machines.models.MachineModelClientData
 import aztech.modern_industrialization.util.Simulation
 import aztech.modern_industrialization.util.Tickable
 import dev.shadowsoffire.hostilenetworks.Hostile
+import me.luligabi.hostile_neural_industrialization.common.HNI
 import me.luligabi.hostile_neural_industrialization.common.block.machine.HNIMachines
 import me.luligabi.hostile_neural_industrialization.common.block.machine.sim_chamber.HNISimChamber
 import net.minecraft.server.level.ServerLevel
@@ -37,7 +38,7 @@ class ElectricSimChamberBlockEntity private constructor(
         const val ID = "electric_simulation_chamber"
         const val NAME = "Electric Simulation Chamber"
 
-        fun registerEnergyApi(bet: BlockEntityType<*>) {
+        fun registerCapabilities(bet: BlockEntityType<*>) {
 
             MICapabilities.onEvent { event: RegisterCapabilitiesEvent ->
                 event.registerBlockEntity(
@@ -72,7 +73,7 @@ class ElectricSimChamberBlockEntity private constructor(
     private lateinit var insertable: MIEnergyStorage
 
     constructor(bep: BEP): this(bep,
-        MachineGuiParameters.Builder(ID, true).build(),
+        MachineGuiParameters.Builder(HNI.id(ID), true).build(),
         OrientationComponent.Params(true, true, false)
     ) {
 

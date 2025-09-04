@@ -1,6 +1,5 @@
 package me.luligabi.hostile_neural_industrialization.common.block.machine.sim_chamber.large
 
-import aztech.modern_industrialization.compat.rei.machines.ReiMachineRecipes
 import aztech.modern_industrialization.machines.BEP
 import aztech.modern_industrialization.machines.blockentities.multiblocks.AbstractElectricCraftingMultiblockBlockEntity
 import aztech.modern_industrialization.machines.components.OrientationComponent
@@ -34,10 +33,6 @@ class LargeSimChamberBlockEntity(bep: BEP): AbstractElectricCraftingMultiblockBl
         const val ID = "large_simulation_chamber"
         const val NAME = "Large Simulation Chamber"
 
-        fun registerReiShapes() {
-            ReiMachineRecipes.registerMultiblockShape(HNI.id(ID), SHAPE)
-        }
-
         override val pattern = listOf(
             "_###_",
             "#####",
@@ -54,7 +49,7 @@ class LargeSimChamberBlockEntity(bep: BEP): AbstractElectricCraftingMultiblockBl
 
         override val controllerXOffset = -2
 
-        private val SHAPE = ShapeTemplate.Builder(HNIMachines.Casings.PREDICTION_MACHINE_CASING)
+        val SHAPE = ShapeTemplate.Builder(HNIMachines.Casings.PREDICTION_MACHINE_CASING)
             .addLayer(0)
             .addLayer(1)
             .addLayer(2)

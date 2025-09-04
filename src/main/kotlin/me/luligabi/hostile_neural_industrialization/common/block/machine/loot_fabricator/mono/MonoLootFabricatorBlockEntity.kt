@@ -18,6 +18,7 @@ import aztech.modern_industrialization.machines.models.MachineModelClientData
 import aztech.modern_industrialization.util.Simulation
 import aztech.modern_industrialization.util.Tickable
 import dev.shadowsoffire.hostilenetworks.item.DataModelItem
+import me.luligabi.hostile_neural_industrialization.common.HNI
 import me.luligabi.hostile_neural_industrialization.common.block.machine.HNIMachines
 import me.luligabi.hostile_neural_industrialization.common.block.machine.loot_fabricator.mono.loot_selector.LootSelector
 import me.luligabi.hostile_neural_industrialization.common.block.machine.loot_fabricator.mono.loot_selector.LootSelectorComponent
@@ -40,7 +41,7 @@ class MonoLootFabricatorBlockEntity private constructor(
         const val ID = "mono_loot_fabricator"
         const val NAME = "Mono Loot Fabricator"
 
-        fun registerEnergyApi(bet: BlockEntityType<*>) {
+        fun registerCapabilities(bet: BlockEntityType<*>) {
 
             MICapabilities.onEvent { event: RegisterCapabilitiesEvent ->
                 event.registerBlockEntity(
@@ -76,7 +77,7 @@ class MonoLootFabricatorBlockEntity private constructor(
     val lootSelector = LootSelectorComponent({ this })
 
     constructor(bep: BEP): this(bep,
-        MachineGuiParameters.Builder(ID, true).build(),
+        MachineGuiParameters.Builder(HNI.id(ID), true).build(),
         OrientationComponent.Params(true, true, false)
     ) {
         registerGuiComponent(

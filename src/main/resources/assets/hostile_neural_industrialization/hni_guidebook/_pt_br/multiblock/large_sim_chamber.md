@@ -16,7 +16,7 @@ item_ids:
 
 Além de todas as particularidades da [Câmara de Simulação Elétrica](../single_block/electric_sim_chamber.md), ela também tem mais outras:
 
-§2§l+ §r§aWQuando a sequência tiver sucesso, §l4 §r§apredições serão geradas de uma vez
+§2§l+ §r§aQuando a sequência tiver sucesso, §l4 §r§apredições serão geradas de uma vez
 
 §2§l+ §r§aColeta §l2 §r§adados para o modelo por sequência
 
