@@ -7,7 +7,7 @@
     "AbstractConfigurableStackAccessor",
     "DataModelRegistryAccessor",
     "HackedMachineRegistrationHelperAccessor",
-    "MIHookContextAccessor",
+    "MachineBlockEntityMixin",
     "ModelTierRegistryAccessor",
     "MultiblockInventoryComponentAccessor",
     "MultiblockMachineBlockEntityAccessor"
