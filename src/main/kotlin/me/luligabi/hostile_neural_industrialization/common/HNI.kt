@@ -14,6 +14,7 @@ import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.Mod
 import net.neoforged.fml.config.ModConfig
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent
+import net.swedz.tesseract.neoforge.compat.mi.TesseractMI
 import net.swedz.tesseract.neoforge.config.ConfigManager
 
 @Mod(HNI.ID)
@@ -32,6 +33,7 @@ class HNI(modEventBus: IEventBus, container: ModContainer) {
     init {
         setupConfig(modEventBus, container)
 
+        TesseractMI.init(ID)
         HNIItems.init(modEventBus)
         HNIBlocks.init(modEventBus)
         HNIMachines.RecipeTypes.init(modEventBus)
