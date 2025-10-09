@@ -155,9 +155,10 @@ object HNIMachines {
 
     fun machineCasings(hook: MachineCasingsMIHookContext) {
 
-        Casings.PREDICTION_MACHINE_CASING = hook.registerImitateBlock("prediction_machine_casing") {
-            HNIBlocks.PREDICTION_MACHINE_CASING.get()
-        }
+        Casings.PREDICTION_MACHINE_CASING = hook.registerImitateBlock(
+            "prediction_machine_casing",
+            HNIBlocks.PREDICTION_MACHINE_CASING
+        )
 
     }
 
