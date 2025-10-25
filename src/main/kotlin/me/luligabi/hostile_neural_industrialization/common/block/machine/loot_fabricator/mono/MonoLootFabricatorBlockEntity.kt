@@ -30,11 +30,13 @@ import net.minecraft.world.level.block.entity.BlockEntityType
 import net.neoforged.neoforge.capabilities.Capabilities
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent
 
-class MonoLootFabricatorBlockEntity private constructor(
-    bep: BEP,
-    guiParams: MachineGuiParameters,
-    orientationParams: OrientationComponent.Params
-): MachineBlockEntity(bep, guiParams, orientationParams), EnergyComponentHolder, Tickable, CrafterComponentHolder, CrafterComponent.Behavior {
+class MonoLootFabricatorBlockEntity(
+    bep: BEP
+): MachineBlockEntity(
+    bep,
+    MachineGuiParameters.Builder(HNI.id(ID), true).backgroundHeight(184).build(),
+    OrientationComponent.Params(true, true, true)
+), EnergyComponentHolder, Tickable, CrafterComponentHolder, CrafterComponent.Behavior {
 
     companion object {
 
@@ -76,27 +78,23 @@ class MonoLootFabricatorBlockEntity private constructor(
 
     val lootSelector = LootSelectorComponent({ this })
 
-    constructor(bep: BEP): this(bep,
-        MachineGuiParameters.Builder(HNI.id(ID), true).build(),
-        OrientationComponent.Params(true, true, false)
-    ) {
+    init {
         registerGuiComponent(
             EnergyBar.Server(
-                EnergyBar.Parameters(14, 35),
+                EnergyBar.Parameters(14, 44),
                 { energy.eu },
                 { energy.capacity })
         )
         registerGuiComponent(
             RecipeEfficiencyBar.Server(
                 RecipeEfficiencyBar.Parameters(
-                    38,
-                    66
+                    38, 84
                 ), crafter
             )
         )
         registerGuiComponent(
             ProgressBar.Server(
-                ProgressBar.Parameters(78, 34, "compress")
+                ProgressBar.Parameters(60, 44, "compress")
             ) { crafter.progress }
         )
 
@@ -149,19 +147,19 @@ class MonoLootFabricatorBlockEntity private constructor(
     private fun buildInventory(): MachineInventoryComponent {
 
         val itemInputs = listOf(ConfigurableItemStack.standardInputSlot())
-        val itemOutputs = listOf(ConfigurableItemStack.standardOutputSlot())
+        val itemOutputs = List(9) { ConfigurableItemStack.standardOutputSlot() }
 
         val fluidInputs = listOf(ConfigurableFluidStack.standardInputSlot(16_000))
         val fluidOutputs = listOf(ConfigurableFluidStack.standardOutputSlot(16_000))
 
         val itemPositions = SlotPositions.Builder()
-            .addSlot(56, 27) // input
-            .addSlot(102, 27) // output
+            .addSlot(38, 36) // input
+            .addSlots(84, 27, 3, 3) // output
             .build()
 
         val fluidPositions = SlotPositions.Builder()
-            .addSlot(56, 45) // input
-            .addSlot(102, 45) // output
+            .addSlot(38, 54) // input
+            .addSlot(138, 27) // output
             .build()
 
         return MachineInventoryComponent(itemInputs, itemOutputs, fluidInputs, fluidOutputs, itemPositions, fluidPositions)

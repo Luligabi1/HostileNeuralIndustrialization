@@ -51,12 +51,12 @@ object HNIMachines {
             .registrator(MonoLootFabricatorBlockEntity::registerCapabilities)
             .gui(SteamMode.ELECTRIC_ONLY, RecipeTypes.MONO_LOOT_FABRICATOR, {
                 it.slots { slots ->
-                    slots.itemInput(56, 39)
-                    slots.itemOutput(102, 39)
-                    slots.fluidInput(56, 57, 16_000)
-                    slots.fluidOutput(102, 57, 16_000)
+                    slots.itemInput(38, 36)
+                    slots.itemOutputs(84, 27, 3, 3)
+                    slots.fluidInput(38, 54, 16_000)
+                    slots.fluidOutput(138, 27, 16_000)
                 }
-                it.progressBar(78, 43, "compress")
+                it.progressBar(60, 44, "compress")
             })
             .registerRecipeCategory()
             .registerMachine()
@@ -154,12 +154,10 @@ object HNIMachines {
     }
 
     fun machineCasings(hook: MachineCasingsMIHookContext) {
-
         Casings.PREDICTION_MACHINE_CASING = hook.registerImitateBlock(
             "prediction_machine_casing",
             HNIBlocks.PREDICTION_MACHINE_CASING
         )
-
     }
 
 
