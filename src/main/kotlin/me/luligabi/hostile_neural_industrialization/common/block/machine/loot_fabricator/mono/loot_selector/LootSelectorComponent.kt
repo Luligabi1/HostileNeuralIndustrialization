@@ -17,7 +17,7 @@ class LootSelectorComponent(val blockEntity: () -> MonoLootFabricatorBlockEntity
     lateinit var inputStackListener: InputStackListener
 
     fun initInputStackListener(triggerOnChange: Boolean = true) {
-        val input = blockEntity().inventory.itemInputs[0]
+        val input = blockEntity().inventory.itemStacks[0]
 
         val listener = InputStackListener(input, blockEntity)
         listener.listenAll(listOf(input), null)

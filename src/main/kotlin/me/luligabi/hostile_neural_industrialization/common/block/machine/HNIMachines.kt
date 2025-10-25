@@ -2,6 +2,8 @@ package me.luligabi.hostile_neural_industrialization.common.block.machine
 
 import aztech.modern_industrialization.api.energy.CableTier
 import aztech.modern_industrialization.compat.rei.machines.SteamMode
+import aztech.modern_industrialization.machines.blockentities.AbstractCraftingMachineBlockEntity
+import aztech.modern_industrialization.machines.blockentities.ElectricCraftingMachineBlockEntity
 import aztech.modern_industrialization.machines.models.MachineCasing
 import aztech.modern_industrialization.machines.recipe.MachineRecipeType
 import com.google.common.collect.Maps
@@ -33,7 +35,9 @@ object HNIMachines {
     fun singleBlockSpecial(hook: SingleBlockSpecialMachinesMIHookContext) {
         hook.builder(ElectricSimChamberBlockEntity.ID, ElectricSimChamberBlockEntity.NAME, ::ElectricSimChamberBlockEntity)
             .builtinModel(CableTier.LV.casing, ElectricSimChamberBlockEntity.ID, { it.front(true).active(true) })
-            .registrator(ElectricSimChamberBlockEntity::registerCapabilities)
+            .registrator(AbstractCraftingMachineBlockEntity::registerItemApi)
+            .registrator(AbstractCraftingMachineBlockEntity::registerFluidApi)
+            .registrator(ElectricCraftingMachineBlockEntity::registerEnergyApi)
             .gui(SteamMode.ELECTRIC_ONLY, RecipeTypes.ELECTRIC_SIM_CHAMBER, {
                 it.slots { slots ->
                     slots.itemInputs(57, 27, 1, 2)
@@ -48,7 +52,9 @@ object HNIMachines {
 
         hook.builder(MonoLootFabricatorBlockEntity.ID, MonoLootFabricatorBlockEntity.NAME, ::MonoLootFabricatorBlockEntity)
             .builtinModel(CableTier.LV.casing, MonoLootFabricatorBlockEntity.ID, { it.front(true).active(true) })
-            .registrator(MonoLootFabricatorBlockEntity::registerCapabilities)
+            .registrator(AbstractCraftingMachineBlockEntity::registerItemApi)
+            .registrator(AbstractCraftingMachineBlockEntity::registerFluidApi)
+            .registrator(ElectricCraftingMachineBlockEntity::registerEnergyApi)
             .gui(SteamMode.ELECTRIC_ONLY, RecipeTypes.MONO_LOOT_FABRICATOR, {
                 it.slots { slots ->
                     slots.itemInput(38, 36)
