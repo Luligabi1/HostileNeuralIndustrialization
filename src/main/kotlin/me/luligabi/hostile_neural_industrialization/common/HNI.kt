@@ -25,9 +25,9 @@ class HNI(modEventBus: IEventBus, container: ModContainer) {
 
         fun id(id: String) = ResourceLocation.fromNamespaceAndPath(ID, id)
 
-        lateinit var CONFIG: HNIConfig
-            private set
+        private var CONFIG: HNIConfig? = null
 
+        fun config() = requireNotNull(CONFIG, { "Config not yet loaded" })
     }
 
     init {

@@ -97,7 +97,7 @@ class LargeSimChamberBlockEntity(bep: BEP): AbstractElectricCraftingMultiblockBl
         )
     }
 
-    override val dataIncreaseAmount = HNI.CONFIG.largeSimChamber().dataPerRecipeAmount()
+    override val dataIncreaseAmount = HNI.config().largeSimChamber().dataPerRecipeAmount()
 
     override fun recipeType() = HNIMachines.RecipeTypes.LARGE_SIM_CHAMBER
 

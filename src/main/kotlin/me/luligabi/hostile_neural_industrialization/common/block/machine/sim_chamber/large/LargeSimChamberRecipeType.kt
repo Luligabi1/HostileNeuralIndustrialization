@@ -26,40 +26,40 @@ class LargeSimChamberRecipeType(id: ResourceLocation): AbstractSimChamberRecipeT
         val recipeBuilder = MIMachineRecipeBuilder(
             this,
             instance.model.largeSimChamberCost,
-            HNI.CONFIG.largeSimChamber().duration()
+            HNI.config().largeSimChamber().duration()
         ).apply {
             addItemInput(DataModelIngredient(instance.model, tier).toVanilla(), 1, 0f)
-            addItemInput(Hostile.Items.PREDICTION_MATRIX.value(), HNI.CONFIG.largeSimChamber().matrixesPerRecipeAmount(), 1f)
+            addItemInput(Hostile.Items.PREDICTION_MATRIX.value(), HNI.config().largeSimChamber().matrixesPerRecipeAmount(), 1f)
 
             instance.model.getDimensionFluid(
-                HNI.CONFIG.largeSimChamber().overworldFluidInputId(), HNI.CONFIG.largeSimChamber().overworldFluidInputAmount(), HNI.CONFIG.largeSimChamber().overworldFluidInputProbability().toFloat(),
-                HNI.CONFIG.largeSimChamber().netherFluidInputId(), HNI.CONFIG.largeSimChamber().netherFluidInputAmount(), HNI.CONFIG.largeSimChamber().netherFluidInputProbability().toFloat(),
-                HNI.CONFIG.largeSimChamber().theEndFluidInputId(), HNI.CONFIG.largeSimChamber().theEndFluidInputAmount(), HNI.CONFIG.largeSimChamber().theEndFluidInputProbability().toFloat(),
-                HNI.CONFIG.largeSimChamber().twilightFluidInputId(), HNI.CONFIG.largeSimChamber().twilightFluidInputAmount(), HNI.CONFIG.largeSimChamber().twilightFluidInputProbability().toFloat()
+                HNI.config().largeSimChamber().overworldFluidInputId(), HNI.config().largeSimChamber().overworldFluidInputAmount(), HNI.config().largeSimChamber().overworldFluidInputProbability().toFloat(),
+                HNI.config().largeSimChamber().netherFluidInputId(), HNI.config().largeSimChamber().netherFluidInputAmount(), HNI.config().largeSimChamber().netherFluidInputProbability().toFloat(),
+                HNI.config().largeSimChamber().theEndFluidInputId(), HNI.config().largeSimChamber().theEndFluidInputAmount(), HNI.config().largeSimChamber().theEndFluidInputProbability().toFloat(),
+                HNI.config().largeSimChamber().twilightFluidInputId(), HNI.config().largeSimChamber().twilightFluidInputAmount(), HNI.config().largeSimChamber().twilightFluidInputProbability().toFloat()
             )?.let { addFluidInput(it.first, it.second, it.third) }
             
             addItemOutput(
                 ItemVariant.of(instance.model.baseDrop),
-                HNI.CONFIG.largeSimChamber().generalizedPredictionPerRecipeAmount(),
+                HNI.config().largeSimChamber().generalizedPredictionPerRecipeAmount(),
                 1f
             )
             addItemOutput(
                 ItemVariant.of(instance.model.predictionDrop),
-                HNI.CONFIG.largeSimChamber().predictionPerRecipeAmount(),
+                HNI.config().largeSimChamber().predictionPerRecipeAmount(),
                 tier.accuracy
             )
 
             instance.model.getDimensionFluid(
-                HNI.CONFIG.largeSimChamber().overworldFluidOutputId(), HNI.CONFIG.largeSimChamber().overworldFluidOutputAmount(), HNI.CONFIG.largeSimChamber().overworldFluidOutputProbability().toFloat(),
-                HNI.CONFIG.largeSimChamber().netherFluidOutputId(), HNI.CONFIG.largeSimChamber().netherFluidOutputAmount(), HNI.CONFIG.largeSimChamber().netherFluidOutputProbability().toFloat(),
-                HNI.CONFIG.largeSimChamber().theEndFluidOutputId(), HNI.CONFIG.largeSimChamber().theEndFluidOutputAmount(), HNI.CONFIG.largeSimChamber().theEndFluidOutputProbability().toFloat(),
-                HNI.CONFIG.largeSimChamber().twilightFluidOutputId(), HNI.CONFIG.largeSimChamber().twilightFluidOutputAmount(), HNI.CONFIG.largeSimChamber().twilightFluidOutputProbability().toFloat()
+                HNI.config().largeSimChamber().overworldFluidOutputId(), HNI.config().largeSimChamber().overworldFluidOutputAmount(), HNI.config().largeSimChamber().overworldFluidOutputProbability().toFloat(),
+                HNI.config().largeSimChamber().netherFluidOutputId(), HNI.config().largeSimChamber().netherFluidOutputAmount(), HNI.config().largeSimChamber().netherFluidOutputProbability().toFloat(),
+                HNI.config().largeSimChamber().theEndFluidOutputId(), HNI.config().largeSimChamber().theEndFluidOutputAmount(), HNI.config().largeSimChamber().theEndFluidOutputProbability().toFloat(),
+                HNI.config().largeSimChamber().twilightFluidOutputId(), HNI.config().largeSimChamber().twilightFluidOutputAmount(), HNI.config().largeSimChamber().twilightFluidOutputProbability().toFloat()
             )?.let { addFluidOutput(it.first, it.second, it.third) }
         }
 
         return RecipeHolder(id, recipeBuilder.convert() as MachineRecipe)
     }
 
-    override fun generatesRuntime() = HNI.CONFIG.largeSimChamber().runtimeRecipes()
+    override fun generatesRuntime() = HNI.config().largeSimChamber().runtimeRecipes()
 
 }
