@@ -26,31 +26,31 @@ class LargeLootFabricatorRecipeType(id: ResourceLocation): ProxyableMachineRecip
         val recipeBuilder = MIMachineRecipeBuilder(
             this,
             model.largeLootFabricatorCost,
-            HNI.config().largeLootFabricator().duration()
+            HNI.CONFIG.largeLootFabricator().duration()
         ).apply {
 
-            val baseInputAmount = HNI.config().largeLootFabricator().basePredictionAmount()
-            val bonusInputAmount = (model.fabDrops.size / HNI.config().largeLootFabricator().bonusPredictionAmount()) - 1
+            val baseInputAmount = HNI.CONFIG.largeLootFabricator().basePredictionAmount()
+            val bonusInputAmount = (model.fabDrops.size / HNI.CONFIG.largeLootFabricator().bonusPredictionAmount()) - 1
             addItemInput(PredictionIngredient(model).toVanilla(), (baseInputAmount + bonusInputAmount).coerceAtLeast(1), 1f)
 
             model.getDimensionFluid(
-                HNI.config().largeLootFabricator().overworldFluidInputId(), HNI.config().largeLootFabricator().overworldFluidInputAmount(), HNI.config().largeLootFabricator().overworldFluidInputProbability().toFloat(),
-                HNI.config().largeLootFabricator().netherFluidInputId(), HNI.config().largeLootFabricator().netherFluidInputAmount(), HNI.config().largeLootFabricator().netherFluidInputProbability().toFloat(),
-                HNI.config().largeLootFabricator().theEndFluidInputId(), HNI.config().largeLootFabricator().theEndFluidInputAmount(), HNI.config().largeLootFabricator().theEndFluidInputProbability().toFloat(),
-                HNI.config().largeLootFabricator().twilightFluidInputId(), HNI.config().largeLootFabricator().twilightFluidInputAmount(), HNI.config().largeLootFabricator().twilightFluidInputProbability().toFloat()
+                HNI.CONFIG.largeLootFabricator().overworldFluidInputId(), HNI.CONFIG.largeLootFabricator().overworldFluidInputAmount(), HNI.CONFIG.largeLootFabricator().overworldFluidInputProbability().toFloat(),
+                HNI.CONFIG.largeLootFabricator().netherFluidInputId(), HNI.CONFIG.largeLootFabricator().netherFluidInputAmount(), HNI.CONFIG.largeLootFabricator().netherFluidInputProbability().toFloat(),
+                HNI.CONFIG.largeLootFabricator().theEndFluidInputId(), HNI.CONFIG.largeLootFabricator().theEndFluidInputAmount(), HNI.CONFIG.largeLootFabricator().theEndFluidInputProbability().toFloat(),
+                HNI.CONFIG.largeLootFabricator().twilightFluidInputId(), HNI.CONFIG.largeLootFabricator().twilightFluidInputAmount(), HNI.CONFIG.largeLootFabricator().twilightFluidInputProbability().toFloat()
             )?.let { addFluidInput(it.first, it.second, it.third) }
 
-            val outputProbability = HNI.config().largeLootFabricator().outputProbability().toFloat()
+            val outputProbability = HNI.CONFIG.largeLootFabricator().outputProbability().toFloat()
             model.fabDrops.forEach {
-                val outputAmount = (it.count * HNI.config().largeLootFabricator().outputAmountMultiplier()).toInt().coerceAtMost(64)
+                val outputAmount = (it.count * HNI.CONFIG.largeLootFabricator().outputAmountMultiplier()).toInt().coerceAtMost(64)
                 if (outputAmount > 0) addItemOutput(ItemVariant.of(it), outputAmount, outputProbability)
             }
 
             model.getDimensionFluid(
-                HNI.config().largeLootFabricator().overworldFluidOutputId(), HNI.config().largeLootFabricator().overworldFluidOutputAmount(), HNI.config().largeLootFabricator().overworldFluidOutputProbability().toFloat(),
-                HNI.config().largeLootFabricator().netherFluidOutputId(), HNI.config().largeLootFabricator().netherFluidOutputAmount(), HNI.config().largeLootFabricator().netherFluidOutputProbability().toFloat(),
-                HNI.config().largeLootFabricator().theEndFluidOutputId(), HNI.config().largeLootFabricator().theEndFluidOutputAmount(), HNI.config().largeLootFabricator().theEndFluidOutputProbability().toFloat(),
-                HNI.config().largeLootFabricator().twilightFluidOutputId(), HNI.config().largeLootFabricator().twilightFluidOutputAmount(), HNI.config().largeLootFabricator().twilightFluidOutputProbability().toFloat()
+                HNI.CONFIG.largeLootFabricator().overworldFluidOutputId(), HNI.CONFIG.largeLootFabricator().overworldFluidOutputAmount(), HNI.CONFIG.largeLootFabricator().overworldFluidOutputProbability().toFloat(),
+                HNI.CONFIG.largeLootFabricator().netherFluidOutputId(), HNI.CONFIG.largeLootFabricator().netherFluidOutputAmount(), HNI.CONFIG.largeLootFabricator().netherFluidOutputProbability().toFloat(),
+                HNI.CONFIG.largeLootFabricator().theEndFluidOutputId(), HNI.CONFIG.largeLootFabricator().theEndFluidOutputAmount(), HNI.CONFIG.largeLootFabricator().theEndFluidOutputProbability().toFloat(),
+                HNI.CONFIG.largeLootFabricator().twilightFluidOutputId(), HNI.CONFIG.largeLootFabricator().twilightFluidOutputAmount(), HNI.CONFIG.largeLootFabricator().twilightFluidOutputProbability().toFloat()
             )?.let { addFluidOutput(it.first, it.second, it.third) }
         }
 
@@ -63,7 +63,7 @@ class LargeLootFabricatorRecipeType(id: ResourceLocation): ProxyableMachineRecip
         val recipes = mutableListOf<RecipeHolder<MachineRecipe>>()
         for (model in DataModelRegistry.INSTANCE.values) {
 
-            if (model.fabDrops.size < HNI.config().largeLootFabricator().minimumLootForRecipe()) continue
+            if (model.fabDrops.size < HNI.CONFIG.largeLootFabricator().minimumLootForRecipe()) continue
 
             val entityId = BuiltInRegistries.ENTITY_TYPE.getKey(model.entity)
 
@@ -80,7 +80,7 @@ class LargeLootFabricatorRecipeType(id: ResourceLocation): ProxyableMachineRecip
 
     override fun fillRecipeList(level: Level, recipeList: MutableList<RecipeHolder<MachineRecipe>>) {
         recipeList.addAll(getManagerRecipes(level))
-        if (HNI.config().largeLootFabricator().runtimeRecipes()) {
+        if (HNI.CONFIG.largeLootFabricator().runtimeRecipes()) {
             recipeList.addAll(getPredictionRecipes())
         }
     }

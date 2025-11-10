@@ -1,10 +1,8 @@
 package me.luligabi.hostile_neural_industrialization.common.item
 
-import aztech.modern_industrialization.MIText
-import aztech.modern_industrialization.util.TextHelper
 import guideme.GuidesCommon
+import me.luligabi.hostile_neural_industrialization.common.HNI
 import me.luligabi.hostile_neural_industrialization.common.compat.guideme.HNIGuide
-import me.luligabi.hostile_neural_industrialization.common.util.HNIText
 import net.minecraft.network.chat.Component
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResultHolder
@@ -26,7 +24,7 @@ class HNIGuidebookItem(properties: Properties) : Item(properties) {
     }
 
     override fun appendHoverText(stack: ItemStack, context: TooltipContext, tooltip: MutableList<Component>, flag: TooltipFlag) {
-        tooltip.add(HNIText.GUIDEBOOK_TOOLTIP.text().setStyle(TextHelper.GRAY_TEXT))
+        tooltip.add(HNI.TEXT.guidebookTooltip())
     }
 
 }

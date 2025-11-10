@@ -13,13 +13,13 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.level.material.Fluid
 
 val DataModel.electricSimChamberCost: Int
-    get() = (simCost * HNI.config().electricSimChamber().energyMultiplier()).toInt()
+    get() = (simCost * HNI.CONFIG.electricSimChamber().energyMultiplier()).toInt()
 
 val DataModel.largeSimChamberCost: Int
-    get() = (simCost * HNI.config().largeSimChamber().energyMultiplier()).toInt()
+    get() = (simCost * HNI.CONFIG.largeSimChamber().energyMultiplier()).toInt()
 
 val DataModel.largeLootFabricatorCost: Int
-    get() = (simCost * HNI.config().largeLootFabricator().energyMultiplier()).toInt()
+    get() = (simCost * HNI.CONFIG.largeLootFabricator().energyMultiplier()).toInt()
 
 fun DataModel.getDimensionFluid(
     overworldFluid: String, overworldAmount: Int, overworldProbability: Float,

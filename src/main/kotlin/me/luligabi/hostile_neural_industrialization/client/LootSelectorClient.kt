@@ -5,11 +5,9 @@ import aztech.modern_industrialization.machines.gui.ClientComponentRenderer.Butt
 import aztech.modern_industrialization.machines.gui.GuiComponentClient
 import aztech.modern_industrialization.machines.gui.MachineScreen
 import aztech.modern_industrialization.util.Rectangle
-import aztech.modern_industrialization.util.TextHelper
 import me.luligabi.hostile_neural_industrialization.common.HNI
 import me.luligabi.hostile_neural_industrialization.common.block.machine.loot_fabricator.mono.loot_selector.LootSelector
 import me.luligabi.hostile_neural_industrialization.common.misc.network.SelectLootPacket
-import me.luligabi.hostile_neural_industrialization.common.util.HNIText
 import me.luligabi.hostile_neural_industrialization.mixin.ScreenAccessor
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphics
@@ -63,8 +61,8 @@ class LootSelectorClient(buf: RegistryFriendlyByteBuf) : GuiComponentClient {
                 { _ -> isPanelOpen = !isPanelOpen },
                 {
                     listOf(
-                        HNIText.LOOT_SELECTOR_TITLE.text(),
-                        HNIText.LOOT_SELECTOR_DESCRIPTION.text().setStyle(TextHelper.GRAY_TEXT)
+                        HNI.TEXT.lootSelectorTitle(),
+                        HNI.TEXT.lootSelectorDescription()
                     )
                 },
                 { screen, button, gui, _, _, _ ->
@@ -100,10 +98,7 @@ class LootSelectorClient(buf: RegistryFriendlyByteBuf) : GuiComponentClient {
                     { syncId -> SelectLootPacket(syncId, BuiltInRegistries.ITEM.getKey(stack.item)).sendToServer() },
                     {
                         listOf(
-                            (HNIText.LOOT_SELECTOR_MEMBER_NAME
-                                .arg(stack.count)
-                                .arg(stack.hoverName))
-                                .withStyle(TextHelper.GRAY_TEXT)
+                            HNI.TEXT.lootSelectorMemberName(stack.count, stack.hoverName)
                         )
                     },
                     { _, button, gui, _, _, _ ->

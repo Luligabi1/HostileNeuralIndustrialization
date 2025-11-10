@@ -1,5 +1,6 @@
 package me.luligabi.hostile_neural_industrialization.common
 
+import aztech.modern_industrialization.util.TextHelper
 import me.luligabi.hostile_neural_industrialization.common.block.HNIBlocks
 import me.luligabi.hostile_neural_industrialization.common.block.machine.HNIMachines
 import me.luligabi.hostile_neural_industrialization.common.compat.guideme.HNIGuide
@@ -7,6 +8,7 @@ import me.luligabi.hostile_neural_industrialization.common.item.HNIItems
 import me.luligabi.hostile_neural_industrialization.common.misc.HNICreativeTab
 import me.luligabi.hostile_neural_industrialization.common.misc.HNIIngredients
 import me.luligabi.hostile_neural_industrialization.common.misc.network.HNIPackets
+import me.luligabi.hostile_neural_industrialization.common.util.HNIText
 import me.luligabi.hostile_neural_industrialization.datagen.HNIDatagen
 import net.minecraft.resources.ResourceLocation
 import net.neoforged.bus.api.IEventBus
@@ -16,6 +18,8 @@ import net.neoforged.fml.config.ModConfig
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent
 import net.swedz.tesseract.neoforge.compat.mi.TesseractMI
 import net.swedz.tesseract.neoforge.config.ConfigManager
+import net.swedz.tesseract.neoforge.lang.LangInstance
+import net.swedz.tesseract.neoforge.lang.LangManager
 
 @Mod(HNI.ID)
 class HNI(modEventBus: IEventBus, container: ModContainer) {
@@ -25,13 +29,17 @@ class HNI(modEventBus: IEventBus, container: ModContainer) {
 
         fun id(id: String) = ResourceLocation.fromNamespaceAndPath(ID, id)
 
-        private var CONFIG: HNIConfig? = null
+        lateinit var CONFIG: HNIConfig
+            private set
+        lateinit var TEXT: HNIText
+            private set
 
-        fun config() = requireNotNull(CONFIG, { "Config not yet loaded" })
+        lateinit var LANG_INSTANCE: LangInstance<HNIText>
+            private set
     }
 
     init {
-        setupConfig(modEventBus, container)
+        preSetup(modEventBus, container)
 
         TesseractMI.init(ID)
         HNIItems.init(modEventBus)
@@ -45,7 +53,7 @@ class HNI(modEventBus: IEventBus, container: ModContainer) {
         modEventBus.register(HNIDatagen)
     }
 
-    private fun setupConfig(bus: IEventBus, container: ModContainer) {
+    private fun preSetup(bus: IEventBus, container: ModContainer) {
         val manager = ConfigManager().includeDefaultValueComments()
 
         CONFIG = manager
@@ -54,6 +62,15 @@ class HNI(modEventBus: IEventBus, container: ModContainer) {
             .load()
             .listenToLoad(bus)
             .config()
+
+        LANG_INSTANCE = LangManager(ID)
+            .style("gray", { TextHelper.GRAY_TEXT })
+            .style("highlight", { TextHelper.NUMBER_TEXT })
+            .build(HNIText::class.java)
+            .load()
+
+        TEXT = LANG_INSTANCE
+            .lang()
     }
 
 }

@@ -26,16 +26,16 @@ class ElectricSimChamberRecipeType(id: ResourceLocation): AbstractSimChamberReci
         val recipeBuilder = MIMachineRecipeBuilder(
             this,
             instance.model.electricSimChamberCost,
-            HNI.config().electricSimChamber().duration()
+            HNI.CONFIG.electricSimChamber().duration()
         ).apply {
             addItemInput(DataModelIngredient(instance.model, tier).toVanilla(), 1, 0f)
             addItemInput(Hostile.Items.PREDICTION_MATRIX.value(), 1, 1f)
 
             instance.model.getDimensionFluid(
-                HNI.config().electricSimChamber().overworldFluidInputId(), HNI.config().electricSimChamber().overworldFluidInputAmount(), HNI.config().electricSimChamber().overworldFluidInputProbability().toFloat(),
-                HNI.config().electricSimChamber().netherFluidInputId(), HNI.config().electricSimChamber().netherFluidInputAmount(), HNI.config().electricSimChamber().netherFluidInputProbability().toFloat(),
-                HNI.config().electricSimChamber().theEndFluidInputId(), HNI.config().electricSimChamber().theEndFluidInputAmount(), HNI.config().electricSimChamber().theEndFluidInputProbability().toFloat(),
-                HNI.config().electricSimChamber().twilightFluidInputId(), HNI.config().electricSimChamber().twilightFluidInputAmount(), HNI.config().electricSimChamber().twilightFluidInputProbability().toFloat()
+                HNI.CONFIG.electricSimChamber().overworldFluidInputId(), HNI.CONFIG.electricSimChamber().overworldFluidInputAmount(), HNI.CONFIG.electricSimChamber().overworldFluidInputProbability().toFloat(),
+                HNI.CONFIG.electricSimChamber().netherFluidInputId(), HNI.CONFIG.electricSimChamber().netherFluidInputAmount(), HNI.CONFIG.electricSimChamber().netherFluidInputProbability().toFloat(),
+                HNI.CONFIG.electricSimChamber().theEndFluidInputId(), HNI.CONFIG.electricSimChamber().theEndFluidInputAmount(), HNI.CONFIG.electricSimChamber().theEndFluidInputProbability().toFloat(),
+                HNI.CONFIG.electricSimChamber().twilightFluidInputId(), HNI.CONFIG.electricSimChamber().twilightFluidInputAmount(), HNI.CONFIG.electricSimChamber().twilightFluidInputProbability().toFloat()
             )?.let { addFluidInput(it.first, it.second, it.third) }
 
             val baseDrop = instance.model.baseDrop
@@ -45,16 +45,16 @@ class ElectricSimChamberRecipeType(id: ResourceLocation): AbstractSimChamberReci
             addItemOutput(ItemVariant.of(predictionDrop), 1, tier.accuracy)
 
             instance.model.getDimensionFluid(
-                HNI.config().electricSimChamber().overworldFluidOutputId(), HNI.config().electricSimChamber().overworldFluidOutputAmount(), HNI.config().electricSimChamber().overworldFluidOutputProbability().toFloat(),
-                HNI.config().electricSimChamber().netherFluidOutputId(), HNI.config().electricSimChamber().netherFluidOutputAmount(), HNI.config().electricSimChamber().netherFluidOutputProbability().toFloat(),
-                HNI.config().electricSimChamber().theEndFluidOutputId(), HNI.config().electricSimChamber().theEndFluidOutputAmount(), HNI.config().electricSimChamber().theEndFluidOutputProbability().toFloat(),
-                HNI.config().electricSimChamber().twilightFluidOutputId(), HNI.config().electricSimChamber().twilightFluidOutputAmount(), HNI.config().electricSimChamber().twilightFluidOutputProbability().toFloat()
+                HNI.CONFIG.electricSimChamber().overworldFluidOutputId(), HNI.CONFIG.electricSimChamber().overworldFluidOutputAmount(), HNI.CONFIG.electricSimChamber().overworldFluidOutputProbability().toFloat(),
+                HNI.CONFIG.electricSimChamber().netherFluidOutputId(), HNI.CONFIG.electricSimChamber().netherFluidOutputAmount(), HNI.CONFIG.electricSimChamber().netherFluidOutputProbability().toFloat(),
+                HNI.CONFIG.electricSimChamber().theEndFluidOutputId(), HNI.CONFIG.electricSimChamber().theEndFluidOutputAmount(), HNI.CONFIG.electricSimChamber().theEndFluidOutputProbability().toFloat(),
+                HNI.CONFIG.electricSimChamber().twilightFluidOutputId(), HNI.CONFIG.electricSimChamber().twilightFluidOutputAmount(), HNI.CONFIG.electricSimChamber().twilightFluidOutputProbability().toFloat()
             )?.let { addFluidOutput(it.first, it.second, it.third) }
         }
 
         return RecipeHolder(id, recipeBuilder.convert() as MachineRecipe)
     }
 
-    override fun generatesRuntime() = HNI.config().electricSimChamber().runtimeRecipes()
+    override fun generatesRuntime() = HNI.CONFIG.electricSimChamber().runtimeRecipes()
 
 }

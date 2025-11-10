@@ -1,18 +1,28 @@
 package me.luligabi.hostile_neural_industrialization.common.util
 
-import me.luligabi.hostile_neural_industrialization.common.HNI
-import net.swedz.tesseract.neoforge.compat.mi.tooltip.MICompatibleTranslatableTextEnum
+import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.MutableComponent
+import net.swedz.tesseract.neoforge.lang.annotation.LangKey
+import net.swedz.tesseract.neoforge.lang.annotation.WithStyle
 
-enum class HNIText(private val text: String): MICompatibleTranslatableTextEnum {
+interface HNIText {
 
-    GUIDEBOOK_TOOLTIP("The neural network must grow."),
-    LOOT_SELECTOR_TITLE("Select Loot Output"),
-    LOOT_SELECTOR_DESCRIPTION("Click to open loot selection panel."),
-    LOOT_SELECTOR_MEMBER_NAME("%dx %s");
+    @WithStyle("gray")
+    @LangKey(text = ["The neural network must grow."])
+    fun guidebookTooltip(): MutableComponent
 
+    @LangKey(text = ["Select Loot Output"])
+    fun lootSelectorTitle(): MutableComponent
 
-    override fun englishText() = text
+    @WithStyle("gray")
+    @LangKey(text = ["Click to open loot selection panel."])
+    fun lootSelectorDescription(): MutableComponent
 
-    override fun getTranslationKey() = "text.${HNI.ID}.${this.name.lowercase()}"
+    @WithStyle("gray")
+    @LangKey(text = ["%dx %s"])
+    fun lootSelectorMemberName(
+        @WithStyle("highlight") amount: Int,
+        @WithStyle("highlight") name: Component
+    ): MutableComponent
 
 }

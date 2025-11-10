@@ -26,26 +26,26 @@ class MonoLootFabricatorRecipeType(id: ResourceLocation): ProxyableMachineRecipe
 
         val recipeBuilder = MIMachineRecipeBuilder(
             this,
-            HNI.config().monoLootFabricator().energy(),
-            HNI.config().monoLootFabricator().duration()
+            HNI.CONFIG.monoLootFabricator().energy(),
+            HNI.CONFIG.monoLootFabricator().duration()
         ).apply {
             addItemInput(PredictionIngredient(model).toVanilla(), 1, 1f)
 
             model.getDimensionFluid(
-                HNI.config().monoLootFabricator().overworldFluidInputId(), HNI.config().monoLootFabricator().overworldFluidInputAmount(), HNI.config().monoLootFabricator().overworldFluidInputProbability().toFloat(),
-                HNI.config().monoLootFabricator().netherFluidInputId(), HNI.config().monoLootFabricator().netherFluidInputAmount(), HNI.config().monoLootFabricator().netherFluidInputProbability().toFloat(),
-                HNI.config().monoLootFabricator().theEndFluidInputId(), HNI.config().monoLootFabricator().theEndFluidInputAmount(), HNI.config().monoLootFabricator().theEndFluidInputProbability().toFloat(),
-                HNI.config().monoLootFabricator().twilightFluidInputId(), HNI.config().monoLootFabricator().twilightFluidInputAmount(), HNI.config().monoLootFabricator().twilightFluidInputProbability().toFloat()
+                HNI.CONFIG.monoLootFabricator().overworldFluidInputId(), HNI.CONFIG.monoLootFabricator().overworldFluidInputAmount(), HNI.CONFIG.monoLootFabricator().overworldFluidInputProbability().toFloat(),
+                HNI.CONFIG.monoLootFabricator().netherFluidInputId(), HNI.CONFIG.monoLootFabricator().netherFluidInputAmount(), HNI.CONFIG.monoLootFabricator().netherFluidInputProbability().toFloat(),
+                HNI.CONFIG.monoLootFabricator().theEndFluidInputId(), HNI.CONFIG.monoLootFabricator().theEndFluidInputAmount(), HNI.CONFIG.monoLootFabricator().theEndFluidInputProbability().toFloat(),
+                HNI.CONFIG.monoLootFabricator().twilightFluidInputId(), HNI.CONFIG.monoLootFabricator().twilightFluidInputAmount(), HNI.CONFIG.monoLootFabricator().twilightFluidInputProbability().toFloat()
             )?.let { addFluidInput(it.first, it.second, it.third) }
             
-            val outputAmount = (outputLoot.count * HNI.config().monoLootFabricator().outputAmountMultiplier()).toInt().coerceAtMost(64)
+            val outputAmount = (outputLoot.count * HNI.CONFIG.monoLootFabricator().outputAmountMultiplier()).toInt().coerceAtMost(64)
             if (outputAmount > 0) addItemOutput(ItemVariant.of(outputLoot), outputAmount, 1f)
 
             model.getDimensionFluid(
-                HNI.config().monoLootFabricator().overworldFluidOutputId(), HNI.config().monoLootFabricator().overworldFluidOutputAmount(), HNI.config().monoLootFabricator().overworldFluidOutputProbability().toFloat(),
-                HNI.config().monoLootFabricator().netherFluidOutputId(), HNI.config().monoLootFabricator().netherFluidOutputAmount(), HNI.config().monoLootFabricator().netherFluidOutputProbability().toFloat(),
-                HNI.config().monoLootFabricator().theEndFluidOutputId(), HNI.config().monoLootFabricator().theEndFluidOutputAmount(), HNI.config().monoLootFabricator().theEndFluidOutputProbability().toFloat(),
-                HNI.config().monoLootFabricator().twilightFluidOutputId(), HNI.config().monoLootFabricator().twilightFluidOutputAmount(), HNI.config().monoLootFabricator().twilightFluidOutputProbability().toFloat()
+                HNI.CONFIG.monoLootFabricator().overworldFluidOutputId(), HNI.CONFIG.monoLootFabricator().overworldFluidOutputAmount(), HNI.CONFIG.monoLootFabricator().overworldFluidOutputProbability().toFloat(),
+                HNI.CONFIG.monoLootFabricator().netherFluidOutputId(), HNI.CONFIG.monoLootFabricator().netherFluidOutputAmount(), HNI.CONFIG.monoLootFabricator().netherFluidOutputProbability().toFloat(),
+                HNI.CONFIG.monoLootFabricator().theEndFluidOutputId(), HNI.CONFIG.monoLootFabricator().theEndFluidOutputAmount(), HNI.CONFIG.monoLootFabricator().theEndFluidOutputProbability().toFloat(),
+                HNI.CONFIG.monoLootFabricator().twilightFluidOutputId(), HNI.CONFIG.monoLootFabricator().twilightFluidOutputAmount(), HNI.CONFIG.monoLootFabricator().twilightFluidOutputProbability().toFloat()
             )?.let { addFluidOutput(it.first, it.second, it.third) }
         }
 
@@ -81,7 +81,7 @@ class MonoLootFabricatorRecipeType(id: ResourceLocation): ProxyableMachineRecipe
 
     override fun fillRecipeList(level: Level, recipeList: MutableList<RecipeHolder<MachineRecipe>>) {
         recipeList.addAll(getManagerRecipes(level))
-        if (HNI.config().monoLootFabricator().runtimeRecipes()) {
+        if (HNI.CONFIG.monoLootFabricator().runtimeRecipes()) {
             recipeList.addAll(getPredictionRecipes())
         }
     }
