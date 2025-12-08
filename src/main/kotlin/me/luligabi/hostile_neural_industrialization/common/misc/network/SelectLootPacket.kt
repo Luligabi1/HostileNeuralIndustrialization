@@ -25,7 +25,7 @@ data class SelectLootPacket(private val syncId: Int, private val id: ResourceLoc
 
         val menu = ctx.player.containerMenu
         if (menu.containerId == syncId && menu is MachineMenuServer) {
-            val lootSelector = menu.blockEntity.guiComponents.get<LootSelector.Server>(LootSelector.ID)
+            val lootSelector = menu.blockEntity.guiComponents.getOrThrow(LootSelector::class.java)
             lootSelector.behavior.handleClick(id)
         }
 

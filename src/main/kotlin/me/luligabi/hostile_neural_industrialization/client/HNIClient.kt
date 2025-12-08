@@ -1,9 +1,9 @@
 package me.luligabi.hostile_neural_industrialization.client
 
-import aztech.modern_industrialization.machines.GuiComponentsClient
+import aztech.modern_industrialization.client.machines.GuiComponentsClient
+import aztech.modern_industrialization.client.machines.MachineBlockEntityRenderer
+import aztech.modern_industrialization.client.machines.multiblocks.MultiblockMachineBER
 import aztech.modern_industrialization.machines.MachineBlock
-import aztech.modern_industrialization.machines.MachineBlockEntityRenderer
-import aztech.modern_industrialization.machines.multiblocks.MultiblockMachineBER
 import aztech.modern_industrialization.machines.multiblocks.MultiblockMachineBlockEntity
 import me.luligabi.hostile_neural_industrialization.common.HNI
 import me.luligabi.hostile_neural_industrialization.common.block.HNIBlocks
@@ -23,7 +23,7 @@ import net.neoforged.neoforge.common.NeoForge
 object HNIClient {
 
     init {
-        GuiComponentsClient.register(LootSelector.ID, ::LootSelectorClient)
+        GuiComponentsClient.register(LootSelector.TYPE, ::LootSelectorClient)
         NeoForge.EVENT_BUS.register(DelayedClientTask)
     }
 

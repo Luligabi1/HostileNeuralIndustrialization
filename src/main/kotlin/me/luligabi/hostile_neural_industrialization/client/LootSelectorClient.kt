@@ -1,9 +1,8 @@
 package me.luligabi.hostile_neural_industrialization.client
 
-import aztech.modern_industrialization.machines.gui.ClientComponentRenderer
-import aztech.modern_industrialization.machines.gui.ClientComponentRenderer.ButtonContainer
-import aztech.modern_industrialization.machines.gui.GuiComponentClient
-import aztech.modern_industrialization.machines.gui.MachineScreen
+import aztech.modern_industrialization.client.machines.gui.ClientComponentRenderer
+import aztech.modern_industrialization.client.machines.gui.GuiComponentClient
+import aztech.modern_industrialization.client.machines.gui.MachineScreen
 import aztech.modern_industrialization.util.Rectangle
 import me.luligabi.hostile_neural_industrialization.common.HNI
 import me.luligabi.hostile_neural_industrialization.common.block.machine.loot_fabricator.mono.loot_selector.LootSelector
@@ -12,11 +11,13 @@ import me.luligabi.hostile_neural_industrialization.mixin.ScreenAccessor
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.core.registries.BuiltInRegistries
-import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
 
-class LootSelectorClient(buf: RegistryFriendlyByteBuf) : GuiComponentClient {
+class LootSelectorClient(
+    params: LootSelector.Data,
+    data: LootSelector.Data
+) : GuiComponentClient<LootSelector.Data, LootSelector.Data>(params, data) {
 
     private companion object {
 
@@ -30,21 +31,7 @@ class LootSelectorClient(buf: RegistryFriendlyByteBuf) : GuiComponentClient {
         val RECIPE_SPRITE = ResourceLocation.withDefaultNamespace("container/stonecutter/recipe")
     }
 
-    private var selectedId: ResourceLocation? = null
-    private var lootList: List<ItemStack> = emptyList()
-
-    init {
-        readCurrentData(buf)
-    }
-
-    override fun readCurrentData(buf: RegistryFriendlyByteBuf) {
-
-        val id = buf.readResourceLocation()
-        val list = ItemStack.LIST_STREAM_CODEC.decode(buf)
-
-        selectedId = if (id == LootSelector.NONE) null else id
-        lootList = list
-    }
+    fun data() = data
 
     override fun createRenderer(screen: MachineScreen) = Renderer(screen)
 
@@ -55,7 +42,7 @@ class LootSelectorClient(buf: RegistryFriendlyByteBuf) : GuiComponentClient {
         private val panelWidth = 109
         private val panelHeight = 94
 
-        override fun addButtons(container: ButtonContainer) {
+        override fun addButtons(container: ClientComponentRenderer.ButtonContainer) {
             screen.addButton(
                 -24, 17, 20, 20,
                 { _ -> isPanelOpen = !isPanelOpen },
@@ -67,7 +54,7 @@ class LootSelectorClient(buf: RegistryFriendlyByteBuf) : GuiComponentClient {
                 },
                 { screen, button, gui, _, _, _ ->
 
-                    val selectedId = this@LootSelectorClient.selectedId
+                    val selectedId = this@LootSelectorClient.data().selectedId
                     val hasInputItem = !screen.menu.inventory.itemStacks[0].isEmpty
 
 
@@ -85,7 +72,7 @@ class LootSelectorClient(buf: RegistryFriendlyByteBuf) : GuiComponentClient {
                 }
             )
 
-            this@LootSelectorClient.lootList.forEachIndexed { i, stack ->
+            this@LootSelectorClient.data().lootList.forEachIndexed { i, stack ->
 
                 val col = i % 6
                 val row = i / 6
@@ -104,7 +91,7 @@ class LootSelectorClient(buf: RegistryFriendlyByteBuf) : GuiComponentClient {
                     { _, button, gui, _, _, _ ->
 
                         val texture = when {
-                            BuiltInRegistries.ITEM.getKey(stack.item) == this@LootSelectorClient.selectedId -> RECIPE_SELECTED_SPRITE
+                            BuiltInRegistries.ITEM.getKey(stack.item) == this@LootSelectorClient.data().selectedId -> RECIPE_SELECTED_SPRITE
                             button.isHovered -> RECIPE_HIGHLIGHTED_SPRITE
                             else -> RECIPE_SPRITE
                         }
@@ -144,7 +131,10 @@ class LootSelectorClient(buf: RegistryFriendlyByteBuf) : GuiComponentClient {
                     panelWidth, panelHeight
                 )
             } else {
-                Rectangle(leftPos - 31, topPos + 10, 31, 34)
+                Rectangle(
+                    leftPos - 31, topPos + 10,
+                    31, 34
+                )
             }
         }
 

@@ -2,7 +2,7 @@ package me.luligabi.hostile_neural_industrialization.common.block.machine.loot_f
 
 import aztech.modern_industrialization.inventory.ChangeListener
 import aztech.modern_industrialization.inventory.ConfigurableItemStack
-import aztech.modern_industrialization.machines.IComponent
+import aztech.modern_industrialization.machines.MachineComponent
 import me.luligabi.hostile_neural_industrialization.common.block.machine.loot_fabricator.mono.MonoLootFabricatorBlockEntity
 import me.luligabi.hostile_neural_industrialization.common.misc.network.RefreshLootListPacket
 import net.minecraft.core.HolderLookup
@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerLevel
 
 
-class LootSelectorComponent(val blockEntity: () -> MonoLootFabricatorBlockEntity): IComponent.ServerOnly {
+class LootSelectorComponent(val blockEntity: () -> MonoLootFabricatorBlockEntity): MachineComponent.ServerOnly {
 
     var selectedLootId: ResourceLocation? = null
     lateinit var inputStackListener: InputStackListener

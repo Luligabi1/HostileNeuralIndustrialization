@@ -31,9 +31,9 @@ class MonoLootFabricatorBlockEntity(
     HNIMachines.RecipeTypes.MONO_LOOT_FABRICATOR,
     buildInventory(),
     MachineGuiParameters.Builder(HNI.id(ID), true).backgroundHeight(184).build(),
-    EnergyBar.Parameters(14, 44),
-    ProgressBar.Parameters(60, 44, "compress"),
-    RecipeEfficiencyBar.Parameters(38, 84),
+    EnergyBar.Params(14, 44),
+    ProgressBar.Params(60, 44, "compress"),
+    RecipeEfficiencyBar.Params(38, 84),
     MachineTier.LV,
     3200
 ), EnergyComponentHolder, Tickable, CrafterComponentHolder, CrafterComponent.Behavior {
@@ -68,7 +68,7 @@ class MonoLootFabricatorBlockEntity(
     val lootSelector = LootSelectorComponent({ this })
 
     init {
-        registerGuiComponent(LootSelector.Server(
+        registerGuiComponent(LootSelector(
             object : LootSelector.Behavior {
 
                 override fun handleClick(id: ResourceLocation) {

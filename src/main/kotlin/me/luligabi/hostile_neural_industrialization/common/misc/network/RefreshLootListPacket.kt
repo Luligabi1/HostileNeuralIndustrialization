@@ -1,6 +1,6 @@
 package me.luligabi.hostile_neural_industrialization.common.misc.network
 
-import aztech.modern_industrialization.machines.gui.MachineScreen
+import aztech.modern_industrialization.client.machines.gui.MachineScreen
 import me.luligabi.hostile_neural_industrialization.client.LootSelectorClient
 import me.luligabi.hostile_neural_industrialization.mixin.MachineScreenAccessor
 import net.minecraft.client.Minecraft

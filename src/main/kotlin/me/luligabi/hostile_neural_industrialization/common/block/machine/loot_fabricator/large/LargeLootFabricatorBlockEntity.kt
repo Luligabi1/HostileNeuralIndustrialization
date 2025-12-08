@@ -63,7 +63,7 @@ class LargeLootFabricatorBlockEntity(bep: BEP): AbstractElectricCraftingMultiblo
         registerComponents(upgrades, overdrive)
 
         registerGuiComponent(
-            SlotPanel.Server(this)
+            SlotPanel(this)
                 .withRedstoneControl(redstoneControl)
                 .withUpgrades(upgrades)
                 .withOverdrive(overdrive)

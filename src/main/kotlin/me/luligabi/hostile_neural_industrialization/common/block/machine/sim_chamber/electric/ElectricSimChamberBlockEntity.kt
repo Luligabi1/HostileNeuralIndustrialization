@@ -28,9 +28,9 @@ class ElectricSimChamberBlockEntity(
     HNIMachines.RecipeTypes.ELECTRIC_SIM_CHAMBER,
     buildInventory(),
     MachineGuiParameters.Builder(HNI.id(MonoLootFabricatorBlockEntity.Companion.ID), true).build(),
-    EnergyBar.Parameters(14, 35),
-    ProgressBar.Parameters(79, 34, "compress"),
-    RecipeEfficiencyBar.Parameters(38, 66),
+    EnergyBar.Params(14, 35),
+    ProgressBar.Params(79, 34, "compress"),
+    RecipeEfficiencyBar.Params(38, 66),
     MachineTier.LV,
     3200
 ), EnergyComponentHolder, Tickable, CrafterComponentHolder, CrafterComponent.Behavior, HNISimChamber {
