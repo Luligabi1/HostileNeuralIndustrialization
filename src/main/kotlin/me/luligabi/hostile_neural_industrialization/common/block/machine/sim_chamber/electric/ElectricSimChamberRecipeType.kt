@@ -2,7 +2,6 @@ package me.luligabi.hostile_neural_industrialization.common.block.machine.sim_ch
 
 import aztech.modern_industrialization.machines.recipe.MachineRecipe
 import aztech.modern_industrialization.thirdparty.fabrictransfer.api.item.ItemVariant
-import dev.shadowsoffire.hostilenetworks.Hostile
 import dev.shadowsoffire.hostilenetworks.data.DataModelInstance
 import dev.shadowsoffire.hostilenetworks.data.ModelTier
 import me.luligabi.hostile_neural_industrialization.common.HNI
@@ -29,7 +28,7 @@ class ElectricSimChamberRecipeType(id: ResourceLocation): AbstractSimChamberReci
             HNI.CONFIG.electricSimChamber().duration()
         ).apply {
             addItemInput(DataModelIngredient(instance.model, tier).toVanilla(), 1, 0f)
-            addItemInput(Hostile.Items.PREDICTION_MATRIX.value(), 1, 1f)
+            addItemInput(instance.model.input, 1, 1f)
 
             instance.model.getDimensionFluid(
                 HNI.CONFIG.electricSimChamber().overworldFluidInputId(), HNI.CONFIG.electricSimChamber().overworldFluidInputAmount(), HNI.CONFIG.electricSimChamber().overworldFluidInputProbability().toFloat(),
