@@ -1,9 +1,9 @@
 package me.luligabi.hostile_neural_industrialization.common
 
-import net.swedz.tesseract.neoforge.config.annotation.ConfigComment
-import net.swedz.tesseract.neoforge.config.annotation.ConfigKey
-import net.swedz.tesseract.neoforge.config.annotation.Range
-import net.swedz.tesseract.neoforge.config.annotation.SubSection
+import net.swedz.tesseract.config.annotation.ConfigComment
+import net.swedz.tesseract.config.annotation.ConfigKey
+import net.swedz.tesseract.config.annotation.Range
+import net.swedz.tesseract.config.annotation.SubSection
 
 interface HNIConfig {
 

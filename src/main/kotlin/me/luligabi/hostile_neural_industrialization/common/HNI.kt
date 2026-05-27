@@ -16,8 +16,9 @@ import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.Mod
 import net.neoforged.fml.config.ModConfig
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent
+import net.swedz.tesseract.config.ConfigManager
 import net.swedz.tesseract.neoforge.compat.mi.TesseractMI
-import net.swedz.tesseract.neoforge.config.ConfigManager
+import net.swedz.tesseract.neoforge.config.ModConfigFileAccess
 import net.swedz.tesseract.neoforge.lang.LangInstance
 import net.swedz.tesseract.neoforge.lang.LangManager
 
@@ -54,18 +55,16 @@ class HNI(modEventBus: IEventBus, container: ModContainer) {
     }
 
     private fun preSetup(bus: IEventBus, container: ModContainer) {
-        val manager = ConfigManager().includeDefaultValueComments()
-
-        CONFIG = manager
+        val configInstance = ConfigManager(ModConfigFileAccess(container, ModConfig.Type.STARTUP))
             .build(HNIConfig::class.java)
-            .register(container, ModConfig.Type.STARTUP)
+
+        CONFIG = configInstance
             .load()
-            .listenToLoad(bus)
             .config()
 
         LANG_INSTANCE = LangManager(ID)
-            .style("gray", { TextHelper.GRAY_TEXT })
-            .style("highlight", { TextHelper.NUMBER_TEXT })
+            .style("gray", { -> TextHelper.GRAY_TEXT })
+            .style("highlight", { -> TextHelper.NUMBER_TEXT })
             .build(HNIText::class.java)
             .load()
 
