@@ -8,9 +8,9 @@ import dev.shadowsoffire.hostilenetworks.data.DataModelRegistry
 import me.luligabi.hostile_neural_industrialization.common.HNI
 import me.luligabi.hostile_neural_industrialization.common.block.machine.loot_fabricator.PredictionIngredient
 import me.luligabi.hostile_neural_industrialization.common.util.getDimensionFluid
+import me.luligabi.hostile_neural_industrialization.common.util.id
 import me.luligabi.hostile_neural_industrialization.common.util.isModelRegistryLoaded
 import me.luligabi.hostile_neural_industrialization.common.util.largeLootFabricatorCost
-import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.level.Level
@@ -30,7 +30,7 @@ class LargeLootFabricatorRecipeType(id: ResourceLocation): ProxyableMachineRecip
         ).apply {
 
             val baseInputAmount = HNI.CONFIG.largeLootFabricator().basePredictionAmount()
-            val bonusInputAmount = (model.fabDrops.size / HNI.CONFIG.largeLootFabricator().bonusPredictionAmount()) - 1
+            val bonusInputAmount = (model.fabDrops().size / HNI.CONFIG.largeLootFabricator().bonusPredictionAmount()) - 1
             addItemInput(PredictionIngredient(model).toVanilla(), (baseInputAmount + bonusInputAmount).coerceAtLeast(1), 1f)
 
             model.getDimensionFluid(
@@ -41,7 +41,7 @@ class LargeLootFabricatorRecipeType(id: ResourceLocation): ProxyableMachineRecip
             )?.let { addFluidInput(it.first, it.second, it.third) }
 
             val outputProbability = HNI.CONFIG.largeLootFabricator().outputProbability().toFloat()
-            model.fabDrops.forEach {
+            model.fabDrops().forEach {
                 val outputAmount = (it.count * HNI.CONFIG.largeLootFabricator().outputAmountMultiplier()).toInt().coerceAtMost(64)
                 if (outputAmount > 0) addItemOutput(ItemVariant.of(it), outputAmount, outputProbability)
             }
@@ -62,14 +62,12 @@ class LargeLootFabricatorRecipeType(id: ResourceLocation): ProxyableMachineRecip
 
         val recipes = mutableListOf<RecipeHolder<MachineRecipe>>()
         for (model in DataModelRegistry.INSTANCE.values) {
+            if (model.fabDrops().size < HNI.CONFIG.largeLootFabricator().minimumLootForRecipe()) continue
 
-            if (model.fabDrops.size < HNI.CONFIG.largeLootFabricator().minimumLootForRecipe()) continue
-
-            val entityId = BuiltInRegistries.ENTITY_TYPE.getKey(model.entity)
-
+            val modelId = model.id
             recipes.add(
                 generate(
-                    ResourceLocation.parse("${HNI.ID}:/large_loot_fabricator/${entityId.namespace}/${entityId.path}"),
+                    ResourceLocation.parse("${HNI.ID}:/large_loot_fabricator/${modelId.namespace}/${modelId.path}"),
                     model
                 )
             )

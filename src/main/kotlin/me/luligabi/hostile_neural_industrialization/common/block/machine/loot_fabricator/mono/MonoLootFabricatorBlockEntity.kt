@@ -97,7 +97,7 @@ class MonoLootFabricatorBlockEntity(
         val prediction = inventory.itemStacks[0].toStack()
         val model = DataModelItem.getStoredModel(prediction).optional
 
-        return if (model.isPresent) model.get().fabDrops else null
+        return if (model.isPresent) model.get().fabDrops() else null
     }
 
     private var inputListenerLoaded = false

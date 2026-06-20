@@ -8,6 +8,7 @@ import dev.shadowsoffire.hostilenetworks.data.DataModelRegistry
 import me.luligabi.hostile_neural_industrialization.common.HNI
 import me.luligabi.hostile_neural_industrialization.common.block.machine.loot_fabricator.PredictionIngredient
 import me.luligabi.hostile_neural_industrialization.common.util.getDimensionFluid
+import me.luligabi.hostile_neural_industrialization.common.util.id
 import me.luligabi.hostile_neural_industrialization.common.util.isModelRegistryLoaded
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.resources.ResourceLocation
@@ -61,14 +62,14 @@ class MonoLootFabricatorRecipeType(id: ResourceLocation): ProxyableMachineRecipe
         val recipes = mutableListOf<RecipeHolder<MachineRecipe>>()
         for (model in DataModelRegistry.INSTANCE.values) {
 
-            model.fabDrops.forEach {
+            model.fabDrops().forEach {
 
-                val entityId = BuiltInRegistries.ENTITY_TYPE.getKey(model.entity)
+                val modelId = model.id
                 val itemId = BuiltInRegistries.ITEM.getKey(it.item)
 
                 recipes.add(
                     generate(
-                        ResourceLocation.parse("${HNI.ID}:/mono_loot_fabricator/${entityId.namespace}/${entityId.path}/${itemId.namespace}/${itemId.path}"),
+                        ResourceLocation.parse("${HNI.ID}:/mono_loot_fabricator/${modelId.namespace}/${modelId.path}/${itemId.namespace}/${itemId.path}"),
                         model, it
                     )
                 )

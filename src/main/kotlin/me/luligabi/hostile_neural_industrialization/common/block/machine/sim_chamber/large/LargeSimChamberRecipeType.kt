@@ -28,7 +28,7 @@ class LargeSimChamberRecipeType(id: ResourceLocation): AbstractSimChamberRecipeT
             HNI.CONFIG.largeSimChamber().duration()
         ).apply {
             addItemInput(DataModelIngredient(instance.model, tier).toVanilla(), 1, 0f)
-            addItemInput(instance.model.input, HNI.CONFIG.largeSimChamber().matrixesPerRecipeAmount(), 1f)
+            addItemInput(instance.model.input(), HNI.CONFIG.largeSimChamber().matrixesPerRecipeAmount(), 1f)
 
             instance.model.getDimensionFluid(
                 HNI.CONFIG.largeSimChamber().overworldFluidInputId(), HNI.CONFIG.largeSimChamber().overworldFluidInputAmount(), HNI.CONFIG.largeSimChamber().overworldFluidInputProbability().toFloat(),
@@ -38,7 +38,7 @@ class LargeSimChamberRecipeType(id: ResourceLocation): AbstractSimChamberRecipeT
             )?.let { addFluidInput(it.first, it.second, it.third) }
             
             addItemOutput(
-                ItemVariant.of(instance.model.baseDrop),
+                ItemVariant.of(instance.model.baseDrop()),
                 HNI.CONFIG.largeSimChamber().generalizedPredictionPerRecipeAmount(),
                 1f
             )

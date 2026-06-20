@@ -10,9 +10,9 @@ import dev.shadowsoffire.hostilenetworks.data.*
 import dev.shadowsoffire.hostilenetworks.item.DataModelItem
 import me.luligabi.hostile_neural_industrialization.common.HNI
 import me.luligabi.hostile_neural_industrialization.common.misc.HNIIngredients
+import me.luligabi.hostile_neural_industrialization.common.util.id
 import me.luligabi.hostile_neural_industrialization.common.util.isHNNRegistryLoaded
 import me.luligabi.hostile_neural_industrialization.mixin.ModelTierRegistryAccessor
-import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.RecipeHolder
@@ -30,13 +30,13 @@ abstract class AbstractSimChamberRecipeType (id: ResourceLocation): ProxyableMac
     abstract fun generatesRuntime(): Boolean
 
     fun getModelRecipes(): MutableList<RecipeHolder<MachineRecipe>> {
-        if (!isHNNRegistryLoaded()) false
+        if (!isHNNRegistryLoaded()) return mutableListOf()
 
         val recipes = mutableListOf<RecipeHolder<MachineRecipe>>()
 
         for (model in DataModelRegistry.INSTANCE.values) {
 
-            val entityId = BuiltInRegistries.ENTITY_TYPE.getKey(model.entity).let {
+            val modelId = model.id.let {
                 "${it.namespace}/${it.path}"
             }
 
@@ -54,7 +54,7 @@ abstract class AbstractSimChamberRecipeType (id: ResourceLocation): ProxyableMac
 
                 recipes.add(
                     generate(
-                        ResourceLocation.parse("${HNI.ID}:/${machineId}/$entityId/$tierId"),
+                        ResourceLocation.parse("${HNI.ID}:/${machineId}/$modelId/$tierId"),
                         DataModelInstance(stack, 0),
                         tier
                     )
