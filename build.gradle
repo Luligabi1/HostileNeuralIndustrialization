@@ -245,6 +245,7 @@ publishMods {
         environment = CLIENT_AND_SERVER
 
         requires("modern-industrialization")
+        requires("hostile-neural-networks")
         requires("tesseract-api")
         requires("kotlin-for-forge")
         optional("emi")
